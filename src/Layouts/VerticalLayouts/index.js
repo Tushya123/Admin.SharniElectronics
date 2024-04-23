@@ -591,21 +591,22 @@ const VerticalLayout = (props) => {
                 Admin Users{" "}
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/user-signin" className="nav-link">
                 User Details
               </Link>
-            </li><li className="nav-item">
+            {/* </li> */}
+            <li className="nav-item">
               <Link to="/roles" className="nav-link">
                 Roles
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               {" "}
               <Link to="/getintouch" className="nav-link">
                 GetInTouch
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link to="/service-type" className="nav-link">
                 ServiceType
@@ -614,6 +615,10 @@ const VerticalLayout = (props) => {
             <li className="nav-item">
               <Link to="/service-detail" className="nav-link">
                  Service Details
+               </Link>
+             </li><li className="nav-item">
+              <Link to="/inquiry" className="nav-link">
+                 Inquiry
                </Link>
              </li>
              <li className="nav-item">

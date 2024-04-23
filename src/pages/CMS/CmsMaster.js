@@ -87,7 +87,7 @@ const CmsMaster = () => {
                   console.log("res", res.url);
                   resolve({
 
-                    default: `${process.env.REACT_APP_API_URL_CONTACTUS}/uploads/cmsckImages/${res.url}`,
+                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/cmsckImages/${res.url}`,
 
                   });
                 })
@@ -330,7 +330,7 @@ const CmsMaster = () => {
 
     await axios
 
-      .post(`${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list/cms`, {
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/cms`, {
 
         skip: skip,
         per_page: perPage,
@@ -957,7 +957,7 @@ const CmsMaster = () => {
                                           checkImagePhoto
                                             ? photoAdd
 
-                                            : `${process.env.REACT_APP_API_URL_CONTACTUS}/${cmsImage}`
+                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${cmsImage}`
 
                                         }
                                         width="180"

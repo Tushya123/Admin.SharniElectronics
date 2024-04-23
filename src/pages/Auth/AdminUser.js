@@ -273,7 +273,7 @@ const AdminUser = () => {
     setsortDirection(sortDirection);
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_CONTACTUS}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
 
     return (
       <img
@@ -301,7 +301,7 @@ const AdminUser = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/listByparams/adminUser`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listByparams/adminUser`,
         {
           skip: skip,
           per_page: perPage,
@@ -749,7 +749,7 @@ const AdminUser = () => {
                   src={
                     checkImagePhoto
                       ? photoAdd
-                      : `${process.env.REACT_APP_API_URL_CONTACTUS}/${values.bannerImage}`
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.bannerImage}`
                   }
                   width="300"
                   height="200"

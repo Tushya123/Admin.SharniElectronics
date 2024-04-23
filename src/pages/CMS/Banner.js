@@ -244,7 +244,7 @@ const Banner = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list-by-params/banner-images`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/banner-images`,
         {
           skip: skip,
           per_page: perPage,
@@ -659,7 +659,7 @@ const Banner = () => {
                   src={
                     checkImagePhoto
                       ? photoAdd
-                      : `${process.env.REACT_APP_API_URL_CONTACTUS}/${values.bannerImage}`
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.bannerImage}`
                   }
                   width="300"
                   height="200"

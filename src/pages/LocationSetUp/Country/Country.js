@@ -226,7 +226,7 @@ const Country = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/location/countries`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/location/countries`,
         {
           skip: skip,
           per_page: perPage,

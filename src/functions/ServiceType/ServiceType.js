@@ -4,7 +4,7 @@ export const createServiceType = async (values) => {
   try{
     console.log(values)
     const response =await axios.post(
-      `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/create/ServiceType`,
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/ServiceType`,
       values
     )
 
@@ -18,13 +18,13 @@ export const createServiceType = async (values) => {
 
 export const removeServiceType = async (_id) => {
   return await axios.delete(
-    `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/delete/ServiceType/${_id}`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/ServiceType/${_id}`
   );
 };
 
 export const listServiceType = async () => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list/ServiceType`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/ServiceType`
   );
 };
 
@@ -36,14 +36,14 @@ export const listServiceType = async () => {
 
 export const updateServiceType = async (_id, values) => {
   return await axios.put(
-    `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/update/ServiceType/${_id}`,
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/ServiceType/${_id}`,
     values
   );
 };
 
 export const getServiceType = async (_id) => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/get/ServiceType/${_id}`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/ServiceType/${_id}`
   );
 };
 // export const getBookingReport = async (id) => {
@@ -60,7 +60,7 @@ export const getServiceType = async (_id) => {
 // };
   export const getServiceTypebyParams = async (body) => {
     return await axios.post(
-      `${process.env.REACT_APP_API_URL_CONTACTUS}/auth/list-by-params/ServiceType`,
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/auth/list-by-params/ServiceType`,
       body
     );
   };  

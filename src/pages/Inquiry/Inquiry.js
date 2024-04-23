@@ -24,25 +24,31 @@ import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
+const initialState = {
+    product: "",
+    IsActive: false,
+    mobile_no:"",
+    Name:"",
+    email:""
+  };
 
-
-const ServiceDetail = () => {
-  
-
+const Inquiry = () => {
+    const [values, setValues] = useState(initialState);
+    const { mobile_no, email, Name, IsActive,product } = values;
   const [selectType,setSelectType] = useState([]);
-  const [blogTitle, setblogTitle] = useState("");
-  const [blogDesc, setblogDesc] = useState("");
-  const [blogImage, setblogImage] = useState("");
-  const [types,setTypes] = useState("");
-  const [blogThumnailDesc, setblogThumnailDesc] = useState("");
-  const [views, setViews] = useState(0);
+  // const [blogTitle, setblogTitle] = useState("");
+  // const [blogDesc, setblogDesc] = useState("");
+  // const [blogImage, setblogImage] = useState("");
+  // const [types,setTypes] = useState("");
+  // const [blogThumnailDesc, setblogThumnailDesc] = useState("");
+  // const [views, setViews] = useState(0);
 
   const [loadingOption, setLoadingOption] = useState(false);
 
-  const [likes, setlikes] = useState([]);
-  const [comments, setcomments] = useState([]);
-  const [userId, setuserId] = useState(localStorage.getItem("AdminUser"));
-  const [IsActive, setIsActive] = useState(false);
+  // const [likes, setlikes] = useState([]);
+  // const [comments, setcomments] = useState([]);
+  // const [userId, setuserId] = useState(localStorage.getItem("AdminUser"));
+//   const [IsActive, setIsActive] = useState(false);
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -63,6 +69,7 @@ const ServiceDetail = () => {
       .get(
         `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`)
       .then((response) => {
+console.log(response)
         if (response.length > 0) {
           setSelectType(response);
         } else if (response.length === 0) {
@@ -78,130 +85,153 @@ const ServiceDetail = () => {
     }
   }, [formErrors, isSubmit]);
 
-
-  const uploadImage = async (body) => {
-    return await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/cms-blog/image-upload`,
-      body
-    );
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const updateBlogs = async (_id, values) => {
-    return await axios.put(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/blogs/${_id}`,
-      values
-    );
+  const handleCheck = (e) => {
+    setValues({ ...values, IsActive: e.target.checked });
   };
+//   const uploadImage = async (body) => {
+//     return await axios.post(
+//       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/cms-blog/image-upload`,
+//       body
+//     );
+//   };
+
+  // const updateBlogs = async (_id, values) => {
+  //   return await axios.put(
+  //     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/inquiry/${_id}`,
+  //     values
+  //   );
+  // };
   
-  const getBlogs = async (_id) => {
-    return await axios.get(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/blogs/${_id}`
-    );
-  };
+  // const getBlogs = async (_id) => {
+  //   return await axios.get(
+  //     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/getbyid/inquiry/${_id}`
+  //   );
+  // };
 
-   const removeBlogs = async (_id) => {
-    return await axios.delete(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/blogs/${_id}`
-    );
-  };
+  //  const removeBlogs = async (_id) => {
+  //   return await axios.delete(
+  //     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/inquiry/${_id}`
+  //   );
+  // };
 
-  function uploadAdapter(loader) {
-    return {
-      upload: () => {
-        return new Promise((resolve, reject) => {
-          const body = new FormData();
-          loader.file
-            .then((file) => {
-              body.append("uploadImg", file);
-              uploadImage(body)
-                .then((res) => {
-                  console.log("res", res.url);
-                  resolve({
-                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
-                  });
-                })
-                .catch((err) => console.log(err));
-            })
-            .catch((err) => reject(err));
-        });
-      },
-    };
-  }
+//   function uploadAdapter(loader) {
+//     return {
+//       upload: () => {
+//         return new Promise((resolve, reject) => {
+//           const body = new FormData();
+//           loader.file
+//             .then((file) => {
+//               body.append("uploadImg", file);
+//               uploadImage(body)
+//                 .then((res) => {
+//                   console.log("res", res.url);
+//                   resolve({
+//                     default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
+//                   });
+//                 })
+//                 .catch((err) => console.log(err));
+//             })
+//             .catch((err) => reject(err));
+//         });
+//       },
+//     };
+//   }
 
-  function uploadPlugin(editor) {
-    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return uploadAdapter(loader);
-    };
-  }
+//   function uploadPlugin(editor) {
+//     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+//       return uploadAdapter(loader);
+//     };
+//   }
 
   const [modal_delete, setmodal_delete] = useState(false);
   const tog_delete = (_id) => {
     setmodal_delete(!modal_delete);
     setRemove_id(_id);
   };
+  const [newname,setoldname]=useState("");
 
   const [modal_edit, setmodal_edit] = useState(false);
   const handleTog_edit = (row,_id) => {
     // setmodal_edit(!modal_edit);
+    // if(row.product===row.serviceTypeDetails[0]._id){
+        setoldname(row.serviceTypeDetails[0].ServiceName);
+    // }
+   
     getSelectType();
     setIsSubmit(false);
     setUpdateForm(true);
     set_Id(_id);
-    setTypes(row.ServiceName);
-    setblogTitle(row.Description);
+    
+   console.log('THis is it',row)
+    // setblogTitle(row.Description);
     // setblogThumnailDesc(row.subtitle);
-    setblogDesc(row.Detail);
-    setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
-    setIsActive(row.IsActive);
-    setCheckImagePhoto(true);
+    // setblogDesc(row.Detail);
+    // setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
+    // setIsActive(row.IsActive);
+    // setCheckImagePhoto(true);
+    setmodal_edit(!modal_edit);
+    setIsSubmit(false);
+    // set_Id(row._id);
+    setValues(row);
+  };
+  const [modal_list, setmodal_list] = useState(false);
+  const tog_list = () => {
+    setmodal_list(!modal_list);
+    setValues(initialState);
+    setIsSubmit(false);
   };
 
   const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    let errors = validate(blogTitle, blogDesc, blogImage,types);
+    let errors = validate(values);
     setFormErrors(errors);
     setIsSubmit(true);
 
     if (Object.keys(errors).length === 0) {
       setLoadingOption(true);
-      const formdata = new FormData();
+    //   const formdata = new FormData();
 
-      formdata.append("newImage", blogImage);
-      formdata.append("ServiceName",types);
-      formdata.append("Description", blogTitle);
-      // formdata.append("Detail", blogDesc);
-      formdata.append("IsActive", IsActive);
+    //   formdata.append("newImage", blogImage);
+    //   formdata.append("ServiceName",types);
+    //   formdata.append("Description", blogTitle);
+    //   // formdata.append("Detail", blogDesc);
+    //   formdata.append("IsActive", IsActive);
       // formdata.append("subtitle", blogThumnailDesc);
 
 
-      axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/projectdetail`,formdata)
+      axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/inquiry`,values)
         .then((res) => {
           console.log(res);
           // setmodal_list(!modal_list);
           setShowForm(false);
           setLoadingOption(false);
           // setValues(initialState);
-          setblogDesc("");
-          setblogTitle("");
-          setlikes([]);
-          setcomments([]);
-          setuserId("");
-          setIsActive(false);
-          setblogImage("");
+          // setblogDesc("");
+          // setblogTitle("");
+          // setlikes([]);
+          // setcomments([]);
+          // setuserId("");
+        //   setIsActive(false);
+          // setblogImage("");
           // setblogThumnailDesc("");
-          setViews(0);
+          // setViews(0);
           setIsSubmit(false);
-          setCheckImagePhoto(false);
-          setPhotoAdd("");
+          // setCheckImagePhoto(false);
+          // setPhotoAdd("");
           setFormErrors({});
           fetchCategories();
-          setTypes("");
+          // setTypes("");
           setSelectType("");
         })
         .catch((err) => {
           console.log(err);
         });
+        tog_list();
     }
   };
 
@@ -209,7 +239,7 @@ const ServiceDetail = () => {
     e.preventDefault();
     axios
       .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/projectdetail/${remove_id}`)
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/inquiry/${remove_id}`)
       .then((res) => {
         setmodal_delete(!modal_delete);
         fetchCategories();
@@ -221,44 +251,68 @@ const ServiceDetail = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    let erros = validate(blogTitle, blogDesc,types);
+    let erros = validate(values);
     setFormErrors(erros);
     setIsSubmit(true);
-    const likesString = JSON.stringify(likes);
-    const commentString = JSON.stringify(comments);
+    // const likesString = JSON.stringify(likes);
+    // const commentString = JSON.stringify(comments);
 
     if (Object.keys(erros).length === 0) {
       setLoadingOption(true);
-      const formdata = new FormData();
+    //   const formdata = new FormData();
 
-      formdata.append("newImage", blogImage);
-      formdata.append("ServiceName",types);
-      formdata.append("Description", blogTitle);
-      // formdata.append("Detail", blogDesc);
-      formdata.append("IsActive", IsActive);
-      // formdata.append("subtitle", blogThumnailDesc);
+    //   formdata.append("newImage", blogImage);
+    //   formdata.append("ServiceName",types);
+    //   formdata.append("Description", blogTitle);
+    //   // formdata.append("Detail", blogDesc);
+    //   formdata.append("IsActive", IsActive);
+    //   // formdata.append("subtitle", blogThumnailDesc);
+    console.log("the values",values);
 
-      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/projectdetail/${_id}`,formdata)
+      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/inquiry/${_id}`,values)
         .then((res) => {
           // setmodal_edit(!modal_edit);
-          setPhotoAdd("");
-          setUpdateForm(false);
-          setLoadingOption(false);
+        //   setPhotoAdd("");
+        //   setUpdateForm(false);
+        //   setLoadingOption(false);
 
-          setCheckImagePhoto(false);
+        //   setCheckImagePhoto(false);
+        //   // setValues(initialState);
+        //   setblogDesc("");
+        //   setblogTitle("");
+        //   setlikes([]);
+        //   setcomments([]);
+        //   setuserId("");
+        // //   setIsActive(false);
+        //   // setblogThumnailDesc("");
+        //   setViews(0);
+        //   setblogImage("");
+        //   fetchCategories();
+        //   setSelectType("");
+        //   setTypes("");
+        console.log(res);
+          // setmodal_list(!modal_list);
+          setShowForm(false);
+          setLoadingOption(false);
           // setValues(initialState);
-          setblogDesc("");
-          setblogTitle("");
-          setlikes([]);
-          setcomments([]);
-          setuserId("");
-          setIsActive(false);
+          // setblogDesc("");
+          // setblogTitle("");
+          // setlikes([]);
+          // setcomments([]);
+          // setuserId("");
+        //   setIsActive(false);
+          // setblogImage("");
           // setblogThumnailDesc("");
-          setViews(0);
-          setblogImage("");
+          // setViews(0);
+          setIsSubmit(false);
+          // setCheckImagePhoto(false);
+          // setPhotoAdd("");
+          setFormErrors({});
           fetchCategories();
+          // setTypes("");
           setSelectType("");
-          setTypes("");
+          setUpdateForm(false);
+          setShowForm(false);
         })
         .catch((err) => {
           console.log(err);
@@ -266,70 +320,82 @@ const ServiceDetail = () => {
     }
   };
 
-  const [errBT, setErrBT] = useState(false);
-  const [errBD, setErrBD] = useState(false);
-  const [errBTD, setErrBTD] = useState(false);
-  const [errBI, setErrBI] = useState(false);
-  const [errSN,setErrSN]=useState(false);
+  const [errEM, setErrEM] = useState(false);
+  const [errNA, setErrNA] = useState(false);
+  const [errMN, setErrMN] = useState(false);
+  const [errPR, setErrPR] = useState(false);
+  // const handlePhoneNumberChange = (e) => {
+  //   const value = e.target.value;
+  //   // Check if the input only contains digits
+  //   if (/^[0-9]*$/.test(value)) {
+  //     setPhoneNumber(value);
+  //     setIsValid(true);
+  //   } else {
+  //     setIsValid(false);
+  //   }
+  // };
 
-  const validate = (
-    // blogDesc,
-     blogTitle, blogImage,types) => {
+  const validate = (values) => {
     const errors = {};
-    if (types === "") {
-      errors.types = "Service Name is required!";
-      setErrSN(true);
+    // if (types === "") {
+    //   errors.types = "Service Name is required!";
+    //   setErrSN(true);
+    // }
+    // else{
+    //   setErrSN(false);
+    // }
+
+    if (values.Name === "") {
+      errors.Name = "Name is Required!";
+      setErrNA(true);
+    }
+    if (values.Name !== "") {
+      setErrNA(false);
+    }
+
+    if (!/\S+@\S+\.\S+/.test(values.email)) {
+      errors.email = "Email address is invalid";
+      // Assuming you have a setter function for the error state of Email field
+      setErrEM(true);
     }
     else{
-      setErrSN(false);
+      setErrEM(false)
     }
 
-    if (blogTitle === "") {
-      errors.blogTitle = "Blog Title is required!";
-      setErrBT(true);
-    }
-    if (blogTitle !== "") {
-      setErrBT(false);
-    }
+   if(values.product===""){
+    errors.product="Please Select a Product";
+    setErrPR(true)
+   }
+   else{
+    setErrPR(false);
+   }
 
-    // if (blogDesc === "") {
-    //   errors.blogDesc = "Blog Description is required!";
-    //   setErrBD(true);
-    // }
-    // if (blogDesc !== "") {
-    //   setErrBD(false);
-    // }
-    // if (blogThumnailDesc === "") {
-    //   errors.blogThumnailDesc = "Blog Thumbnail Description is required!";
-    //   setErrBTD(true);
-    // }
-    // if (blogThumnailDesc !== "") {
-    //   setErrBTD(false);
-    // }
+   if(values.mobile_no.length===10){
+    setErrMN(false);
+   }
+   else{
+    errors.mobile_no="Please Enter a Correct Mobile Number";
+    setErrMN(true);
+   }
+   
 
-    // if (blogImage === "") {
-    //   errors.blogImage = "Blog Image is required!";
-    //   setErrBI(true);
-    // }
-    // if (blogImage !== "") {
-    //   setErrBI(false);
-    // }
+   
 
     return errors;
   };
 
-  const validClassBT =
-    errBT && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassName =
+errNA && isSubmit ? "form-control is-invalid" : "form-control";
 
-  const validClassBD =
-    errBD && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassBTD =
-    errBTD && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassEmail =
+    errEM && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassMobileNumber =
+    errMN && isSubmit ? "form-control is-invalid" : "form-control";
 
-  const validClassBI =
-    errBI && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassSN =
-    errSN && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassProduct =
+    errPR && isSubmit ? "form-control is-invalid" : "form-control";
+  
+
 
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
@@ -377,7 +443,7 @@ const ServiceDetail = () => {
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`, {
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/inquiry`, {
         skip: skip,
         per_page: perPage,
         sorton: column,
@@ -405,19 +471,19 @@ const ServiceDetail = () => {
   const [photoAdd, setPhotoAdd] = useState();
   const [checkImagePhoto, setCheckImagePhoto] = useState(false);
 
-  const PhotoUpload = (e) => {
-    if (e.target.files.length > 0) {
-      const image = new Image();
+  // const PhotoUpload = (e) => {
+  //   if (e.target.files.length > 0) {
+  //     const image = new Image();
 
-      let imageurl = URL.createObjectURL(e.target.files[0]);
-      console.log("img", e.target.files[0]);
+  //     let imageurl = URL.createObjectURL(e.target.files[0]);
+  //     console.log("img", e.target.files[0]);
 
-      setPhotoAdd(imageurl);
-      // setValues({ ...values, blogImage: e.target.files[0] });
-      setblogImage(e.target.files[0]);
-      setCheckImagePhoto(true);
-    }
-  };
+  //     setPhotoAdd(imageurl);
+  //     // setValues({ ...values, blogImage: e.target.files[0] });
+  //     // setblogImage(e.target.files[0]);
+  //     setCheckImagePhoto(true);
+  //   }
+  // };
 
   const handlePerRowsChange = async (newPerPage, page) => {
     // setPageNo(page);
@@ -430,44 +496,46 @@ const ServiceDetail = () => {
   const handleAddCancel = (e) => {
     e.preventDefault();
     setIsSubmit(false);
-    setPhotoAdd("");
-    setCheckImagePhoto(false);
+    // setPhotoAdd("");
+    // setCheckImagePhoto(false);
     setShowForm(false);
     setUpdateForm(false);
     // setblogThumnailDesc("");
-    setViews(0);
+    // setViews(0);
     // setValues(initialState);
-    setblogDesc("");
-    setblogTitle("");
-    setlikes([]);
-    setcomments([]);
-    setuserId("");
-    setIsActive(false);
-    setblogImage("");
-    setTypes("");
+    // setblogDesc("");
+    // setblogTitle("");
+    // setlikes([]);
+    // setcomments([]);
+    // setuserId("");
+    // // setIsActive(false);
+    // setblogImage("");
+    // setTypes("");
     setSelectType("");
-    setTypes("");
+    // setTypes("");
+    setValues(initialState)
   };
 
   const handleUpdateCancel = (e) => {
     e.preventDefault();
+    setoldname("");
     setIsSubmit(false);
     setPhotoAdd("");
     setUpdateForm(false);
     setShowForm(false);
     // setblogThumnailDesc("");
-    setViews(0);
-    setCheckImagePhoto(false);
-    // setValues(initialState);
-    setblogDesc("");
-    setblogTitle("");
-    setlikes([]);
-    setcomments([]);
-    setuserId("");
-    setIsActive(false);
-    setblogImage("");
+    // setViews(0);
+    // setCheckImagePhoto(false);
+    // // setValues(initialState);
+    // setblogDesc("");
+    // setblogTitle("");
+    // setlikes([]);
+    // setcomments([]);
+    // setuserId("");
+    // // setIsActive(false);
+    // setblogImage("");
     setSelectType("");
-    setTypes("");
+    // setTypes("");
   };
 
   const col = [
@@ -486,8 +554,20 @@ const ServiceDetail = () => {
       minWidth: "150px",
     },
     {
-        name: "Title",
-        cell: (row) => row.Description,
+        name: "Name",
+        cell: (row) => row.Name,
+        sortable: true,
+        sortField: "blogTitle",
+        minWidth: "150px",
+      }, {
+        name: "email",
+        cell: (row) => row.email,
+        sortable: true,
+        sortField: "blogTitle",
+        minWidth: "150px",
+      },{
+        name: "Mobile Number",
+        cell: (row) => row.mobile_no,
         sortable: true,
         sortField: "blogTitle",
         minWidth: "150px",
@@ -592,13 +672,13 @@ const ServiceDetail = () => {
                                       getSelectType();
                                       setShowForm(!showForm);
                                       // setValues(initialState);
-                                      setblogDesc("");
-                                      setblogTitle("");
-                                      setlikes([]);
-                                      setcomments([]);
-                                      setuserId("");
-                                      setIsActive(false);
-                                      setblogImage("");
+                                      // setblogDesc("");
+                                      // setblogTitle("");
+                                      // setlikes([]);
+                                      // setcomments([]);
+                                      // setuserId("");
+                                    //   setIsActive(false);
+                                      // setblogImage("");
                                       // setFileId(Math.random() * 100000);
                                     }}
                                     // onClick={() => tog_list()}
@@ -627,13 +707,13 @@ const ServiceDetail = () => {
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
                                     // setValues(initialState);
-                                    setblogDesc("");
-                                    setblogTitle("");
-                                    setlikes([]);
-                                    setcomments([]);
-                                    setuserId("");
-                                    setIsActive(false);
-                                    setblogImage("");
+                                    // setblogDesc("");
+                                    // setblogTitle("");
+                                    // setlikes([]);
+                                    // setcomments([]);
+                                    // setuserId("");
+                                    // // setIsActive(false);
+                                    // setblogImage("");
                                     setShowForm(false);
                                     setUpdateForm(false);
                                     // setFileId(Math.random() * 100000);
@@ -687,18 +767,18 @@ const ServiceDetail = () => {
                                         Service Name{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
-                                    <Input name="Type" id="" type="select" onChange={(e) => {
-                                          setTypes(e.target.value);
-                                        }}>
-                                        <option>Select Type</option>
+                                    <Input name="product" id="" type="select" onChange={handleChange} className={validClassProduct} style={{height:"55px"}}>
+                                        <option>Select Type</option> {console.log(selectType)}
                                         {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id}>{item.ServiceName}</option>
+                                        <option key={index} value={item._id
+}>{item
+.ServiceName}</option>
                                         )}
                                     </Input>
                                     {isSubmit && (
                                       <p className="text-danger">
-                                      {console.log(formErrors.types)}
-                                        {formErrors.types}
+                                     
+                                        {formErrors.product}
                                       </p>
                                     )}
                                    
@@ -708,26 +788,71 @@ const ServiceDetail = () => {
                                       <Input
                                         key={"blogTitle_" + _id}
                                         type="text"
-                                        className={validClassBT}
+                                        className={validClassName}
                                         placeholder="Enter blog title"
                                         required
-                                        name="blogTitle"
-                                        value={blogTitle}
-                                        onChange={(e) => {
-                                          setblogTitle(e.target.value);
-                                        }}
+                                        name="Name"
+                                        value={Name}
+                                        onChange={handleChange}
                                       />
                                       <Label>
-                                        Title{" "}
+                                        Name{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogTitle}
+                                          {formErrors.Name}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </Col>     
+                                  <Col lg={6}>
+                                    <div className="form-floating mt-3  ">
+                                      <Input
+                                        key={"blogTitle_" + _id}
+                                        type="text"
+                                        className={validClassEmail}
+                                        placeholder="Enter blog title"
+                                        required
+                                        name="email"
+                                        value={email}
+                                        onChange={handleChange}
+                                      />
+                                      <Label>
+                                        Email{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.email}
                                         </p>
                                       )}
                                     </div>
                                   </Col>
+                                  <Col lg={6}>
+                                    <div className="form-floating mb-3">
+                                      <Input
+                                        key={"blogTitle_" + _id}
+                                        type="text"
+                                        className={validClassMobileNumber}
+                                        placeholder="Enter blog title"
+                                        required
+                                        name="mobile_no"
+                                        value={mobile_no}
+                                        onChange={handleChange}
+                                      />
+                                      <Label>
+                                      Mobile Number{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.mobile_no}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </Col>
+                               
 
                                   {/* <Col lg={6}>
                                     <div className="form-floating mb-3">
@@ -784,7 +909,7 @@ const ServiceDetail = () => {
                                     </Card>
                                   </Col> */}
 
-                                  <Col lg={6}>
+                                  {/* <Col lg={6}>
                                     <label>
                                       Image{" "}
                                       <span className="text-danger">*</span>
@@ -814,7 +939,7 @@ const ServiceDetail = () => {
                                         height="200"
                                       />
                                     ) : null}
-                                  </Col>
+                                  </Col> */}
 
                                   <div className="mt-5">
                                     <Col lg={6}>
@@ -824,10 +949,8 @@ const ServiceDetail = () => {
                                           type="checkbox"
                                           name="IsActive"
                                           value={IsActive}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setIsActive(e.target.checked);
-                                          }}
+                                          onChange={handleCheck}
+                                      
                                           checked={IsActive}
                                         />
                                         <Label
@@ -899,50 +1022,99 @@ const ServiceDetail = () => {
                           <CardBody>
                             <div className="live-preview">
                               <Form>
-                                <Row>
+                              <Row>
                                 <Col lg={6}>
                                 <Label>
                                         Service Name{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
-                                    <Input name="Type" id="" type="select" value={types} onChange={(e) => {
-                                          setTypes(e.target.value); 
-                                        }}>
+                                    <Input name="product" id="" type="select" onChange={handleChange} className={validClassProduct}>
+
+                                         {/* {console.log(selectType)} */}
+                                         {/* <option>{newname}</option> */}
                                         {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id}>{item.ServiceName}</option>
+                                        <option key={index} value={item._id} selected={item._id === product}>{item
+.ServiceName}</option>
                                         )}
                                     </Input>
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.types}
+                                      
+                                        {formErrors.product}
                                       </p>
                                     )}
+                                   
                                   </Col>
                                   <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
                                         key={"blogTitle_" + _id}
                                         type="text"
-                                        className={validClassBT}
+                                        className={validClassName}
                                         placeholder="Enter blog title"
                                         required
-                                        name="blogTitle"
-                                        value={blogTitle}
-                                        onChange={(e) => {
-                                          setblogTitle(e.target.value);
-                                        }}
+                                        name="Name"
+                                        value={Name}
+                                        onChange={handleChange}
                                       />
                                       <Label>
-                                        Title{" "}
+                                        Name{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogTitle}
+                                          {formErrors.Name}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </Col>     
+                                  <Col lg={6}>
+                                    <div className="form-floating mt-3  ">
+                                      <Input
+                                        key={"blogTitle_" + _id}
+                                        type="text"
+                                        className={validClassEmail}
+                                        placeholder="Enter blog title"
+                                        required
+                                        name="email"
+                                        value={email}
+                                        onChange={handleChange}
+                                      />
+                                      <Label>
+                                        Email{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.email}
                                         </p>
                                       )}
                                     </div>
                                   </Col>
+                                  <Col lg={6}>
+                                    <div className="form-floating mb-3">
+                                      <Input
+                                        key={"blogTitle_" + _id}
+                                        type="text"
+                                        className={validClassMobileNumber}
+                                        placeholder="Enter blog title"
+                                        required
+                                        name="mobile_no"
+                                        value={mobile_no}
+                                        onChange={handleChange}
+                                      />
+                                      <Label>
+                                      Mobile Number{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.mobile_no}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </Col>
+                               
 
                                   {/* <Col lg={6}>
                                     <div className="form-floating mb-3">
@@ -967,15 +1139,15 @@ const ServiceDetail = () => {
                                       )}
                                     </div>
                                   </Col> */}
-
-                                  {/* <Col lg={12}>
+{/* 
+                                  <Col lg={12}>
                                     <Card>
                                       <Label>
                                         Description
                                         <span className="text-danger">*</span>
                                       </Label>
                                       <CardBody>
-                                        
+
                                         <CKEditor
                                           key={"blogDesc_" + _id}
                                           editor={ClassicEditor}
@@ -999,7 +1171,7 @@ const ServiceDetail = () => {
                                     </Card>
                                   </Col> */}
 
-                                  <Col lg={6}>
+                                  {/* <Col lg={6}>
                                     <label>
                                       Image{" "}
                                       <span className="text-danger">*</span>
@@ -1029,8 +1201,7 @@ const ServiceDetail = () => {
                                         height="200"
                                       />
                                     ) : null}
-                                  </Col>
-
+                                  </Col> */}
 
                                   <div className="mt-5">
                                     <Col lg={6}>
@@ -1040,9 +1211,8 @@ const ServiceDetail = () => {
                                           type="checkbox"
                                           name="IsActive"
                                           value={IsActive}
-                                          onChange={(e) => {
-                                            setIsActive(e.target.checked);
-                                          }}
+                                          onChange={handleCheck}
+                                      
                                           checked={IsActive}
                                         />
                                         <Label
@@ -1073,10 +1243,10 @@ const ServiceDetail = () => {
                                   )}
 
                                   <Col lg={12}>
-                                    <div className="text-end">
+                                    <div className="hstack gap-2 justify-content-end">
                                       <button
                                         type="submit"
-                                        className=" btn btn-success m-1"
+                                        className="btn btn-success  m-1"
                                         id="add-btn"
                                         onClick={handleUpdate}
                                       >
@@ -1146,13 +1316,13 @@ const ServiceDetail = () => {
         toggle={() => {
           tog_delete();
           // setValues([]);
-          setblogDesc("");
-          setblogTitle("");
-          setlikes([]);
-          setcomments([]);
-          setuserId("");
-          setIsActive(false);
-          setblogImage("");
+        //   setblogDesc("");
+        //   setblogTitle("");
+        //   setlikes([]);
+        //   setcomments([]);
+        //   setuserId("");
+        // //   setIsActive(false);
+        //   setblogImage("");
         }}
         centered
       >
@@ -1207,4 +1377,4 @@ const ServiceDetail = () => {
   );
 };
 
-export default ServiceDetail;
+export default Inquiry;

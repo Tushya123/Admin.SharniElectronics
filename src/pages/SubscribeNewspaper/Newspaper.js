@@ -202,7 +202,7 @@ const Newspaper = () => {
     await axios
       .post(
 
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list-by-params/subscribe`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/subscribe`,
 
         {
           skip: skip,
@@ -242,8 +242,8 @@ const Newspaper = () => {
   const col = [
     
     {
-      name: "Email Address",
-      selector: (row) => row.email,
+      name: "Phone Number",
+      selector: (row) => row.Phone_Number,
       sortable: true,
       sortField: "address",
       minWidth: "50%",

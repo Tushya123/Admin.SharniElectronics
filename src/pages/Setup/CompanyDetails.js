@@ -270,7 +270,7 @@ const CompanyDetails = () => {
         //     // console.log(uri);
         //     setLoading(true);
         //     axios
-        //       .post(process.env.REACT_APP_API_URL_CONTACTUS + "/api/uploadimages", {
+        //       .post(process.env.REACT_APP_API_URL_SHREEJI_PHARMACY + "/api/uploadimages", {
         //         image: uri,
         //       })
         //       .then((res) => {
@@ -316,7 +316,7 @@ const CompanyDetails = () => {
         //   (uri) => {
         //     // console.log(uri);
         //     axios
-        //       .post(process.env.REACT_APP_API_URL_CONTACTUS + "/api/uploadimages", {
+        //       .post(process.env.REACT_APP_API_URL_SHREEJI_PHARMACY + "/api/uploadimages", {
         //         image: uri,
         //       })
         //       .then((res) => {
@@ -361,7 +361,7 @@ const CompanyDetails = () => {
         //   (uri) => {
         //     // console.log(uri);
         //     axios
-        //       .post(process.env.REACT_APP_API_URL_CONTACTUS + "/api/uploadimages", {
+        //       .post(process.env.REACT_APP_API_URL_SHREEJI_PHARMACY + "/api/uploadimages", {
         //         image: uri,
         //       })
         //       .then((res) => {
@@ -406,7 +406,7 @@ const CompanyDetails = () => {
         //   (uri) => {
         //     // console.log(uri);
         //     axios
-        //       .post(process.env.REACT_APP_API_URL_CONTACTUS + "/api/uploadimages", {
+        //       .post(process.env.REACT_APP_API_URL_SHREEJI_PHARMACY + "/api/uploadimages", {
         //         image: uri,
         //       })
         //       .then((res) => {
@@ -711,7 +711,7 @@ const CompanyDetails = () => {
                   }}
                 >
                   <Row>
-                    <Col lg={3}>
+                    {/* <Col>
                       <Card>
                         <CardBody>
                           <div className="form-floating mb-3">
@@ -730,7 +730,7 @@ const CompanyDetails = () => {
                                 key={values.Favicon}
                                 alt="fav-icon"
                                 src={
-                                  process.env.REACT_APP_API_URL_CONTACTUS +
+                                  process.env.REACT_APP_API_URL_SHREEJI_PHARMACY +
                                   "/" +
                                   values.Favicon
                                 }
@@ -763,7 +763,7 @@ const CompanyDetails = () => {
                                 key={values.Icon}
                                 alt="menu-icon"
                                 src={
-                                  process.env.REACT_APP_API_URL_CONTACTUS +
+                                  process.env.REACT_APP_API_URL_SHREEJI_PHARMACY +
                                   "/" +
                                   values.Icon
                                 }
@@ -791,7 +791,7 @@ const CompanyDetails = () => {
                                 key={values.Logo}
                                 alt="logo-img"
                                 src={
-                                  process.env.REACT_APP_API_URL_CONTACTUS +
+                                  process.env.REACT_APP_API_URL_SHREEJI_PHARMACY +
                                   "/" +
                                   values.Logo
                                 }
@@ -818,7 +818,7 @@ const CompanyDetails = () => {
                               <img
                                 key={values.DigitalSignature}
                                 src={
-                                  process.env.REACT_APP_API_URL_CONTACTUS +
+                                  process.env.REACT_APP_API_URL_SHREEJI_PHARMACY +
                                   "/" +
                                   values.DigitalSignature
                                 }
@@ -833,8 +833,8 @@ const CompanyDetails = () => {
                           {DigitalSignature == "" && <h6>No Image</h6>}
                         </CardBody>
                       </Card>
-                    </Col>
-                    <Col lg={9}>
+                    </Col> */}
+                    <Col>
                       <Card>
                         <CardBody>
                           <div className="live-preview">
@@ -1044,7 +1044,7 @@ const CompanyDetails = () => {
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={4}>
+                                {/* <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="tel"
@@ -1061,8 +1061,8 @@ const CompanyDetails = () => {
                                       </p>
                                     )}
                                   </div>
-                                </Col>
-                                <Col md={4}>
+                                </Col> */}
+                                {/* <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="tel"
@@ -1079,7 +1079,7 @@ const CompanyDetails = () => {
                                       </p>
                                     )}
                                   </div>
-                                </Col>
+                                </Col> */}
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
@@ -1102,7 +1102,7 @@ const CompanyDetails = () => {
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={4}>
+                                {/* <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="email"
@@ -1114,14 +1114,14 @@ const CompanyDetails = () => {
                                       onChange={handleChange}
                                     />
                                     <Label>Sales EmailID</Label>
-                                    {/* {isSubmit && (
+                                    {isSubmit && (
                                 <p className="text-danger">
                                   {formErrors.EmailID_Sales}
                                 </p>
-                              )} */}
+                              )}
                                   </div>
-                                </Col>
-                                <Col md={4}>
+                                </Col> */}
+                                {/* <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="email"
@@ -1133,13 +1133,13 @@ const CompanyDetails = () => {
                                       onChange={handleChange}
                                     />
                                     <Label>Support EmailID</Label>
-                                    {/* {isSubmit && (
+                                    {isSubmit && (
                                 <p className="text-danger">
                                   {formErrors.EmailID_Support}
                                 </p>
-                              )} */}
+                              )}
                                   </div>
-                                </Col>
+                                </Col> */}
 
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
@@ -1152,7 +1152,7 @@ const CompanyDetails = () => {
                                       onChange={handleChange}
                                     />
                                     <Label>
-                                      Website1
+                                      Website
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (
@@ -1162,7 +1162,7 @@ const CompanyDetails = () => {
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={4}>
+                                {/* <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="text"
@@ -1173,14 +1173,14 @@ const CompanyDetails = () => {
                                       onChange={handleChange}
                                     />
                                     <Label>Website2</Label>
-                                    {/* {isSubmit && (
+                                    {isSubmit && (
                                 <p className="text-danger">
                                   {formErrors.Website2}
                                 </p>
-                              )} */}
+                              )}
                                   </div>
-                                </Col>
-                                <Col md={4}>
+                                </Col> */}
+                                {/* <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="text"
@@ -1192,7 +1192,7 @@ const CompanyDetails = () => {
                                     />
                                     <Label>GST No.</Label>
                                   </div>
-                                </Col>
+                                </Col> */}
 
                                 <Row>
                                   <Col lg={6}>

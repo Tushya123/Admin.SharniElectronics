@@ -20,7 +20,7 @@ import NewProject from "../pages/CMS/NewProject";
 import GetInTouch from "../pages/GetInTouch/GetInTouch";
 import UserSignIn from "../pages/UserSignIn/usersignin";
 import Roles from "../pages/Roles/Roles";
-
+import Inquiry from "../pages/Inquiry/Inquiry";
 
 import ServiceType from "../pages/ServiceType/ServiceType";
 import ServiceDetail from "../pages/ServiceDetail/ServiceDetail";
@@ -48,6 +48,7 @@ const authProtectedRoutes = [
   { path: "/product-details", component: <ProductDetails /> },
   {path:"/getintouch",component:<GetInTouch/>},
   {path:"/roles",component:<Roles/>},
+  {path:"/inquiry",component:<Inquiry/>},
 
   {path:"/service-type",component:<ServiceType/>},
   {path:"/service-detail",component:<ServiceDetail/>},

@@ -110,7 +110,7 @@ const ServiceType = () => {
     if (Object.keys(errors).length === 0) {
       await axios
         .post(
-          `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/areatype`,
+          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/areatype`,
           values
         )
         .then((response) => {
@@ -128,7 +128,7 @@ const ServiceType = () => {
 
     await axios
       .delete(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/remove/areatype/${_id}`
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/areatype/${_id}`
       )
       .then((response) => {
         fetchCategories();
@@ -148,7 +148,7 @@ const ServiceType = () => {
     if (Object.keys(errors).length === 0) {
       await axios
         .put(
-          `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/update/areatype/${_id}`,
+          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/areatype/${_id}`,
           values
         )
         .then((response) => {
@@ -206,7 +206,7 @@ const ServiceType = () => {
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/listarea`, {
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listarea`, {
         skip: skip,
         per_page: perPage,
         sorton: column,
