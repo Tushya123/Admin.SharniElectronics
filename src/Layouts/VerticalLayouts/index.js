@@ -371,6 +371,12 @@ const VerticalLayout = (props) => {
   const [inquiry, setInquiry] = useState(false);
   const [policy, setPolicy] = useState(false);
   const [cms, setCMS] = useState(false);
+  const [supplier, setsupplier] = useState(false);
+  const [inquiry1, setinquiry1] = useState(false);
+  const [preferences, setpreferences] = useState(false);
+  const [gallery, setgallery] = useState(false);
+  const [reports, setreports] = useState(false);
+  const [cmsss, setcmsss] = useState(false);
 
   const navData = navdata().props.children;
   const path = props.router.location.pathname;
@@ -570,11 +576,509 @@ const VerticalLayout = (props) => {
             setCMS(!cms);
           }}
         >
-          <span data-key="t-apps"> Setup </span>
+           <span data-key="t-apps"> Product Setup </span>
         </Link>
         <Collapse
           className="menu-dropdown"
           isOpen={cms}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+          {/* <li className="nav-item">
+              {" "}
+              <Link to="/company-details" className="nav-link">
+                Company Details
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/admin-user" className="nav-link">
+                {" "}
+                Admin Users{" "}
+              </Link>
+            </li> */}
+            {/* <li className="nav-item">
+              <Link to="/user-signin" className="nav-link">
+                User Details
+              </Link>
+            {/* </li> */}
+            {/* <li className="nav-item">
+              <Link to="/roles" className="nav-link">
+                Roles
+              </Link>
+            </li> */}
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/getintouch" className="nav-link">
+                GetInTouch
+              </Link>
+            </li> */}
+            <li className="nav-item">
+              <Link to="/service-type" className="nav-link">
+                ProductGroup 
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/service-detail" className="nav-link">
+                 Products
+               </Link>
+             </li>
+             {/* <li className="nav-item">
+              <Link to="/inquiry" className="nav-link">
+                 Inquiry
+               </Link>
+             </li> */}
+             {/* <li className="nav-item">
+          <Link to="/newspaper" className="nav-link">
+                 Subscribe Newspaper
+               </Link>
+             </li>
+           
+           
+            <li className="nav-item">
+               <Link to="/feature" className="nav-link">
+                 Features
+               </Link>
+             </li>
+             <li className="nav-item">
+            <Link to="/cmsmaster" className="nav-link">                Cms Master
+              </Link>
+            </li> */}
+            
+
+             
+           
+          </ul>
+        </Collapse>
+      </li> 
+      <li className="nav-item">
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setsupplier(!supplier);
+          }}
+        >
+           <span data-key="t-apps"> Supplier Setup </span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={supplier}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+          <li className="nav-item">
+              {" "}
+              <Link to="/company-details" className="nav-link">
+                Company Details
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/admin-user" className="nav-link">
+                {" "}
+                Admin Users{" "}
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              <Link to="/user-signin" className="nav-link">
+                User Details
+              </Link>
+            {/* </li> */}
+            <li className="nav-item">
+              <Link to="/roles" className="nav-link">
+                Roles
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/getintouch" className="nav-link">
+                GetInTouch
+              </Link>
+            </li> */}
+            <li className="nav-item">
+              <Link to="/service-type" className="nav-link">
+                ServiceType
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/service-detail" className="nav-link">
+                 Service Details
+               </Link>
+             </li><li className="nav-item">
+              <Link to="/inquiry" className="nav-link">
+                 Inquiry
+               </Link>
+             </li>
+             <li className="nav-item">
+          <Link to="/newspaper" className="nav-link">
+                 Subscribe Newspaper
+               </Link>
+             </li>
+           
+           
+            <li className="nav-item">
+               <Link to="/feature" className="nav-link">
+                 Features
+               </Link>
+             </li>
+             <li className="nav-item">
+            <Link to="/cmsmaster" className="nav-link">                Cms Master
+              </Link>
+            </li>
+            
+
+             
+           
+          </ul>
+        </Collapse>
+      </li> 
+      <li className="nav-item">
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setinquiry1(!inquiry1);
+          }}
+        >
+           <span data-key="t-apps"> Inquiry Management </span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={inquiry1}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+          <li className="nav-item">
+              {" "}
+              <Link to="/company-details" className="nav-link">
+                Company Details
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/admin-user" className="nav-link">
+                {" "}
+                Admin Users{" "}
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              <Link to="/user-signin" className="nav-link">
+                User Details
+              </Link>
+            {/* </li> */}
+            <li className="nav-item">
+              <Link to="/roles" className="nav-link">
+                Roles
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/getintouch" className="nav-link">
+                GetInTouch
+              </Link>
+            </li> */}
+            <li className="nav-item">
+              <Link to="/service-type" className="nav-link">
+                ServiceType
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/service-detail" className="nav-link">
+                 Service Details
+               </Link>
+             </li><li className="nav-item">
+              <Link to="/inquiry" className="nav-link">
+                 Inquiry
+               </Link>
+             </li>
+             <li className="nav-item">
+          <Link to="/newspaper" className="nav-link">
+                 Subscribe Newspaper
+               </Link>
+             </li>
+           
+           
+            <li className="nav-item">
+               <Link to="/feature" className="nav-link">
+                 Features
+               </Link>
+             </li>
+             <li className="nav-item">
+            <Link to="/cmsmaster" className="nav-link">                Cms Master
+              </Link>
+            </li>
+            
+
+             
+           
+          </ul>
+        </Collapse>
+      </li> 
+      <li className="nav-item">
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setpreferences(!preferences);
+          }}
+        >
+           <span data-key="t-apps"> Preferences</span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={preferences}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+          <li className="nav-item">
+              {" "}
+              <Link to="/company-details" className="nav-link">
+                Company Details
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/admin-user" className="nav-link">
+                {" "}
+                Admin Users{" "}
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              <Link to="/user-signin" className="nav-link">
+                User Details
+              </Link>
+            {/* </li> */}
+            <li className="nav-item">
+              <Link to="/roles" className="nav-link">
+                Roles
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/getintouch" className="nav-link">
+                GetInTouch
+              </Link>
+            </li> */}
+            <li className="nav-item">
+              <Link to="/service-type" className="nav-link">
+                ServiceType
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/service-detail" className="nav-link">
+                 Service Details
+               </Link>
+             </li><li className="nav-item">
+              <Link to="/inquiry" className="nav-link">
+                 Inquiry
+               </Link>
+             </li>
+             <li className="nav-item">
+          <Link to="/newspaper" className="nav-link">
+                 Subscribe Newspaper
+               </Link>
+             </li>
+           
+           
+            <li className="nav-item">
+               <Link to="/feature" className="nav-link">
+                 Features
+               </Link>
+             </li>
+             <li className="nav-item">
+            <Link to="/cmsmaster" className="nav-link">                Cms Master
+              </Link>
+            </li>
+            
+
+             
+           
+          </ul>
+        </Collapse>
+      </li> 
+      <li className="nav-item">
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setgallery(!gallery);
+          }}
+        >
+           <span data-key="t-apps"> Gallery Management </span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={gallery}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+          <li className="nav-item">
+              {" "}
+              <Link to="/company-details" className="nav-link">
+                Company Details
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/admin-user" className="nav-link">
+                {" "}
+                Admin Users{" "}
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              <Link to="/user-signin" className="nav-link">
+                User Details
+              </Link>
+            {/* </li> */}
+            <li className="nav-item">
+              <Link to="/roles" className="nav-link">
+                Roles
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/getintouch" className="nav-link">
+                GetInTouch
+              </Link>
+            </li> */}
+            <li className="nav-item">
+              <Link to="/service-type" className="nav-link">
+                ServiceType
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/service-detail" className="nav-link">
+                 Service Details
+               </Link>
+             </li><li className="nav-item">
+              <Link to="/inquiry" className="nav-link">
+                 Inquiry
+               </Link>
+             </li>
+             <li className="nav-item">
+          <Link to="/newspaper" className="nav-link">
+                 Subscribe Newspaper
+               </Link>
+             </li>
+           
+           
+            <li className="nav-item">
+               <Link to="/feature" className="nav-link">
+                 Features
+               </Link>
+             </li>
+             <li className="nav-item">
+            <Link to="/cmsmaster" className="nav-link">                Cms Master
+              </Link>
+            </li>
+            
+
+             
+           
+          </ul>
+        </Collapse>
+      </li> 
+      <li className="nav-item">
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setreports(!reports);
+          }}
+        >
+           <span data-key="t-apps"> CMS </span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={reports}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+          <li className="nav-item">
+              {" "}
+              <Link to="/company-details" className="nav-link">
+                Company Details
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/admin-user" className="nav-link">
+                {" "}
+                Admin Users{" "}
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              <Link to="/user-signin" className="nav-link">
+                User Details
+              </Link>
+            {/* </li> */}
+            <li className="nav-item">
+              <Link to="/roles" className="nav-link">
+                Roles
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/getintouch" className="nav-link">
+                GetInTouch
+              </Link>
+            </li> */}
+            <li className="nav-item">
+              <Link to="/service-type" className="nav-link">
+                ServiceType
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/service-detail" className="nav-link">
+                 Service Details
+               </Link>
+             </li><li className="nav-item">
+              <Link to="/inquiry" className="nav-link">
+                 Inquiry
+               </Link>
+             </li>
+             <li className="nav-item">
+          <Link to="/newspaper" className="nav-link">
+                 Subscribe Newspaper
+               </Link>
+             </li>
+           
+           
+            <li className="nav-item">
+               <Link to="/feature" className="nav-link">
+                 Features
+               </Link>
+             </li>
+             <li className="nav-item">
+            <Link to="/cmsmaster" className="nav-link">                Cms Master
+              </Link>
+            </li>
+            
+
+             
+           
+          </ul>
+        </Collapse>
+      </li> <li className="nav-item">
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setcmsss(!cmsss);
+          }}
+        >
+           <span data-key="t-apps"> Reports </span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={cmsss}
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">

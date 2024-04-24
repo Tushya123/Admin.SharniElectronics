@@ -523,7 +523,7 @@ const CmsMaster = () => {
     },
   ];
 
-  document.title = "Roles | Contact to Owner";
+  document.title = "Roles | Shreeji Pharma";
 
   return (
     <React.Fragment>

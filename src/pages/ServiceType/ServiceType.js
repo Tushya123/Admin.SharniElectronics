@@ -28,13 +28,13 @@ import DataTable from "react-data-table-component";
 // } from '../../functions/Conatct1/Contacct'
 
 const initialState = {
-  ServiceName: "",
+  ProductGroup: "",
   IsActive: false,
 };
 
 const ServiceType = () => {
   const [values, setValues] = useState(initialState);
-  const { contactno, address, email, IsActive } = values;
+  const { ProductGroup, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -164,8 +164,8 @@ const ServiceType = () => {
   const validate = (values) => {
     const errors = {};
 
-    if (values.ServiceName === "") {
-      errors.ServiceName = " Name is required!";
+    if (values.ProductGroup === "") {
+      errors.ProductGroup = "Product Group is  required!";
       setErrCN(true);
     }
     if (values.ServiceName !== "") {
@@ -248,8 +248,8 @@ const ServiceType = () => {
       minWidth: "150px",
     },
     {
-      name: "Service Name",
-      selector: (row) => row.ServiceName,
+      name: "Product Group",
+      selector: (row) => row.ProductGroup,
       sortable: true,
       sortField: "servicename",
       minWidth: "150px",
@@ -298,7 +298,7 @@ const ServiceType = () => {
     },
   ];
 
-  document.title = "Service Type|Contact to Owner";
+  document.title = "Service Type|Shreeji Pharma";
 
   return (
     <React.Fragment>
@@ -315,7 +315,7 @@ const ServiceType = () => {
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" sm={6} lg={4} md={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Service Type</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Product Group</h2>
                     </Col>
 
                     <Col sm={6} lg={4} md={6}>
@@ -400,7 +400,7 @@ const ServiceType = () => {
             setIsSubmit(false);
           }}
         >
-          Add Service Type
+          Add Product Group
         </ModalHeader>
         <form>
           <ModalBody>
@@ -408,16 +408,16 @@ const ServiceType = () => {
               <Input
                 type="text"
                 className={validClassCategoryName}
-                placeholder="Enter Area Type"
+                placeholder="Enter ProductGroup"
                 required
-                name="ServiceName"
-                value={values.ServiceName}
+                name="ProductGroup"
+                value={values.ProductGroup}
                 onChange={handleChange}
               />
               <Label>
-                Service Name <span className="text-danger">*</span>
+                Product Group <span className="text-danger">*</span>
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.ServiceName}</p>}
+              {isSubmit && <p className="text-danger">{formErrors.ProductGroup}</p>}
             </div>
             <div className="form-check mb-2">
               <Input
@@ -471,7 +471,7 @@ const ServiceType = () => {
             setIsSubmit(false);
           }}
         >
-      Edit Service Type
+      Edit Product Group
         </ModalHeader>
         <form>
           <ModalBody>
@@ -479,16 +479,16 @@ const ServiceType = () => {
               <Input
                 type="text"
                 className={validClassCategoryName}
-                placeholder="Enter Contact Name"
+                placeholder="Enter ProductGroup"
                 required
-                name="ServiceName"
-                value={values.ServiceName}
+                name="ProductGroup"
+                value={values.ProductGroup}
                 onChange={handleChange}
               />
               <Label>
-                Service Name <span className="text-danger">*</span>
+              Product Group <span className="text-danger">*</span>
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.ServiceName}</p>}
+              {isSubmit && <p className="text-danger">{formErrors.ProductGroup}</p>}
             </div>
             <div className="form-check mb-2">
               <Input
@@ -544,7 +544,7 @@ const ServiceType = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Service Type
+          Remove Product Group
         </ModalHeader>
         <form>
           <ModalBody>

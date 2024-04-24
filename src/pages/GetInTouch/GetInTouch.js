@@ -374,7 +374,7 @@ const GetInTouch = () => {
     },
   ];
 
-  document.title = "Get In Touch | Contact to Owner";
+  document.title = "Get In Touch | Shreeji Pharma";
 
   return (
     <React.Fragment>

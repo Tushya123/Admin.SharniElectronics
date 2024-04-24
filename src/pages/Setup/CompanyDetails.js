@@ -648,7 +648,7 @@ const CompanyDetails = () => {
       minWidth: "180px",
     },
   ];
-  document.title = "Company Details | Contact to Owner";
+  document.title = "Company Details | Shreeji Pharma";
 
   return (
     <React.Fragment>

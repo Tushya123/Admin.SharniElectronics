@@ -434,7 +434,7 @@ if (values.mobile_no === ""||values.mobile_no.length<10) {
     },
   ];
 
-  document.title = "User Details|Contact to Owner" ;
+  document.title = "User Details|Shreeji Pharma" ;
 
   return (
     <React.Fragment>

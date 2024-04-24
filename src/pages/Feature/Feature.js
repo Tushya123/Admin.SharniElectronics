@@ -406,7 +406,7 @@ const Feature = () => {
   ];
 
 
-  document.title = "Features | Contact to Owner";
+  document.title = "Features | Shreeji Pharma";
 
 
 

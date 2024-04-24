@@ -500,7 +500,7 @@ const CmsMaster = () => {
     },
   ];
 
-  document.title = "Cms Master | Contact to Owner";
+  document.title = "Cms Master | Shreeji Pharma";
 
   return (
     <React.Fragment>

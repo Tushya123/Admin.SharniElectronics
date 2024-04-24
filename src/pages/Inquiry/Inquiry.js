@@ -616,7 +616,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
     },
   ];
 
-  document.title = "Service Detail|Contact to Owner";
+  document.title = "Service Detail|Shreeji Pharma";
 
   return (
     <React.Fragment>

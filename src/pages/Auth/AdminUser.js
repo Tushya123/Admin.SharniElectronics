@@ -412,7 +412,7 @@ const AdminUser = () => {
     },
   ];
 
-  document.title = "Admin Users|Contact to Owner" ;
+  document.title = "Admin Users|Shreeji Pharma" ;
 
   return (
     <React.Fragment>
