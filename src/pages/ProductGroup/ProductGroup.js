@@ -32,7 +32,7 @@ const initialState = {
   IsActive: false,
 };
 
-const ServiceType = () => {
+const ProductGroup = () => {
   const [values, setValues] = useState(initialState);
   const { ProductGroup, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
@@ -589,4 +589,4 @@ const ServiceType = () => {
   );
 };
 
-export default ServiceType;
+export default ProductGroup;

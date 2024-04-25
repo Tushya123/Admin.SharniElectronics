@@ -22,12 +22,14 @@ import UserSignIn from "../pages/UserSignIn/usersignin";
 import Roles from "../pages/Roles/Roles";
 import Inquiry from "../pages/Inquiry/Inquiry";
 
-import ServiceType from "../pages/ServiceType/ServiceType";
-import ServiceDetail from "../pages/ServiceDetail/ServiceDetail";
+import ProductGroup from "../pages/ProductGroup/ProductGroup";
+import ProductDetail from "../pages/ProductDetail/ProductDetail";
 
 import Newspaper from "../pages/SubscribeNewspaper/Newspaper";
 import Feature from "../pages/Feature/Feature";
 import CmsMaster from "../pages/CMS/CmsMaster";
+import OtherProducts from "../pages/OtherProducts/OtherProducts";
+import Supplier from "../pages/SupplierSetup/SupplierSetup";
 
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
@@ -50,9 +52,11 @@ const authProtectedRoutes = [
   {path:"/roles",component:<Roles/>},
   {path:"/inquiry",component:<Inquiry/>},
 
-  {path:"/service-type",component:<ServiceType/>},
-  {path:"/service-detail",component:<ServiceDetail/>},
+  {path:"/product-group",component:<ProductGroup/>},
+  {path:"/product-detail",component:<ProductDetail/>},
   {path:"/user-signin",component:<UserSignIn/>},
+  {path:"/other-products",component:<OtherProducts/>},
+  {path:"/supplier",component:<Supplier/>},
 
 
 

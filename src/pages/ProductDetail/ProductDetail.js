@@ -26,7 +26,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 
 
-const ServiceDetail = () => {
+const ProductDetail = () => {
   
 
   const [selectType,setSelectType] = useState([]);
@@ -1665,4 +1665,4 @@ const ServiceDetail = () => {
   );
 };
 
-export default ServiceDetail;
+export default ProductDetail;

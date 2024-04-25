@@ -614,20 +614,20 @@ const VerticalLayout = (props) => {
               </Link>
             </li> */}
             <li className="nav-item">
-              <Link to="/service-type" className="nav-link">
+              <Link to="/product-group" className="nav-link">
                 ProductGroup 
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/service-detail" className="nav-link">
+              <Link to="/product-detail" className="nav-link">
                  Products
                </Link>
              </li>
-             {/* <li className="nav-item">
-              <Link to="/inquiry" className="nav-link">
-                 Inquiry
+             <li className="nav-item">
+              <Link to="/other-products" className="nav-link">
+                 Other Products
                </Link>
-             </li> */}
+             </li>
              {/* <li className="nav-item">
           <Link to="/newspaper" className="nav-link">
                  Subscribe Newspaper
@@ -668,36 +668,36 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          <li className="nav-item">
+          {/* <li className="nav-item">
               {" "}
               <Link to="/company-details" className="nav-link">
                 Company Details
               </Link>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               {" "}
               <Link to="/admin-user" className="nav-link">
                 {" "}
                 Admin Users{" "}
               </Link>
-            </li>
+            </li> */}
             {/* <li className="nav-item">
               <Link to="/user-signin" className="nav-link">
                 User Details
               </Link>
             {/* </li> */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/roles" className="nav-link">
                 Roles
               </Link>
-            </li>
+            </li> */}
             {/* <li className="nav-item">
               {" "}
               <Link to="/getintouch" className="nav-link">
                 GetInTouch
               </Link>
             </li> */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/service-type" className="nav-link">
                 ServiceType
               </Link>
@@ -710,10 +710,10 @@ const VerticalLayout = (props) => {
               <Link to="/inquiry" className="nav-link">
                  Inquiry
                </Link>
-             </li>
+             </li> */}
              <li className="nav-item">
-          <Link to="/newspaper" className="nav-link">
-                 Subscribe Newspaper
+          <Link to="/supplier" className="nav-link">
+                 Supplier
                </Link>
              </li>
            
