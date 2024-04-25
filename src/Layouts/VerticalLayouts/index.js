@@ -719,8 +719,8 @@ const VerticalLayout = (props) => {
            
            
             <li className="nav-item">
-               <Link to="/feature" className="nav-link">
-                 Features
+               <Link to="/assign-product" className="nav-link">
+                 Assign product
                </Link>
              </li>
              <li className="nav-item">
