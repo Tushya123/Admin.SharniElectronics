@@ -468,6 +468,7 @@ if(Object.keys(errors).length===0){
     e.preventDefault();
     setShowForm(false);
     setUpdateForm(false);
+    setValues(initialState);
     setIsSubmit(false);
   };
 
@@ -483,6 +484,7 @@ if(Object.keys(errors).length===0){
         .then((res) => {
           setUpdateForm(false);
           setShowForm(false);
+          setValues(initialState);
           fetchCategories();
         })
         .catch((err) => {
@@ -496,7 +498,7 @@ if(Object.keys(errors).length===0){
     setShowForm(false);
     setUpdateForm(false);
     setIsSubmit(false);
-    setValues([]);
+    setValues(initialState);
   };
 
   const handleCheck = (e) => {
@@ -1298,14 +1300,14 @@ if(Object.keys(errors).length===0){
                                       <button
                                         type="submit"
                                         className="btn btn-success  m-1"
-                                        onClick={handleUpdate}
+                                        onClick={handleSubmit}
                                       >
                                         Submit
                                       </button>
                                       <button
                                         type="submit"
                                         className="btn btn-outline-danger m-1"
-                                        onClick={handleUpdateCancel}
+                                        onClick={handleAddCancel}
                                       >
                                         Cancel
                                       </button>
