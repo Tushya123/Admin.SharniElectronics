@@ -1656,6 +1656,7 @@ const ProductDetail = () => {
                 type="button"
                 className="btn btn-outline-danger"
                 onClick={() => setmodal_delete(false)}
+                
               >
                 Close
               </button>

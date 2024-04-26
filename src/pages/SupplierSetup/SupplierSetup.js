@@ -12,7 +12,10 @@ import {
   Label,
   Input,
   FormFeedback,
-  FormGroup,
+  FormGroup,Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
 } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 
@@ -471,6 +474,19 @@ if(Object.keys(errors).length===0){
     setValues(initialState);
     setIsSubmit(false);
   };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    axios
+      .delete(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/supplier/${remove_id}`)
+      .then((res) => {
+        setmodal_delete(!modal_delete);
+        fetchCategories();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleUpdate = (e) => {
     // debugger;
@@ -758,7 +774,7 @@ if(Object.keys(errors).length===0){
   document.title = "Company Details | Shreeji Pharma";
 
   return (
-    <React.Fragment>
+    <>
       <UiContent />
       <div className="page-content">
         <Container fluid>
@@ -1778,7 +1794,62 @@ if(Object.keys(errors).length===0){
           </Row>
         </Container>
       </div>
-    </React.Fragment>
+      <Modal
+        isOpen={modal_delete}
+        toggle={() => {
+          tog_delete();
+          setValues([]);
+        }}
+        centered
+      >
+        <ModalHeader
+          className="bg-light p-3"
+          toggle={() => {
+            setmodal_delete(!modal_delete);
+          }}
+        >
+          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+        </ModalHeader>
+
+        <form>
+          <ModalBody>
+            <div className="mt-2 text-center">
+              <lord-icon
+                src="https://cdn.lordicon.com/gsqxdxog.json"
+                trigger="loop"
+                colors="primary:#f7b84b,secondary:#f06548"
+                style={{ width: "100px", height: "100px" }}
+              ></lord-icon>
+              <div className="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
+                <h4>Are you sure ?</h4>
+                <p className="text-muted mx-4 mb-0">
+                  Are you Sure You want to Remove this Record ?
+                </p>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <div className="hstack gap-2 justify-content-end">
+              <button
+                type="submit"
+                className="btn btn-danger"
+                id="add-btn"
+                onClick={handleDelete}
+              >
+                Remove
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={() => setmodal_delete(false)}
+              >
+                Close
+              </button>
+            </div>
+          </ModalFooter>
+        </form>
+      </Modal>
+    </>
   );
 };
 
