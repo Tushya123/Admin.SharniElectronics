@@ -24,19 +24,22 @@ import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
+// import {
+//   createTypes,
+//   uploadImagetype,
+//   removeType,
+//   updateType,
+//   getType,
+// } from "../../functions/SolarType/SolarType";
 import {
-  createBlogs,
-  getBlogs,
-  removeBlogs,
-  updateBlogs,
-  uploadImage,
-} from "../../functions/Blogs/Blogs";
+    getOtherProductsDetailsbyParams,getOtherProducts,updateOtherProducts,listOtherProducts,removeOtherProducts,createOtherProducts,listotherproductsbyparam,uploadproductImage
+} from "../../functions/OtherProducts/OtherProducts";
 
-const Blogs = () => {
-  const [blogTitle, setblogTitle] = useState("");
-  const [blogDesc, setblogDesc] = useState("");
-  const [blogImage, setblogImage] = useState("");
-  const [blogThumnailDesc, setblogThumnailDesc] = useState("");
+const OtherProducts = () => {
+  const [rolename, setrolename] = useState("");
+  const [Detail, setDetail] = useState("");
+//   const [roleImage, setroleimage] = useState("");
+  const [cmsThumnailDesc, setcmsThumnailDesc] = useState("");
   const [views, setViews] = useState(0);
 
   const [loadingOption, setLoadingOption] = useState(false);
@@ -74,12 +77,14 @@ const Blogs = () => {
           const body = new FormData();
           loader.file
             .then((file) => {
-              body.append("uploadImg", file);
-              uploadImage(body)
+              body.append("uploadImage", file);
+              uploadproductImage(body)
                 .then((res) => {
                   console.log("res", res.url);
                   resolve({
-                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
+
+                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/otherproductsCKImage/${res.url}`,
+
                   });
                 })
                 .catch((err) => console.log(err));
@@ -110,16 +115,17 @@ const Blogs = () => {
 
     setIsSubmit(false);
     set_Id(_id);
-    getBlogs(_id)
+    getOtherProducts(_id)
       .then((res) => {
-        setblogTitle(res.blogTitle);
-        setblogDesc(res.blogDesc);
-        setblogImage(res.blogImage);
-        setlikes(res.likes);
-        setcomments(res.comments);
-        setblogThumnailDesc(res.blogThumnailDesc);
-        setViews(res.views);
-        setuserId(res.userId);
+        console.log("ressssss", res);
+        setrolename(res.ProductName);
+        setDetail(res.Detail);
+        // setroleimage(res.imageURL);
+        // setlikes(res.likes);
+        // setcomments(res.comments);
+        // setcmsThumnailDesc(res.cmsThumnailDesc);
+        // setViews(res.views);
+        // setuserId(res.userId);
         setIsActive(res.IsActive);
       })
       .catch((err) => {
@@ -130,7 +136,7 @@ const Blogs = () => {
   const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    let errors = validate(blogTitle, blogDesc, blogImage);
+    let errors = validate(rolename, Detail);
     setFormErrors(errors);
     setIsSubmit(true);
 
@@ -138,31 +144,32 @@ const Blogs = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      formdata.append("myFile", blogImage);
-      formdata.append("blogTitle", blogTitle);
-      formdata.append("blogDesc", blogDesc);
+     
+      formdata.append("ProductName", rolename);
+      formdata.append("Detail", Detail);
+    //   formdata.append("imageURL", roleImage);
       formdata.append("IsActive", IsActive);
-      formdata.append("comments", comments);
-      formdata.append("views", views);
-      formdata.append("blogThumnailDesc", blogThumnailDesc);
-      formdata.append("likes", likes);
-      formdata.append("userId", localStorage.getItem("AdminUser"));
+      // formdata.append("comments", comments);
+      // formdata.append("views", views);
+      // formdata.append("cmsThumnailDesc", cmsThumnailDesc);
+      // formdata.append("likes", likes);
+      // formdata.append("userId", localStorage.getItem("RCCoffeeAdmin"));
 
-      createBlogs(formdata)
+      createOtherProducts(formdata)
         .then((res) => {
           console.log(res);
           // setmodal_list(!modal_list);
           setShowForm(false);
           setLoadingOption(false);
           // setValues(initialState);
-          setblogDesc("");
-          setblogTitle("");
+          setDetail("");
+          setrolename("");
           setlikes([]);
           setcomments([]);
           setuserId("");
           setIsActive(false);
-          setblogImage("");
-          setblogThumnailDesc("");
+        //   setroleimage("");
+          setcmsThumnailDesc("");
           setViews(0);
           setIsSubmit(false);
           setCheckImagePhoto(false);
@@ -178,7 +185,7 @@ const Blogs = () => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    removeBlogs(remove_id)
+    removeOtherProducts(remove_id)
       .then((res) => {
         setmodal_delete(!modal_delete);
         fetchCategories();
@@ -190,7 +197,7 @@ const Blogs = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    let erros = validate(blogTitle, blogDesc, blogImage);
+    let erros = validate(rolename, Detail);
     setFormErrors(erros);
     setIsSubmit(true);
     const likesString = JSON.stringify(likes);
@@ -200,17 +207,17 @@ const Blogs = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      formdata.append("myFile", blogImage);
-      formdata.append("blogTitle", blogTitle);
-      formdata.append("blogDesc", blogDesc);
+    //   formdata.append("imageURL", roleImage);
+      formdata.append("ProductName", rolename);
+      formdata.append("Detail", Detail);
       formdata.append("IsActive", IsActive);
-      formdata.append("comments", commentString);
-      formdata.append("views", views);
-      formdata.append("blogThumnailDesc", blogThumnailDesc);
-      formdata.append("likes", likesString);
-      formdata.append("userId", userId);
+      // formdata.append("comments", commentString);
+      // formdata.append("views", views);
+      // formdata.append("cmsThumnailDesc", cmsThumnailDesc);
+      // formdata.append("likes", likesString);
+      // formdata.append("userId", userId);
 
-      updateBlogs(_id, formdata)
+      updateOtherProducts(_id, formdata)
         .then((res) => {
           // setmodal_edit(!modal_edit);
           setPhotoAdd("");
@@ -219,15 +226,15 @@ const Blogs = () => {
 
           setCheckImagePhoto(false);
           // setValues(initialState);
-          setblogDesc("");
-          setblogTitle("");
+          setDetail("");
+          setrolename("");
           setlikes([]);
           setcomments([]);
           setuserId("");
           setIsActive(false);
-          setblogThumnailDesc("");
+          setcmsThumnailDesc("");
           setViews(0);
-          setblogImage("");
+        //   setroleimage("");
           fetchCategories();
         })
         .catch((err) => {
@@ -241,39 +248,41 @@ const Blogs = () => {
   const [errBTD, setErrBTD] = useState(false);
   const [errBI, setErrBI] = useState(false);
 
-  const validate = (blogDesc, blogTitle, blogImage) => {
+  const validate = (rolename,Detail) => {
     const errors = {};
 
-    if (blogTitle === "") {
-      errors.blogTitle = "Blog Title is required!";
+    if (rolename === "") {
+      errors.rolename = "ProductName is required!";
       setErrBT(true);
     }
-    if (blogTitle !== "") {
+    if (rolename !== "") {
       setErrBT(false);
     }
 
-    if (blogDesc === "") {
-      errors.blogDesc = "Blog Description is required!";
+    if (Detail === "") {
+      errors.Detail = "Description is required!";
       setErrBD(true);
     }
-    if (blogDesc !== "") {
+    if (Detail !== "") {
       setErrBD(false);
     }
-    if (blogThumnailDesc === "") {
-      errors.blogThumnailDesc = "Blog Thumbnail Description is required!";
-      setErrBTD(true);
-    }
-    if (blogThumnailDesc !== "") {
-      setErrBTD(false);
-    }
+    // if (cmsThumnailDesc === "") {
 
-    if (blogImage === "") {
-      errors.blogImage = "Blog Image is required!";
-      setErrBI(true);
-    }
-    if (blogImage !== "") {
-      setErrBI(false);
-    }
+    //   errors.cmsThumnailDesc = "Thumbnail Description is required!";
+
+    //   setErrBTD(true);
+    // }
+    // if (cmsThumnailDesc !== "") {
+    //   setErrBTD(false);
+    // }
+
+    // if (roleImage === "") {
+    //   errors.roleImage = " Image is required!";
+    //   setErrBI(true);
+    // }
+    // if (roleImage !== "") {
+    //   setErrBI(false);
+    // }
 
     return errors;
   };
@@ -300,6 +309,17 @@ const Blogs = () => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
   };
+//   const renderImage = (uploadimage) => {
+//     const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+
+//     return (
+//       <img
+//         src={imageUrl}
+//         alt="Image"
+//         style={{ width: "75px", height: "75px", padding: "5px" }}
+//       />
+//     );
+//   };
 
   useEffect(() => {
     // fetchUsers(1); // fetch page 1 of users
@@ -317,17 +337,16 @@ const Blogs = () => {
     }
 
     await axios
-      .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/blogs`,
-        {
-          skip: skip,
-          per_page: perPage,
-          sorton: column,
-          sortdir: sortDirection,
-          match: query,
-          IsActive: filter,
-        }
-      )
+
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listotherproductsbyparam`, {
+
+        skip: skip,
+        per_page: perPage,
+        sorton: column,
+        sortdir: sortDirection,
+        match: query,
+        IsActive: filter,
+      })
       .then((response) => {
         if (response.length > 0) {
           let res = response[0];
@@ -358,8 +377,8 @@ const Blogs = () => {
       console.log("img", e.target.files[0]);
 
       setPhotoAdd(imageurl);
-      // setValues({ ...values, blogImage: e.target.files[0] });
-      setblogImage(e.target.files[0]);
+      // setValues({ ...values, roleImage: e.target.files[0] });
+    //   setroleimage(e.target.files[0]);
       setCheckImagePhoto(true);
     }
   };
@@ -379,16 +398,16 @@ const Blogs = () => {
     setCheckImagePhoto(false);
     setShowForm(false);
     setUpdateForm(false);
-    setblogThumnailDesc("");
+    setcmsThumnailDesc("");
     setViews(0);
     // setValues(initialState);
-    setblogDesc("");
-    setblogTitle("");
+    setDetail("");
+    setrolename("");
     setlikes([]);
     setcomments([]);
     setuserId("");
     setIsActive(false);
-    setblogImage("");
+    // setroleimage("");
   };
 
   const handleUpdateCancel = (e) => {
@@ -397,27 +416,43 @@ const Blogs = () => {
     setPhotoAdd("");
     setUpdateForm(false);
     setShowForm(false);
-    setblogThumnailDesc("");
+    setcmsThumnailDesc("");
     setViews(0);
     setCheckImagePhoto(false);
     // setValues(initialState);
-    setblogDesc("");
-    setblogTitle("");
+    setDetail("");
+    setrolename("");
     setlikes([]);
     setcomments([]);
     setuserId("");
     setIsActive(false);
-    setblogImage("");
+    // setroleimage("");
   };
 
   const col = [
     {
-      name: "Title",
-      cell: (row) => row.blogTitle,
+      name: "Other Products",
+      cell: (row) => row.ProductName,
       sortable: true,
-      sortField: "blogTitle",
+      sortField: "rolename",
       minWidth: "150px",
-    },
+    },  {
+      name: "Description",
+      cell: (row) => {
+        const detail = row.Detail;
+        return typeof detail === 'string' ? detail.replace(/<[^>]+>/g, '') : detail;
+      },
+      sortable: true,
+      sortField: "Detail",
+      minWidth: "150px",
+    },  
+    // {
+    //   name: "Image",
+    //   cell: (row) => renderImage(row.imageURL),
+    //   sortable: true,
+    //   sortField: "imageURL",
+    //   minWidth: "150px",
+    // },
 
     // {
     //   name: " Written By",
@@ -427,23 +462,23 @@ const Blogs = () => {
     //   minWidth: "150px",
     // },
 
-    {
-      name: "Date & Time",
-      selector: (row) => {
-        const dateObject = new Date(row.createdAt);
+    // {
+    //   name: "Date & Time",
+    //   selector: (row) => {
+    //     const dateObject = new Date(row.createdAt);
 
-        return (
-          <React.Fragment>
-            {moment(new Date(dateObject.getTime())).format(
-              "DD-MM-YYYY hh:mm A"
-            )}
-          </React.Fragment>
-        );
-      },
-      sortable: true,
-      sortField: "createdAt",
-      minWidth: "150px",
-    },
+    //     return (
+    //       <React.Fragment>
+    //         {moment(new Date(dateObject.getTime())).format(
+    //           "DD-MM-YYYY hh:mm A"
+    //         )}
+    //       </React.Fragment>
+    //     );
+    //   },
+    //   sortable: true,
+    //   sortField: "createdAt",
+    //   minWidth: "150px",
+    // },
 
     {
       name: "Status",
@@ -489,13 +524,15 @@ const Blogs = () => {
     },
   ];
 
-  document.title = "Blogs | Contact_Owner";
+  document.title = "Roles | Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Blogs" title="Blogs" pageTitle="Blogs" />
+
+          <BreadCrumb title="Roles"  />
+
 
           <Row>
             <Col lg={12}>
@@ -503,7 +540,7 @@ const Blogs = () => {
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Blogs</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Roles</h2>
                     </Col>
                     <Col lg={4} md={6} sm={6}>
                       <div
@@ -544,13 +581,13 @@ const Blogs = () => {
                                     onClick={() => {
                                       setShowForm(!showForm);
                                       // setValues(initialState);
-                                      setblogDesc("");
-                                      setblogTitle("");
+                                      setDetail("");
+                                      setrolename("");
                                       setlikes([]);
                                       setcomments([]);
                                       setuserId("");
                                       setIsActive(false);
-                                      setblogImage("");
+                                    //   setroleimage("");
                                       // setFileId(Math.random() * 100000);
                                     }}
                                     // onClick={() => tog_list()}
@@ -579,13 +616,13 @@ const Blogs = () => {
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
                                     // setValues(initialState);
-                                    setblogDesc("");
-                                    setblogTitle("");
+                                    setDetail("");
+                                    setrolename("");
                                     setlikes([]);
                                     setcomments([]);
                                     setuserId("");
                                     setIsActive(false);
-                                    setblogImage("");
+                                    // setroleimage("");
                                     setShowForm(false);
                                     setUpdateForm(false);
                                     // setFileId(Math.random() * 100000);
@@ -637,94 +674,97 @@ const Blogs = () => {
                                   <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
-                                        key={"blogTitle_" + _id}
+                                        key={"rolename" + _id}
                                         type="text"
                                         className={validClassBT}
-                                        placeholder="Enter blog title"
+                                        placeholder="Enter Name"
                                         required
-                                        name="blogTitle"
-                                        value={blogTitle}
+                                        name="rolename"
+                                        value={rolename}
                                         onChange={(e) => {
-                                          setblogTitle(e.target.value);
+                                          setrolename(e.target.value);
                                         }}
                                       />
                                       <Label>
-                                        Blog Title{" "}
+                                        Product Name {" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogTitle}
+                                          {formErrors.rolename}
                                         </p>
                                       )}
                                     </div>
                                   </Col>
 
-                                  <Col lg={6}>
+                                  {/* <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
                                         type="textarea"
                                         className={validClassBTD}
                                         style={{ height: "100px" }}
                                         placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
+                                        name="cmsThumnailDesc"
+                                        value={cmsThumnailDesc}
                                         onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
+                                          setcmsThumnailDesc(e.target.value);
                                         }}
                                       />
                                       <Label className="form-label">
-                                        Blog Thumbnail Description
+
+                                        CMS Thumbnail Description
+
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
+                                          {formErrors.cmsThumnailDesc}
                                         </p>
                                       )}
                                     </div>
-                                  </Col>
+                                  </Col> */}
 
                                   <Col lg={12}>
                                     <Card>
                                       <Label>
-                                        Blog Description
+                                        Description
                                         <span className="text-danger">*</span>
                                       </Label>
                                       <CardBody>
                                         {/* <Form method="post"> */}
                                         <CKEditor
-                                          key={"blogDesc_" + _id}
+                                          key={"Detail" + _id}
                                           editor={ClassicEditor}
-                                          data={blogDesc}
+className={validClassBD}
+                                          data={Detail}
                                           config={{
                                             extraPlugins: [uploadPlugin],
                                           }}
                                           onChange={(event, editor) => {
                                             const data = editor.getData();
 
-                                            setblogDesc(data);
-                                            console.log(blogDesc);
+                                            setDetail(data);
+                                            console.log(Detail);
                                           }}
                                         />
                                         {isSubmit && (
                                           <p className="text-danger">
-                                            {formErrors.blogDesc}
+                                            {formErrors.Detail}
                                           </p>
                                         )}
                                       </CardBody>
                                     </Card>
                                   </Col>
 
-                                  <Col lg={6}>
+                                  {/* <Col lg={6}>
                                     <label>
-                                      Blog Image{" "}
+                                      Image{" "}
                                       <span className="text-danger">*</span>
                                     </label>
 
                                     <Input
-                                      key={"blogImage_" + _id}
+                                      key={"roleImage" + _id}
                                       type="file"
-                                      name="blogImage"
+                                      name="roleImage"
                                       className={validClassBI}
                                       // accept="images/*"
                                       accept=".jpg, .jpeg, .png"
@@ -732,7 +772,7 @@ const Blogs = () => {
                                     />
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.blogImage}
+                                        {formErrors.roleImage}
                                       </p>
                                     )}
                                     {checkImagePhoto ? (
@@ -745,7 +785,7 @@ const Blogs = () => {
                                         height="200"
                                       />
                                     ) : null}
-                                  </Col>
+                                  </Col> */}
 
                                   <div className="mt-5">
                                     <Col lg={6}>
@@ -834,92 +874,70 @@ const Blogs = () => {
                                   <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
-                                        key={"blogTitle_" + _id}
+                                        key={"rolename" + _id}
                                         type="text"
                                         className={validClassBT}
                                         placeholder="Enter blog title"
                                         required
-                                        name="blogTitle"
-                                        value={blogTitle}
+                                        name="rolename"
+                                        value={rolename}
                                         // onChange={handleChange}
                                         onChange={(e) => {
-                                          setblogTitle(e.target.value);
+                                          setrolename(e.target.value);
                                         }}
                                       />
                                       <Label>
-                                        Blog Title{" "}
+                                        Product Name{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogTitle}
+                                          {formErrors.rolename}
                                         </p>
                                       )}
                                     </div>
                                   </Col>
 
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        type="textarea"
-                                        className={validClassBTD}
-                                        style={{ height: "100px" }}
-                                        placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
-                                        onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
-                                        }}
-                                      />
-                                      <Label className="form-label">
-                                        Blog Thumbnail Description
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>
+                              
                                   <Col lg={12}>
                                     <Card>
                                       <Label>
-                                        Blog Description
+                                        Description
                                         <span className="text-danger">*</span>
                                       </Label>
                                       <CardBody>
                                         {/* <Form method="post"> */}
                                         <CKEditor
-                                          key={"blogDesc_" + _id}
+                                          key={"Detail" + _id}
                                           editor={ClassicEditor}
-                                          data={blogDesc}
+                                          data={Detail}
                                           config={{
                                             extraPlugins: [uploadPlugin],
                                           }}
                                           onChange={(event, editor) => {
                                             const data = editor.getData();
 
-                                            setblogDesc(data);
+                                            setDetail(data);
                                           }}
                                         />
                                         {isSubmit && (
                                           <p className="text-danger">
-                                            {formErrors.blogDesc}
+                                            {formErrors.Detail}
                                           </p>
                                         )}
                                       </CardBody>
                                     </Card>
                                   </Col>
 
-                                  <Col lg={6}>
+                                  {/* <Col lg={6}>
                                     <label>
-                                      Blog Image{" "}
+                                      Image{" "}
                                       <span className="text-danger">*</span>
                                     </label>
                                     <Input
-                                      key={"blogImage_" + _id}
+                                      key={"roleImage" + _id}
                                       type="file"
-                                      name="blogImage"
+                                      name="roleImage"
                                       className={validClassBI}
                                       // accept="images/*"
                                       accept=".jpg, .jpeg, .png"
@@ -927,24 +945,29 @@ const Blogs = () => {
                                     />
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.blogImage}
+                                        {formErrors.roleImage}
                                       </p>
                                     )}
 
-                                    {blogImage || photoAdd ? (
+                                    {console.log("This is ",photoAdd)}
+                                    {roleImage || photoAdd ? (
+                                     
+
                                       <img
                                         // key={photoAdd}
                                         className="m-2"
                                         src={
                                           checkImagePhoto
                                             ? photoAdd
-                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${blogImage}`
+
+                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${roleImage}`
+
                                         }
                                         width="180"
                                         height="200"
                                       />
                                     ) : null}
-                                  </Col>
+                                  </Col> */}
 
                                   <div className="mt-5">
                                     <Col lg={6}>
@@ -1060,13 +1083,13 @@ const Blogs = () => {
         toggle={() => {
           tog_delete();
           // setValues([]);
-          setblogDesc("");
-          setblogTitle("");
+          setDetail("");
+          setrolename("");
           setlikes([]);
           setcomments([]);
           setuserId("");
           setIsActive(false);
-          setblogImage("");
+        //   setroleimage("");
         }}
         centered
       >
@@ -1076,7 +1099,9 @@ const Blogs = () => {
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Blog</span>
+
+          <span style={{ marginRight: "210px" }}>Remove Roles</span>
+
         </ModalHeader>
 
         <form>
@@ -1121,4 +1146,4 @@ const Blogs = () => {
   );
 };
 
-export default Blogs;
+export default OtherProducts;

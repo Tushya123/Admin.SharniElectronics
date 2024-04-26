@@ -363,7 +363,7 @@ const CompanyLocation = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list-by-params/company-locations`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/company-locations`,
         {
           skip: skip,
           per_page: perPage,
@@ -1056,7 +1056,7 @@ const CompanyLocation = () => {
                   src={
                     newProfileImageSelected
                       ? image
-                      : `${process.env.REACT_APP_API_URL_CONTACTUS}/${values.StoreLogo}`
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.StoreLogo}`
                   }
                   width="180"
                   height="180"

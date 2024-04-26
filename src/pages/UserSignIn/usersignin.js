@@ -281,7 +281,7 @@ if (values.mobile_no === ""||values.mobile_no.length<10) {
     setsortDirection(sortDirection);
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_CONTACTUS}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
 
     return (
       <img
@@ -309,7 +309,7 @@ if (values.mobile_no === ""||values.mobile_no.length<10) {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/list/listUser`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/list/listUser`,
         {
           skip: skip,
           per_page: perPage,
@@ -434,7 +434,7 @@ if (values.mobile_no === ""||values.mobile_no.length<10) {
     },
   ];
 
-  document.title = "User Details|Contact to Owner" ;
+  document.title = "User Details|Shreeji Pharma" ;
 
   return (
     <React.Fragment>

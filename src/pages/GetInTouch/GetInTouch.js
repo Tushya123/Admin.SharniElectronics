@@ -257,7 +257,7 @@ const GetInTouch = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list-by-params/getintouch`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/getintouch`,
         {
           skip: skip,
           per_page: perPage,
@@ -374,7 +374,7 @@ const GetInTouch = () => {
     },
   ];
 
-  document.title = "Get In Touch | Contact to Owner";
+  document.title = "Get In Touch | Shreeji Pharma";
 
   return (
     <React.Fragment>

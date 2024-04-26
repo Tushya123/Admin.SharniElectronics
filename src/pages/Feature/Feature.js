@@ -275,7 +275,7 @@ const Feature = () => {
   };
   const renderImage = (uploadimage) => {
 
-    const imageUrl = `${process.env.REACT_APP_API_URL_CONTACTUS}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
 
 
     return (
@@ -305,7 +305,7 @@ const Feature = () => {
     await axios
       .post(
 
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/listByparams/feature`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listByparams/feature`,
 
         {
           skip: skip,
@@ -406,7 +406,7 @@ const Feature = () => {
   ];
 
 
-  document.title = "Features | Contact to Owner";
+  document.title = "Features | Shreeji Pharma";
 
 
 
@@ -754,7 +754,7 @@ const Feature = () => {
                     checkImagePhoto
                       ? photoAdd
 
-                      : `${process.env.REACT_APP_API_URL_CONTACTUS}/${values.bannerImage}`
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.bannerImage}`
 
                   }
                   width="300"

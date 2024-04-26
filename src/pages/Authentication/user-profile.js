@@ -95,7 +95,7 @@ const UserProfile = () => {
                   <div className="d-flex">
                     <div className="mx-3">
                       <img
-                      src={`${process.env.REACT_APP_API_URL_CONTACTUS}/${localStorage.getItem("Image")}`}
+                      src={`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${localStorage.getItem("Image")}`}
                         alt=""
                         className="avatar-md rounded-circle img-thumbnail"
                       />

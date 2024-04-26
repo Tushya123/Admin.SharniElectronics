@@ -202,7 +202,7 @@ const CategoryMaster = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list-by-params/categoryMaster`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/categoryMaster`,
         {
           skip: skip,
           per_page: perPage,

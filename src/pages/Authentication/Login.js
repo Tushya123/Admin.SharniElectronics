@@ -61,7 +61,7 @@ const Login = (props) => {
     setFormErrors(validate(values));
 console.log("dddd")
     axios
-      .post(`${process.env.REACT_APP_API_URL_CONTACTUS}/api/adminLogin`, values)
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/adminLogin`, values)
       .then((res) => {
         console.log("Hiii",res);
         if (res.isOk&&res.data.IsActive===true) {

@@ -26,7 +26,7 @@ import {
 } from "../../functions/Subscribers/Subscribers";
 
 const initialState = {
-  email: "",
+  Phone_Number: "",
   IsActive: false,
 };
 
@@ -77,7 +77,7 @@ const Newspaper = () => {
           console.log(res);
           setValues({
             ...values,
-            email: res.email,
+            Phone_Number: res.Phone_Number,
             IsActive: res.IsActive,
           });
         })
@@ -158,11 +158,11 @@ const Newspaper = () => {
     const validate = (values) => {
       const errors = {};
 
-      if (values.email === "") {
-        errors.categoryName = "Email is required!";
+      if (values.Phone_Number === ""||values.Phone_Number.length!==10) {
+        errors.categoryName = "Phone Number is required!";
         setErrCN(true);
       }
-      if (values.email !== "") {
+      if (values.Phone_Number !== "") {
         setErrCN(false);
       }
 
@@ -202,7 +202,7 @@ const Newspaper = () => {
     await axios
       .post(
 
-        `${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list-by-params/subscribe`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/subscribe`,
 
         {
           skip: skip,
@@ -242,8 +242,8 @@ const Newspaper = () => {
   const col = [
     
     {
-      name: "Email Address",
-      selector: (row) => row.email,
+      name: "Phone Number",
+      selector: (row) => row.Phone_Number,
       sortable: true,
       sortField: "address",
       minWidth: "50%",
@@ -296,7 +296,7 @@ const Newspaper = () => {
   ];
 
 
-  document.title = "Subscribe NewsPaper | Contact to Owner";
+  document.title = "Subscribe NewsPaper | Shreeji Pharma";
 
 
   return (
@@ -517,13 +517,13 @@ const Newspaper = () => {
                 className={validClassCategoryName}
                 placeholder="Enter Category Name"
                 required
-                name="email"
-                value={values.email}
+                name="Phone_Number"
+                value={values.Phone_Number}
                 onChange={handleChange}
               />
-              <Label>Category Name <span className="text-danger">*</span></Label>
+              <Label>Phone Number <span className="text-danger">*</span></Label>
               {isSubmit && (
-                <p className="text-danger">{formErrors.email}</p>
+                <p className="text-danger">{formErrors.categoryName}</p>
               )}
             </div>
 

@@ -83,7 +83,7 @@ const CmsMaster = () => {
                   console.log("res", res.url);
                   resolve({
 
-                    default: `${process.env.REACT_APP_API_URL_CONTACTUS}/uploads/rolesCKImage/${res.url}`,
+                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/rolesCKImage/${res.url}`,
 
                   });
                 })
@@ -310,7 +310,7 @@ const CmsMaster = () => {
     setsortDirection(sortDirection);
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_CONTACTUS}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
 
     return (
       <img
@@ -338,7 +338,7 @@ const CmsMaster = () => {
 
     await axios
 
-      .post(`${process.env.REACT_APP_API_URL_CONTACTUS}/api/auth/list-by-params/role`, {
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/role`, {
 
         skip: skip,
         per_page: perPage,
@@ -523,7 +523,7 @@ const CmsMaster = () => {
     },
   ];
 
-  document.title = "Roles | Contact to Owner";
+  document.title = "Roles | Shreeji Pharma";
 
   return (
     <React.Fragment>
@@ -959,7 +959,7 @@ className={validClassBD}
                                           checkImagePhoto
                                             ? photoAdd
 
-                                            : `${process.env.REACT_APP_API_URL_CONTACTUS}/${roleImage}`
+                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${roleImage}`
 
                                         }
                                         width="180"
