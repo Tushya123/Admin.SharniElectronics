@@ -416,8 +416,10 @@ const ProductDetail = () => {
         IsActive: filter,
       })
       .then((response) => {
+        console.log(response.length)
         if (response.length > 0) {
           let res = response[0];
+          console.log("Hii",res.data)
           setLoading(false);
           setBlogs(res.data);
           setTotalRows(res.count);
