@@ -1,327 +1,253 @@
 import React, { useState, useEffect } from "react";
+import Select from 'react-select'
+import moment from "moment-timezone";
 import {
-  Input,
-  Label,
   Button,
   Card,
   CardBody,
   CardHeader,
-  Col,
   Form,
+  Col,
   Container,
+  ListGroup,
+  ListGroupItem,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Label,
+  Input,
   Row,
 } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
-import DataTable from "react-data-table-component";
 import axios from "axios";
+import DataTable from "react-data-table-component";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-import {
-  createProductsDetails,
-  getProductsDetails,
-  removeProductsDetails,
-  updateProductsDetails,
-} from "../../functions/Products/ProductsDetails";
-import { listCategory } from "../../functions/Category/CategoryMaster";
+
 
 const AssignProduct = () => {
+  
+  const [SupplierName, setSupplierName] = useState("");
+  const [selectType,setSelectType] = useState([]);
+  const [blogTitle, setblogTitle] = useState("");
+  const [blogDesc, setblogDesc] = useState("");
+  const [blogImage, setblogImage] = useState("");
+  const [types,setTypes] = useState("");
+  const [blogThumnailDesc, setblogThumnailDesc] = useState("");
+  const [views, setViews] = useState(0);
+
+  const [loadingOption, setLoadingOption] = useState(false);
+
+  const [likes, setlikes] = useState([]);
+  const [comments, setcomments] = useState([]);
+  const [userId, setuserId] = useState(localStorage.getItem("AdminUser"));
+  const [IsActive, setIsActive] = useState(false);
+  const [Other, setOther] = useState(false);
+  const [EP, setEP] = useState(false);
+  const [USP, setUSP] = useState(false);
+  const [BP, setBP] = useState(false);
+ 
+
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
-  const [_id, set_Id] = useState("");
-
-  const initialState = {
-    category: "",
-    productName: "",
-    productImage: "",
-    productDescription: "",
-    price: 0,
-    IsActive: false,
-    IsSubscriptionProduct: false,
-    isOutOfStock: false,
-  };
-
-  const [remove_id, setRemove_id] = useState("");
-
-  //search and pagination state
-  const [query, setQuery] = useState("");
-
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [values, setValues] = useState(initialState);
-
-  const {
-    category,
-    productName,
-    productDescription,
-    productImage,
-    price,
-    IsActive,
-    IsSubscriptionProduct,
-    isOutOfStock
-  } = values;
-
-  const [loading, setLoading] = useState(false);
-  const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(10);
-  const [pageNo, setPageNo] = useState(0);
-  const [column, setcolumn] = useState();
-  const [sortDirection, setsortDirection] = useState();
 
   const [showForm, setShowForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
-  const [data, setData] = useState([]);
 
-  const columns = [
-    {
-      name: "Product Category",
-      selector: (row) => row.category.categoryName,
-      sortable: true,
-      sortField: "row.category.categoryName",
-      minWidth: "150px",
-    },
-    {
-      name: "Product Name",
-      selector: (row) => row.productName,
-      sortable: true,
-      sortField: "productName",
-      minWidth: "150px",
-    },
-    {
-      name: "Subscription",
-      selector: (row) => {
-        return <p>{row.IsSubscriptionProduct ? "Yes" : "No"}</p>;
-      },
-      sortable: false,
-      sortField: "IsSubscriptionProduct",
-    },
-    {
-      name: "Action",
-      selector: (row) => {
-        return (
-          <React.Fragment>
-            <div className="d-flex gap-2">
-              <div className="edit">
-                <button
-                  className="btn btn-sm btn-success edit-item-btn "
-                  data-bs-toggle="modal"
-                  data-bs-target="#showModal"
-                  onClick={() => handleTog_edit(row._id)}
-                >
-                  Edit
-                </button>
-              </div>
+  const [query, setQuery] = useState("");
 
-              <div className="remove">
-                <button
-                  className="btn btn-sm btn-danger remove-item-btn"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deleteRecordModal"
-                  onClick={() => tog_delete(row._id)}
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          </React.Fragment>
-        );
-      },
-      sortable: false,
-      minWidth: "180px",
-    },
-  ];
+  const [_id, set_Id] = useState("");
+  const [remove_id, setRemove_id] = useState("");
 
-  useEffect(() => {
-    fetchProducts();
-  }, [pageNo, perPage, column, sortDirection, query, filter]);
+  const [blogs, setBlogs] = useState([]);
+  const [blogs2, setBlogs2] = useState([]);
 
-  const fetchProducts = async () => {
+  const getSelectType=()=>{
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`)
+      .then((response) => {
+        if (response.length > 0) {
+          console.log(response)
+          const names = response.map((item)=>({
+            value:item._id , label :item.SupplierName,
+          }
+         ));
+          
+          setSelectType(names);
+        } else if (response.length === 0) {
+          setSelectType([]);
+        }
+      });
+  }
+  const [product, setProduct]= useState([])
+  const getProductDetails = () => {
     setLoading(true);
     let skip = (pageNo - 1) * perPage;
     if (skip < 0) {
       skip = 0;
     }
-
-    await axios
-      .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listAssignProductbyparam`,
-        {
-          skip: skip,
-          per_page: perPage,
-          sorton: column,
-          sortdir: sortDirection,
-          match: query,
-          isActive: filter,
-        }
-      )
+    axios
+    .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`, {
+      skip: skip,
+      per_page: perPage,
+      sorton: column,
+      sortdir: sortDirection,
+      match: query,
+      IsActive: filter,
+    })
       .then((response) => {
         if (response.length > 0) {
-          let res = response[0];
+          console.log(response[0].data);
+          setProduct(response);
+          setBlogs2(response[0].data);
+          setTotalRows2(response.count);
           setLoading(false);
-          console.log(res.data)
-          setData(res.data);
-          setTotalRows(res.count);
-        } else if (response.length === 0) {
-          setData([]);
         } 
-        // console.log(res);
+        else if (response.length === 0) {
+          setBlogs2([]);
+          setProduct([])
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching product details:", error);
+        // Handle error appropriately
       });
-
-    setLoading(false);
   };
-
-  const [errPN, setErrPN] = useState(false);
-  const [errCN, setErrCN] = useState(false);
-  const [errPI, setErrPI] = useState(false);
-  const [errwt, setErrwt] = useState(false);
-  const [errut, setErrut] = useState(false);
-
-  const [errPr, setErrPr] = useState(false);
-
-  const validate = (values) => {
-    const errors = {};
-    if (values.category === "") {
-      errors.category = "Category Name is required";
-      setErrCN(true);
-    }
-    if (values.category !== "") {
-      setErrCN(false);
-    }
-
-    if (values.productName === "") {
-      errors.productName = "Product Name is required";
-      setErrPN(true);
-    }
-
-    if (values.productName !== "") {
-      setErrPN(false);
-    }
-
   
-
- 
-
-    if (values.productImage === "") {
-      errors.productImage = "Product Image is required";
-      setErrPI(true);
+  useEffect(() => {
+    console.log(formErrors);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log("no errors");
     }
+  }, [formErrors, isSubmit]);
 
-    if (values.productImage !== "") {
-      setErrPI(false);
-    }
 
-    return errors;
+  const uploadImage = async (body) => {
+    return await axios.post(
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/cms-blog/image-upload`,
+      body
+    );
   };
 
-  const validClassCategory =
-    errCN && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassUnit =
-    errCN && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassPN =
-    errPN && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClasswt =
-    errwt && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassPr =
-    errPr && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassPI =
-    errPI && isSubmit ? "form-control is-invalid" : "form-control";
+  const updateBlogs = async (_id, values) => {
+    return await axios.put(
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/blogs/${_id}`,
+      values
+    );
+  };
+  
+  const getBlogs = async (_id) => {
+    return await axios.get(
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/blogs/${_id}`
+    );
+  };
+
+   const removeBlogs = async (_id) => {
+    return await axios.delete(
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/AssignProduct/${_id}`
+    );
+  };
+
+  function uploadAdapter(loader) {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          const body = new FormData();
+          loader.file
+            .then((file) => {
+              body.append("uploadImg", file);
+              uploadImage(body)
+                .then((res) => {
+                  console.log("res", res.url);
+                  resolve({
+                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
+                  });
+                })
+                .catch((err) => console.log(err));
+            })
+            .catch((err) => reject(err));
+        });
+      },
+    };
+  }
+
+  function uploadPlugin(editor) {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return uploadAdapter(loader);
+    };
+  }
 
   const [modal_delete, setmodal_delete] = useState(false);
-
   const tog_delete = (_id) => {
     setmodal_delete(!modal_delete);
     setRemove_id(_id);
   };
 
   const [modal_edit, setmodal_edit] = useState(false);
-
-  const handlecheck = (e) => {
-    console.log(e.target.checked);
-    setValues({ ...values, IsActive: e.target.checked });
-  };
-  const handlecheckGH = (e) => {
-    console.log(e.target.checked);
-    setValues({ ...values, IsGiftHamper: e.target.checked });
-  };
-
-  const handlecheckSubs = (e) => {
-    console.log(e.target.checked);
-    setValues({ ...values, IsSubscriptionProduct: e.target.checked });
-  };
-
-  const handlecheckDrink = (e) => {
-    console.log(e.target.checked);
-    setValues({ ...values, isDrink: e.target.checked });
-  };
-
-  const handlecheckSize = (e) => {
-    console.log(e.target.checked);
-    setValues({ ...values, isSize: e.target.checked });
-  };
-
-  const handlecheckMilk = (e) => {
-    console.log(e.target.checked);
-    setValues({ ...values, isMilk: e.target.checked });
-  };
-
-  const handlecheckOutStock = (e) => {
-    console.log(e.target.checked);
-    setValues({ ...values, isOutOfStock: e.target.checked });
-  };
-
-  const [modal_list, setModalList] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log("no errors");
-    }
-  }, [formErrors, isSubmit]);
-
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const [drinkCategories, setDrinkCategories] = useState([]);
-
-  useEffect(() => {
-    loadDrinkCategories();
-  }, [category]);
-
-  const loadDrinkCategories = () => {
-    listCategory().then((res) => setDrinkCategories(res));
+  const handleTog_edit = (row,_id) => {
+    // setmodal_edit(!modal_edit);
+    getSelectType();
+    setIsSubmit(false);
+    setUpdateForm(true);
+    set_Id(_id);
+    // setTypes(row.ProductDetail);
+    setblogTitle(row.Description);
+    // setblogThumnailDesc(row.subtitle);
+    setblogDesc(row.Detail);
+    // setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
+    setIsActive(row.IsActive);
+    setBP(row.BP);
+    setEP(row.EP);
+    setUSP(row.USP);
+    setOther(row.Other);
+   
+    setCheckImagePhoto(true);
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    let errors = validate(values);
+    setFormErrors({});
+    let errors = validate(ProductDetail,SupplierName);
     setFormErrors(errors);
     setIsSubmit(true);
+
     if (Object.keys(errors).length === 0) {
+      setLoadingOption(true);
       const formdata = new FormData();
+      console.log("ProductDetail",ProductDetail,"SupplierName",SupplierName)
+      // formdata.append("newImage", blogImage);
+      formdata.append("ProductDetail",ProductDetail);
+      formdata.append("SupplierName", SupplierName);
+      // formdata.append("Detail", blogDesc);
+      // formdata.append("IsActive", IsActive);
+      // formdata.append("Other", Other);
+      // formdata.append("BP", BP);
+      // formdata.append("EP", EP);
+      // formdata.append("USP", USP);
+      // formdata.append("subtitle", blogThumnailDesc);
 
-      formdata.append("myFile", values.productImage);
-      formdata.append("category", values.category);
-      formdata.append("productName", values.productName);
-      formdata.append("productDescription", values.productDescription);
-      formdata.append("IsActive", values.IsActive);
-      formdata.append("IsGiftHamper", values.IsGiftHamper);
-      formdata.append("IsSubscriptionProduct", values.IsSubscriptionProduct);
-      formdata.append("isOutOfStock", values.isOutOfStock);
-      formdata.append("price", values.price);
 
-      createProductsDetails(formdata)
+      axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/AssignProduct`,formdata)
         .then((res) => {
-          // setModalList(!modal_list);
+          console.log(res);
+          setSelectType([])
+          setProductDetail("")
+          setSupplierNamePlaceholder("")
+          // setmodal_list(!modal_list);
           setShowForm(false);
-          setValues(initialState);
-          setCheckImagePhoto(false);
-          setPhotoAdd("");
-          setIsSubmit(false);
+          setLoadingOption(false);
+          // setValues(initialState);
+        
+          setIsActive(false);
+      
           setFormErrors({});
-          fetchProducts();
+          fetchCategories();
+          setTypes("");
+          setSelectType("");
         })
         .catch((err) => {
           console.log(err);
@@ -329,17 +255,15 @@ const AssignProduct = () => {
     }
   };
 
-  const tog_list = () => {
-    setModalList(!modal_list);
-    setIsSubmit(false);
-  };
-
   const handleDelete = (e) => {
     e.preventDefault();
-    removeProductsDetails(remove_id)
+
+    axios
+      .delete(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/AssignProduct/${remove_id}`)
       .then((res) => {
         setmodal_delete(!modal_delete);
-        fetchProducts();
+        fetchCategories();
       })
       .catch((err) => {
         console.log(err);
@@ -348,93 +272,186 @@ const AssignProduct = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-
-    // let errors = validate(values);
-    // setFormErrors(errors);
+    let erros = validate(blogTitle,types);
+    setFormErrors(erros);
     setIsSubmit(true);
-    // if (Object.keys(errors).length === 0) {
-    const formdata = new FormData();
+    const likesString = JSON.stringify(likes);
+    const commentString = JSON.stringify(comments);
 
-    formdata.append("myFile", values.productImage);
-      formdata.append("category", values.category);
-      formdata.append("productName", values.productName);
-      formdata.append("productDescription", values.productDescription);
-      formdata.append("IsActive", values.IsActive);
-      formdata.append("IsGiftHamper", values.IsGiftHamper);
-      formdata.append("IsSubscriptionProduct", values.IsSubscriptionProduct);
-      formdata.append("isOutOfStock", values.isOutOfStock);
-      formdata.append("price", values.price);
-    updateProductsDetails(_id, formdata)
-      .then((res) => {
-        // setmodal_edit(!modal_edit);
-        setPhotoAdd("");
-        setUpdateForm(false);
+    if (Object.keys(erros).length === 0) {
+      setLoadingOption(true);
+      const formdata = new FormData();
 
-        fetchProducts();
-        setCheckImagePhoto(false);
-        setValues(initialState);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // }
-  };
+      // formdata.append("newImage", blogImage);
+      formdata.append("ProductDetail",types);
+      formdata.append("Description", blogTitle);
+      // formdata.append("Detail", blogDesc);
+      formdata.append("IsActive", IsActive);
+      formdata.append("Other", Other);
+      formdata.append("BP", BP);
+      formdata.append("EP", EP);
+      formdata.append("USP", USP);
+      // formdata.append("subtitle", blogThumnailDesc);
 
-  const handleAddCancel = (e) => {
-    e.preventDefault();
-    setIsSubmit(false);
-    setPhotoAdd("");
-    setCheckImagePhoto(false);
-    // setModalList(false);
-    setShowForm(false);
-    setUpdateForm(false);
-    setValues(initialState);
-  };
-
-  const handleUpdateCancel = (e) => {
-    e.preventDefault();
-    setIsSubmit(false);
-    setPhotoAdd("");
-    setUpdateForm(false);
-    setShowForm(false);
-
-    setCheckImagePhoto(false);
-    setValues(initialState);
-  };
-
-  const handleTog_edit = (_id) => {
-    // setmodal_edit(!modal_edit);
-    setIsSubmit(false);
-    setUpdateForm(true);
-
-    set_Id(_id);
-    console.log(_id);
-    setFormErrors(false);
-    getProductsDetails(_id)
-      .then((res) => {
-        setValues({
-          ...values,
-          category: res.category,
-          productName: res.productName,
-          productImage: res.productImage,
-          productDescription: res.productDescription,
-          IsActive: res.IsActive,
-          IsGiftHamper: res.IsGiftHamper,
-          IsSubscriptionProduct: res.IsSubscriptionProduct,
-          price: res.price,
-          isOutOfStock: res.isOutOfStock,
+      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/projectdetail/${_id}`,formdata)
+        .then((res) => {
+          // setmodal_edit(!modal_edit);
+          setSelectType([])
+          setProductDetail("")
+          setSupplierNamePlaceholder("")
+          // setmodal_list(!modal_list);
+          setShowForm(false);
+          setLoadingOption(false);
+          // setValues(initialState);
+        
+          setIsActive(false);
+      
+          setFormErrors({});
+          fetchCategories();
+          setTypes("");
+          setSelectType("");
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }
   };
+
+  const [errBT, setErrBT] = useState(false);
+  const [errBD, setErrBD] = useState(false);
+  const [errBTD, setErrBTD] = useState(false);
+  const [errBI, setErrBI] = useState(false);
+  const [errSN,setErrSN]=useState(false);
+
+  const validate = (
+    // blogDesc,
+    SupplierName,ProductDetail) => {
+    const errors = {};
+    // if (types === "") {
+    //   errors.types = "Product Group is required!";
+    //   setErrSN(true);
+    // }
+    // else{
+    //   setErrSN(false);
+    // }
+
+    // if (blogTitle === "") {
+    //   errors.blogTitle = "Title is required!";
+    //   setErrBT(true);
+    // }
+    // if (blogTitle !== "") {
+    //   setErrBT(false);
+    // }
+
+    // if (blogDesc === "") {
+    //   errors.blogDesc = "Blog Description is required!";
+    //   setErrBD(true);
+    // }
+    // if (blogDesc !== "") {
+    //   setErrBD(false);
+    // }
+    // if (blogThumnailDesc === "") {
+    //   errors.blogThumnailDesc = "Blog Thumbnail Description is required!";
+    //   setErrBTD(true);
+    // }
+    // if (blogThumnailDesc !== "") {
+    //   setErrBTD(false);
+    // }
+
+    // if (blogImage === "") {
+    //   errors.blogImage = "Blog Image is required!";
+    //   setErrBI(true);
+    // }
+    // if (blogImage !== "") {
+    //   setErrBI(false);
+    // }
+
+    return errors;
+  };
+
+  const validClassBT =
+    errBT && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const validClassBD =
+    errBD && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassBTD =
+    errBTD && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const validClassBI =
+    errBI && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassSN =
+    errSN && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const [loading, setLoading] = useState(false);
+  const [totalRows, setTotalRows] = useState(0);
+  const [totalRows2, setTotalRows2] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(0);
+  const [column, setcolumn] = useState();
+  const [sortDirection, setsortDirection] = useState();
 
   const handleSort = (column, sortDirection) => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
   };
 
+  useEffect(() => {
+    // fetchUsers(1); // fetch page 1 of users
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [pageNo, perPage, column, sortDirection, query, filter]);
+
+  // const fetchCategories = async () => {
+  //   setLoading(true);
+
+  //   await axios
+  //     .get(
+  //       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`)
+  //     .then((response) => {
+  //       if (response.length > 0) {
+  //         setLoading(false);
+  //         console.log(response)
+  //         setBlogs(response);
+  //       } else if (response.length === 0) {
+  //         setBlogs([]);
+  //       }
+  //     });
+
+  //   setLoading(false);
+  // };
+  const fetchCategories = async () => {
+    setLoading(true);
+    let skip = (pageNo - 1) * perPage;
+    if (skip < 0) {
+      skip = 0;
+    }
+
+    await axios
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listAssignProductbyparam`, {
+        skip: skip,
+        per_page: perPage,
+        sorton: column,
+        sortdir: sortDirection,
+        match: query,
+        isActive: filter,
+      })
+      .then((response) => {
+        console.log(response.length)
+        if (response.length > 0) {
+          let res = response[0];
+          console.log("Hii",res.data)
+          setLoading(false);
+          setBlogs(res.data);
+          setTotalRows(res.count);
+        } else if (response.length === 0) {
+          setBlogs([]);
+        }
+        // console.log(res);
+      });
+    setLoading(false);
+  };
   const handlePageChange = (page) => {
     setPageNo(page);
   };
@@ -449,16 +466,9 @@ const AssignProduct = () => {
       let imageurl = URL.createObjectURL(e.target.files[0]);
       console.log("img", e.target.files[0]);
 
-      image.onload = () => {
-        const width = image.width;
-        const height = image.height;
-
-        // Now, you have the image width and height available.
-        // You can use this information when sending the image to the backend.
-      };
-
       setPhotoAdd(imageurl);
-      setValues({ ...values, productImage: e.target.files[0] });
+      // setValues({ ...values, blogImage: e.target.files[0] });
+      setblogImage(e.target.files[0]);
       setCheckImagePhoto(true);
     }
   };
@@ -467,21 +477,215 @@ const AssignProduct = () => {
     // setPageNo(page);
     setPerPage(newPerPage);
   };
-
   const handleFilter = (e) => {
     setFilter(e.target.checked);
   };
-  document.title = "Product Details | Contact_Owner";
+
+  const handleAddCancel = (e) => {
+    e.preventDefault();
+    setIsSubmit(false);
+    setPhotoAdd("");
+    setCheckImagePhoto(false);
+    setShowForm(false);
+    setUpdateForm(false);
+    // setblogThumnailDesc("");
+    setViews(0);
+    // setValues(initialState);
+    setblogDesc("");
+    setIsActive(false);
+          setErrBD(false);
+          setOther(false);
+          setEP(false)
+          setBP(false);
+          setUSP(false);
+    setblogTitle("");
+    setlikes([]);
+    setcomments([]);
+    setuserId("");
+    setIsActive(false);
+    setblogImage("");
+    setTypes("");
+    setSelectType("");
+    setTypes("");
+  };
+
+  const handleUpdateCancel = (e) => {
+    e.preventDefault();
+    setIsSubmit(false);
+    setPhotoAdd("");
+    setUpdateForm(false);
+    setShowForm(false);
+    // setblogThumnailDesc("");
+    setViews(0);
+    setCheckImagePhoto(false);
+    setIsActive(false);
+          setErrBD(false);
+          setEP(false)
+          setOther(false);
+          setBP(false);
+          setUSP(false);
+    // setValues(initialState);
+    setblogDesc("");
+    setblogTitle("");
+    setlikes([]);
+    setcomments([]);
+    setuserId("");
+    setIsActive(false);
+    setblogImage("");
+    setSelectType("");
+    setTypes("");
+  };
+  const [SupplierNamePlaceholder, setSupplierNamePlaceholder] = useState("")
+  const handleSelectSingle =(selectedOption)=>{
+    console.log("Selected Specilty:", selectedOption);
+    // Update speciality state with the selected option's value
+    setSupplierName(selectedOption.value)
+    console.log(selectedOption.value)
+    setSupplierNamePlaceholder(selectedOption.label)
+  }
+ 
+  const [ProductDetail, setProductDetail] = useState([]);
+
+  const handleCheckboxChange = (rowId) => {
+    console.log(rowId)
+    // Check if the checkbox is already checked
+    if (ProductDetail.includes(rowId)) {
+      // If checked, remove it from the array
+      setProductDetail(ProductDetail.filter((id) => id !== rowId));
+    } else {
+      // If not checked, add it to the array
+      setProductDetail([...ProductDetail, rowId]);
+    }
+  };
+  
+  console.log(ProductDetail)
+
+  const col2 = [
+    {
+        name: "Sr No",
+        selector: (row,index) => index+1,
+        sortable: true,
+        sortField: "srno",
+        minWidth: "150px",
+      },
+  
+    {
+      name: "Group name",
+      cell: (row) => row.ProductDetailTypes[0].ProductGroup,
+      sortable: true,
+      sortField: "blogTitle",
+      minWidth: "150px",
+    },
+    {
+      name: "SupplierName",
+      cell: (row) => row.Description,
+      sortable: true,
+      sortField: "blogTitle",
+      minWidth: "150px",
+    },
+   
+    {
+      name: "Action",
+      selector: (row) => {
+        return (
+          <React.Fragment>
+            <div className="d-flex gap-2">
+              <div className="edit">
+              <input
+  type="checkbox"
+  className="form-check-input"
+  id={`checkbox-${row._id}`}
+   
+  onClick={() => handleCheckboxChange(row._id)}
+/>
+<label
+  className="btn btn-sm edit-item-btn"
+  htmlFor={`checkbox-${row._id}`}
+  data-bs-toggle="modal"
+  data-bs-target="#showModal"
+  onClick={() => handleTog_edit(row, row._id)}
+>
+  {/* Add any content inside the label that you want to display */}
+</label>
+
+              </div>
+
+               
+            </div>
+          </React.Fragment>
+        );
+      },
+      sortable: false,
+      minWidth: "180px",
+    },
+  ];
+  const col = [
+    {
+        name: "Sr No",
+        selector: (row,index) => index+1,
+        sortable: true,
+        sortField: "srno",
+        minWidth: "150px",
+      },
+    {
+      name: "SupplierName",
+      cell: (row) => row.SupplierDetailTypes[0].SupplierName,
+      sortable: true,
+      sortField: "blogTitle",
+      minWidth: "150px",
+    },
+   
+    {
+      name: "Status",
+      selector: (row) => {
+        return <p>{row.isActive ? "Active" : "InActive"}</p>;
+      },
+      sortable: false,
+      sortField: "Status",
+    },
+    {
+      name: "Action",
+      selector: (row) => {
+        return (
+          <React.Fragment>
+            <div className="d-flex gap-2">
+              <div className="edit">
+                <button
+                  className="btn btn-sm btn-success edit-item-btn "
+                  data-bs-toggle="modal"
+                  data-bs-target="#showModal"
+                  onClick={() => handleTog_edit(row,row._id)}
+                >
+                  Edit
+                </button>
+              </div>
+
+              <div className="remove">
+                <button
+                  className="btn btn-sm btn-danger remove-item-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteRecordModal"
+                  onClick={() => tog_delete(row._id)}
+                >
+                  Remove 
+                </button>
+              </div>
+            </div>
+          </React.Fragment>
+        );
+      },
+      sortable: false,
+      minWidth: "180px",
+    },
+  ];
+
+  document.title = "Service Detail|Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb
-            maintitle="Product Master"
-            title="Product Details"
-            pageTitle="Product Master"
-          />
+          <BreadCrumb  title="Service Detail"  />
 
           <Row>
             <Col lg={12}>
@@ -489,9 +693,7 @@ const AssignProduct = () => {
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">
-                        Product Details
-                      </h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Assign Products</h2>
                     </Col>
                     <Col lg={4} md={6} sm={6}>
                       <div
@@ -530,15 +732,29 @@ const AssignProduct = () => {
                                     color="success"
                                     className="add-btn me-1"
                                     onClick={() => {
+                                      getSelectType();
+                                      getProductDetails()
                                       setShowForm(!showForm);
-                                      setValues(initialState);
+                                      // setValues(initialState);
+                                      setblogDesc("");
+                                      setblogTitle("");
+                                      setlikes([]);
+                                      setcomments([]);
+                                      setuserId("");
+                                      setIsActive(false);
+                                      setIsActive(false);
+          setErrBD(false);
+          setOther(false);
+          setBP(false);
+          setUSP(false);
+                                      setblogImage("");
                                       // setFileId(Math.random() * 100000);
                                     }}
                                     // onClick={() => tog_list()}
                                     // id="create-btn"
                                   >
                                     <i className="ri-add-line align-bottom me-1"></i>
-                                    Add
+                                    Asign Product
                                   </Button>
                                 </div>
                               </div>
@@ -559,7 +775,19 @@ const AssignProduct = () => {
                                 <button
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
-                                    setValues(initialState);
+                                    // setValues(initialState);
+                                    setblogDesc("");
+                                    setblogTitle("");
+                                    setlikes([]);
+                                    setcomments([]);
+                                    setuserId("");
+                                    setIsActive(false);
+                                    setIsActive(false);
+          setErrBD(false);
+          setOther(false);
+          setBP(false);
+          setUSP(false);
+                                    setblogImage("");
                                     setShowForm(false);
                                     setUpdateForm(false);
                                     // setFileId(Math.random() * 100000);
@@ -608,186 +836,56 @@ const AssignProduct = () => {
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                  <Row>
-                                    <Col lg={6}>
-                                      <div className="form-floating  mb-3">
-                                        <select
-                                          name="category"
-                                          className={validClassCategory}
-                                          onChange={handleChange}
-                                          value={category}
-                                          data-choices
-                                          data-choices-sorting="true"
-                                        >
-                                          <option>Select Category</option>
-                                          {drinkCategories.map((c) => {
-                                            return (
-                                              <React.Fragment key={c._id}>
-                                                {c.IsActive && (
-                                                  <option value={c._id}>
-                                                    {c.categoryName}
-                                                  </option>
-                                                )}
-                                              </React.Fragment>
-                                            );
-                                          })}
-                                        </select>
-                                        <Label>
-                                          Product Category{" "}
-                                          <span className="text-danger">*</span>
-                                        </Label>
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.category}
-                                          </p>
-                                        )}
+                                <Col lg={6}>
+                               
+                                      
+                                      <Col lg={6} md={6}>
+                                                    <div className="mb-3">
+                                                    <Label>
+                                Assign Products{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                       <Select
+                                       placeholder={SupplierNamePlaceholder}
+                                                            value={SupplierName}
+                                                            onChange={handleSelectSingle}
+                                                            options={selectType}
+                                                        />
+                                                    </div>
+                                                </Col>
+                                   
+                                  </Col>
+                                   {/* <Col lg={12}>
+                                    <Label>
+                                      Select Product
+                                    </Label>
+                                    {product.map((item, index)=>{
+                                        return(
+                                          <div className="form-check" key={index}>
+                                          <Input className="form-check-input" type="checkbox" id={index}  />                                                           /
+                                          <Label className="form-check-label" htmlFor="formCheck2">
+                                             {item.Description}
+                                          </Label>
                                       </div>
-                                    </Col>
-                                    <Col lg={4}>
-                                      <div className="form-floating mb-3">
-                                        <input
-                                          type="text"
-                                          className={validClassPN}
-                                          placeholder="Enter product name"
-                                          required
-                                          name="productName"
-                                          value={values.productName}
-                                          onChange={handleChange}
-                                        />
-                                        <label
-                                          htmlFor="role-field"
-                                          className="form-label"
-                                        >
-                                          Product Name
-                                          <span className="text-danger">*</span>
-                                        </label>
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.productName}
-                                          </p>
-                                        )}
-                                      </div>
-                                    </Col>
-
+                                        )
+                                    }
+                                    
+                                     )}
+                                  
+                                    </Col> */}
+ 
+                                    {/* <div className="mt-5">
                                     <Col lg={2}>
-                                      <div className="form-floating mb-3">
-                                        <input
-                                          type="number"
-                                          className="form-control"
-                                          placeholder="Enter price"
-                                          required
-                                          name="price"
-                                          value={values.price}
-                                          onChange={handleChange}
-                                        />
-                                        <label
-                                          htmlFor="role-field"
-                                          className="form-label"
-                                        >
-                                          Price
-                                          <span className="text-danger">*</span>
-                                        </label>
-                                       
-                                      </div>
-                                    </Col>
-                                  </Row>
-                                 
-                                  <Col>
-                                    <div className="form-floating mb-3">
-                                      <input
-                                        type="textarea"
-                                        className="form-control"
-                                        placeholder="Enter product description..."
-                                        name="productDescription"
-                                        rows="5"
-                                        style={{ height: "150px" }}
-                                        value={values.productDescription}
-                                        onChange={handleChange}
-                                      />
-
-                                      <label
-                                        htmlFor="role-field"
-                                        className="form-label"
-                                      >
-                                        Description
-                                      </label>
-                                    </div>
-                                  </Col>
-                                  <Col lg={6}>
-                                    <label>
-                                      Product Image{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-
-                                    <input
-                                      type="file"
-                                      name="productImage"
-                                      className={validClassPI}
-                                      // accept="images/*"
-                                      accept=".jpg, .jpeg, .png"
-                                      onChange={PhotoUpload}
-                                    />
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.productImage}
-                                      </p>
-                                    )}
-                                    {checkImagePhoto ? (
-                                      <img
-                                        //   src={image ?? myImage}
-                                        className="m-2"
-                                        src={photoAdd}
-                                        alt="Profile"
-                                        width="180"
-                                        height="200"
-                                      />
-                                    ) : null}
-                                  </Col>
-                                  <Col lg={6}>
-                                    <div className="form-check mb-2 mt-2">
-                                      <Input
-                                        type="checkbox"
-                                        name="isOutOfStock"
-                                        value={isOutOfStock}
-                                        onChange={handlecheckGH}
-                                      />
-                                      <Label
-                                        className="form-check-label"
-                                        htmlFor="activeCheckBox"
-                                      >
-                                        Is OutOfStock
-                                      </Label>
-                                    </div>
-                                  </Col>
-
-                                  <Col lg={6}>
-                                    <div className="form-check mb-2 mt-2">
-                                      <Input
-                                        type="checkbox"
-                                        name="IsSubscriptionProduct"
-                                        value={IsSubscriptionProduct}
-                                        onChange={handlecheckSubs}
-                                        // checked={IsTopProducts}
-                                      />
-                                      <Label
-                                        className="form-check-label"
-                                        htmlFor="activeCheckBox"
-                                      >
-                                        Subscription Product
-                                      </Label>
-                                    </div>
-                                  </Col>
-
-                                 
-
-                                  <div className="mt-5">
-                                    <Col lg={6}>
                                       <div className="form-check mb-2">
                                         <Input
+                                          key={"IsActive_" + _id}
                                           type="checkbox"
                                           name="IsActive"
                                           value={IsActive}
-                                          onChange={handlecheck}
+                                          // onChange={handleCheck}
+                                          onChange={(e) => {
+                                            setIsActive(e.target.checked);
+                                          }}
                                           checked={IsActive}
                                         />
                                         <Label
@@ -798,7 +896,53 @@ const AssignProduct = () => {
                                         </Label>
                                       </div>
                                     </Col>
-                                  </div>
+                                  </div> */}
+                                  <Col>
+                                  </Col>
+                                  <CardBody>
+                                    
+                    <div>
+                      <div className="table-responsive table-card mt-1 mb-1 text-right">
+                        <DataTable
+                          columns={col2}
+                          data={blogs2}
+                          progressPending={loading}
+                          sortServer
+                          onSort={(column, sortDirection, sortedRows) => {
+                            handleSort(column, sortDirection);
+                          }}
+                          pagination
+                          paginationServer
+                          paginationTotalRows={totalRows}
+                          paginationRowsPerPageOptions={[
+                            10,
+                            50,
+                            100,
+                            totalRows,
+                          ]}
+                          onChangeRowsPerPage={handlePerRowsChange}
+                          onChangePage={handlePageChange}
+                        />
+                      </div>
+                    </div>
+                  </CardBody>
+
+                                  {loadingOption && (
+                                    <div className="d-flex justify-content-center">
+                                      <div
+                                        className="spinner-border"
+                                        role="status"
+                                      >
+                                        <span className="sr-only">
+                                          Loading...
+                                        </span>
+                                      </div>
+                                      <h6 className="p-2">
+                                        Wait for a few seconds.This process
+                                        might take some time.
+                                      </h6>
+                                    </div>
+                                  )}
 
                                   <Col lg={12}>
                                     <div className="hstack gap-2 justify-content-end">
@@ -843,191 +987,151 @@ const AssignProduct = () => {
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                  <Row>
-                                    <Col lg={6}>
-                                      <div className="form-floating  mb-3">
-                                        <select
-                                          name="category"
-                                          className={validClassCategory}
-                                          onChange={handleChange}
-                                          value={category}
-                                          data-choices
-                                          data-choices-sorting="true"
-                                        >
-                                          <option>Select Category</option>
-                                          {drinkCategories.map((c) => {
-                                            return (
-                                              <React.Fragment key={c._id}>
-                                                {c.IsActive && (
-                                                  <option value={c._id}>
-                                                    {c.categoryName}
-                                                  </option>
-                                                )}
-                                              </React.Fragment>
-                                            );
-                                          })}
-                                        </select>
-                                        <Label>
-                                          Product Category{" "}
-                                          <span className="text-danger">*</span>
-                                        </Label>
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.category}
-                                          </p>
+                                <Col lg={6}>
+                                <Label>
+                                Assign Products{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                    <Input name="Type" id="" type="select" value={types} onChange={(e) => {
+                                          setTypes(e.target.value); 
+                                        }}>
+                                        {selectType && selectType.map((item,index)=>
+                                        <option key={index} value={item._id}>{item.ProductGroup}</option>
                                         )}
-                                      </div>
-                                    </Col>
-                                    <Col lg={4}>
-                                      <div className="form-floating mb-3">
-                                        <input
-                                          type="text"
-                                          className={validClassPN}
-                                          placeholder="Enter product name"
-                                          required
-                                          name="productName"
-                                          value={values.productName}
-                                          onChange={handleChange}
-                                        />
-                                        <label
-                                          htmlFor="role-field"
-                                          className="form-label"
-                                        >
-                                          Product Name
-                                          <span className="text-danger">*</span>
-                                        </label>
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.productName}
-                                          </p>
-                                        )}
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-floating mb-3">
-                                        <input
-                                          type="number"
-                                          className="form-control"
-                                          placeholder="Enter price"
-                                          required
-                                          name="price"
-                                          value={values.price}
-                                          onChange={handleChange}
-                                        />
-                                        <label
-                                          htmlFor="role-field"
-                                          className="form-label"
-                                        >
-                                          Price
-                                          <span className="text-danger">*</span>
-                                        </label>
-                                       
-                                      </div>
-                                    </Col>
-                                  </Row>
-                                  
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3 mt-4">
-                                      <input
-                                        type="textarea"
-                                        className="form-control"
-                                        placeholder="Enter product description..."
-                                        name="productDescription"
-                                        rows="5"
-                                        style={{ height: "150px" }}
-                                        value={values.productDescription}
-                                        onChange={handleChange}
-                                      />
-
-                                      <label
-                                        htmlFor="role-field"
-                                        className="form-label"
-                                      >
-                                        Description
-                                      </label>
-                                    </div>
-                                  </Col>
-
-                                  <Col lg={6}>
-                                    <label>
-                                      Product Image{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-                                    <input
-                                      key={"productImage" + _id}
-                                      type="file"
-                                      name="productImage"
-                                      className={validClassPI}
-                                      // accept="images/*"
-                                      accept=".jpg, .jpeg, .png"
-                                      onChange={PhotoUpload}
-                                    />
+                                    </Input>
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.productImage}
+                                        {formErrors.types}
                                       </p>
                                     )}
-
-                                    {values.productImage || photoAdd ? (
-                                      <img
-                                        // key={photoAdd}
-                                        className="m-2"
-                                        src={
-                                          checkImagePhoto
-                                            ? photoAdd
-                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.productImage}`
-                                        }
-                                        width="180"
-                                        height="200"
-                                      />
-                                    ) : null}
                                   </Col>
-
                                   <Col lg={6}>
-                                    <div className="form-check mb-2 mt-2">
+                                    <div className="form-floating mb-3">
                                       <Input
-                                        type="checkbox"
-                                        name="isOutOfStock"
-                                        value={isOutOfStock}
-                                        onChange={handlecheckGH}
-                                        checked={isOutOfStock}
+                                        key={"blogTitle_" + _id}
+                                        type="text"
+                                        className={validClassBT}
+                                        placeholder="Enter blog title"
+                                        required
+                                        name="blogTitle"
+                                        value={blogTitle}
+                                        onChange={(e) => {
+                                          setblogTitle(e.target.value);
+                                        }}
                                       />
-                                      <Label
-                                        className="form-check-label"
-                                        htmlFor="activeCheckBox"
-                                      >
-                                        Is OutOfStock
+                                      <Label>
+                                        Title{" "}
+                                        <span className="text-danger">*</span>
                                       </Label>
-                                    </div>
-                                  </Col>
-
-                                  <Col lg={6}>
-                                    <div className="form-check mb-2 mt-2">
-                                      <Input
-                                        type="checkbox"
-                                        name="IsSubscriptionProduct"
-                                        value={IsSubscriptionProduct}
-                                        onChange={handlecheckSubs}
-                                        checked={IsSubscriptionProduct}
-                                      />
-                                      <Label
-                                        className="form-check-label"
-                                        htmlFor="activeCheckBox"
-                                      >
-                                        Subscription Product
-                                      </Label>
+                                      {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.blogTitle}
+                                        </p>
+                                      )}
                                     </div>
                                   </Col>
 
                                  
-                                  <div className="mt-5">
+                                    <Col lg={6} style={{marginTop:"35px"}}>
+                                      <Row>
+                                      <Col lg={2}>
+                                      <div className="form-check mb-2">
+                                        <Input
+                                          key={"BP_" + _id}
+                                          type="checkbox"
+                                          name="BP"
+                                          value={BP}
+                                          // onChange={handleCheck}
+                                          onChange={(e) => {
+                                            setBP(e.target.checked);
+                                          }}
+                                          checked={BP}
+                                        />
+                                        <Label
+                                          className="form-check-label"
+                                          htmlFor="activeCheckBox"
+                                        >
+                                          BP
+                                        </Label>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2}>
+                                      <div className="form-check mb-2">
+                                        <Input
+                                          key={"USP_" + _id}
+                                          type="checkbox"
+                                          name="USP"
+                                          value={USP}
+                                          // onChange={handleCheck}
+                                          onChange={(e) => {
+                                            setUSP(e.target.checked);
+                                          }}
+                                          checked={USP}
+                                        />
+                                        <Label
+                                          className="form-check-label"
+                                          htmlFor="activeCheckBox"
+                                        >
+                                          USP
+                                        </Label>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2}>
+                                      <div className="form-check mb-2">
+                                        <Input
+                                          key={"EP_" + _id}
+                                          type="checkbox"
+                                          name="EP"
+                                          value={EP}
+                                          // onChange={handleCheck}
+                                          onChange={(e) => {
+                                            setEP(e.target.checked);
+                                          }}
+                                          checked={EP}
+                                        />
+                                        <Label
+                                          className="form-check-label"
+                                          htmlFor="activeCheckBox"
+                                        >
+                                          EP
+                                        </Label>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2}>
+                                      <div className="form-check mb-2">
+                                        <Input
+                                          key={"Other_" + _id}
+                                          type="checkbox"
+                                          name="Other"
+                                          value={Other}
+                                          // onChange={handleCheck}
+                                          onChange={(e) => {
+                                            setOther(e.target.checked);
+                                          }}
+                                          checked={Other}
+                                        />
+                                        <Label
+                                          className="form-check-label"
+                                          htmlFor="activeCheckBox"
+                                        >
+                                          Other
+                                        </Label>
+                                      </div>
+                                    </Col>
+                                      </Row>
+                                    </Col>
+
+                                  {/* <div className="mt-5">
                                     <Col lg={6}>
                                       <div className="form-check mb-2">
                                         <Input
+                                          key={"IsActive_" + _id}
                                           type="checkbox"
                                           name="IsActive"
                                           value={IsActive}
-                                          onChange={handlecheck}
+                                          onChange={(e) => {
+                                            setIsActive(e.target.checked);
+                                          }}
                                           checked={IsActive}
                                         />
                                         <Label
@@ -1038,7 +1142,52 @@ const AssignProduct = () => {
                                         </Label>
                                       </div>
                                     </Col>
-                                  </div>
+                                  </div> */}
+
+                                  <div className="mt-5">
+                                    <Col lg={2}>
+                                      <div className="form-check mb-2">
+                                        <Input
+                                          key={"IsActive_" + _id}
+                                          type="checkbox"
+                                          name="IsActive"
+                                          value={IsActive}
+                                          // onChange={handleCheck}
+                                          onChange={(e) => {
+                                            setIsActive(e.target.checked);
+                                          }}
+                                          checked={IsActive}
+                                        />
+                                        <Label
+                                          className="form-check-label"
+                                          htmlFor="activeCheckBox"
+                                        >
+                                          Is Active
+                                        </Label>
+                                      </div>
+                                    </Col>
+                                  </div><Col>
+
+                                
+                                  </Col>
+                                 
+
+                                  {loadingOption && (
+                                    <div className="d-flex justify-content-center">
+                                      <div
+                                        className="spinner-border"
+                                        role="status"
+                                      >
+                                        <span className="sr-only">
+                                          Loading...
+                                        </span>
+                                      </div>
+                                      <h6 className="p-2">
+                                        Wait for a few seconds.This process
+                                        might take some time.
+                                      </h6>
+                                    </div>
+                                  )}
 
                                   <Col lg={12}>
                                     <div className="text-end">
@@ -1079,8 +1228,8 @@ const AssignProduct = () => {
                     <div>
                       <div className="table-responsive table-card mt-1 mb-1 text-right">
                         <DataTable
-                          columns={columns}
-                          data={data}
+                          columns={col}
+                          data={blogs}
                           progressPending={loading}
                           sortServer
                           onSort={(column, sortDirection, sortedRows) => {
@@ -1113,7 +1262,14 @@ const AssignProduct = () => {
         isOpen={modal_delete}
         toggle={() => {
           tog_delete();
-          setValues([]);
+          // setValues([]);
+          setblogDesc("");
+          setblogTitle("");
+          setlikes([]);
+          setcomments([]);
+          setuserId("");
+          setIsActive(false);
+          setblogImage("");
         }}
         centered
       >
@@ -1123,15 +1279,7 @@ const AssignProduct = () => {
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Product</span>
-          {/* <Button
-            type="button"
-            onClick={() => {
-              setmodal_delete(false);
-            }}
-            className="btn-close"
-            aria-label="Close"
-          ></Button> */}
+          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
         </ModalHeader>
 
         <form>
@@ -1165,6 +1313,7 @@ const AssignProduct = () => {
                 type="button"
                 className="btn btn-outline-danger"
                 onClick={() => setmodal_delete(false)}
+                
               >
                 Close
               </button>
