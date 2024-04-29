@@ -30,6 +30,8 @@ import Feature from "../pages/Feature/Feature";
 import CmsMaster from "../pages/CMS/CmsMaster";
 import OtherProducts from "../pages/OtherProducts/OtherProducts";
 import Supplier from "../pages/SupplierSetup/SupplierSetup";
+import AssignProduct from "../pages/SupplierSetup/AssignProduct";
+import SupplierQuote from "../pages/SupplierQuote/SupplierQuote";
 
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
@@ -57,6 +59,8 @@ const authProtectedRoutes = [
   {path:"/user-signin",component:<UserSignIn/>},
   {path:"/other-products",component:<OtherProducts/>},
   {path:"/supplier",component:<Supplier/>},
+  {path:"/assign-product", component:<AssignProduct />},
+  {path:"/supplier-quote",component:<SupplierQuote/>},
 
 
 
