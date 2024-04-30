@@ -726,10 +726,10 @@ const VerticalLayout = (props) => {
                  Assign product
                </Link>
              </li>
-             <li className="nav-item">
+             {/* <li className="nav-item">
             <Link to="/cmsmaster" className="nav-link">                Cms Master
               </Link>
-            </li>
+            </li> */}
             
 
              
@@ -920,7 +920,7 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          <li className="nav-item">
+          {/* <li className="nav-item">
               {" "}
               <Link to="/company-details" className="nav-link">
                 Company Details
@@ -932,24 +932,24 @@ const VerticalLayout = (props) => {
                 {" "}
                 Admin Users{" "}
               </Link>
-            </li>
+            </li> */}
             {/* <li className="nav-item">
               <Link to="/user-signin" className="nav-link">
                 User Details
               </Link>
             {/* </li> */}
             <li className="nav-item">
-              <Link to="/roles" className="nav-link">
-                Roles
+              <Link to="/category" className="nav-link">
+                Category
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/gallery-photos" className="nav-link">
+                Gallery Photos
               </Link>
             </li>
             {/* <li className="nav-item">
-              {" "}
-              <Link to="/getintouch" className="nav-link">
-                GetInTouch
-              </Link>
-            </li> */}
-            <li className="nav-item">
               <Link to="/service-type" className="nav-link">
                 ServiceType
               </Link>
@@ -967,9 +967,9 @@ const VerticalLayout = (props) => {
           <Link to="/newspaper" className="nav-link">
                  Subscribe Newspaper
                </Link>
-             </li>
+             </li> */}
            
-           
+{/*            
             <li className="nav-item">
                <Link to="/feature" className="nav-link">
                  Features
@@ -979,7 +979,7 @@ const VerticalLayout = (props) => {
             <Link to="/cmsmaster" className="nav-link">                Cms Master
               </Link>
             </li>
-            
+             */}
 
              
            

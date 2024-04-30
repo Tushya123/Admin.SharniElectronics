@@ -28,13 +28,13 @@ import {
 } from "../../functions/Category/CategoryMaster";
 
 const initialState = {
-  categoryName: "",
+  Category: "",
   IsActive: false,
 };
 
-const CategoryMaster = () => {
+const Category = () => {
   const [values, setValues] = useState(initialState);
-  const { categoryName, IsActive } = values;
+  const { Category, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -78,7 +78,7 @@ const CategoryMaster = () => {
         console.log(res);
         setValues({
           ...values,
-          categoryName: res.categoryName,
+          Category: res.Category,
           IsActive: res.IsActive,
         });
       })
@@ -116,7 +116,7 @@ const CategoryMaster = () => {
           //   if (res.field === 1) {
           //     setErrCN(true);
           //     setFormErrors({
-          //       categoryName: "This Category name is already exists!",
+          //       Category: "This Category name is already exists!",
           //     });
           //   }
           // }
@@ -159,18 +159,18 @@ const CategoryMaster = () => {
   const validate = (values) => {
     const errors = {};
 
-    if (values.categoryName === "") {
-      errors.categoryName = "Category Name is required!";
+    if (values.Category === "") {
+      errors.Category = "Category Name is required!";
       setErrCN(true);
     }
-    if (values.categoryName !== "") {
+    if (values.Category !== "") {
       setErrCN(false);
     }
 
     return errors;
   };
 
-  const validClassCategoryName =
+  const validClassCategory =
     errCN && isSubmit ? "form-control is-invalid" : "form-control";
 
   const [loading, setLoading] = useState(false);
@@ -202,7 +202,7 @@ const CategoryMaster = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/categoryMaster`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/Category`,
         {
           skip: skip,
           per_page: perPage,
@@ -240,10 +240,17 @@ const CategoryMaster = () => {
   };
   const col = [
     {
-      name: "Category Name",
-      selector: (row) => row.categoryName,
+      name: "Sr No",
+      selector: (row, index) => index + 1,
       sortable: true,
-      sortField: "categoryName",
+      sortField: "srno",
+      minWidth: "150px",
+    },
+    {
+      name: "Category Name",
+      selector: (row) => row.Category,
+      sortable: true,
+      sortField: "Category",
       minWidth: "150px",
     },
 
@@ -400,16 +407,16 @@ const CategoryMaster = () => {
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassCategoryName}
+                className={validClassCategory}
                 placeholder="Enter Category Name"
                 required
-                name="categoryName"
-                value={categoryName}
+                name="Category"
+                value={Category}
                 onChange={handleChange}
               />
               <Label>Category Name <span className="text-danger">*</span></Label>
               {isSubmit && (
-                <p className="text-danger">{formErrors.categoryName}</p>
+                <p className="text-danger">{formErrors.Category}</p>
               )}
             </div>
 
@@ -472,16 +479,16 @@ const CategoryMaster = () => {
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassCategoryName}
+                className={validClassCategory}
                 placeholder="Enter Category Name"
                 required
-                name="categoryName"
-                value={categoryName}
+                name="Category"
+                value={Category}
                 onChange={handleChange}
               />
               <Label>Category Name <span className="text-danger">*</span></Label>
               {isSubmit && (
-                <p className="text-danger">{formErrors.categoryName}</p>
+                <p className="text-danger">{formErrors.Category}</p>
               )}
             </div>
 
@@ -584,4 +591,4 @@ const CategoryMaster = () => {
   );
 };
 
-export default CategoryMaster;
+export default Category;

@@ -37,7 +37,9 @@ const initialState = {
 const SupplierQuote = () => {
     const [values, setValues] = useState(initialState);
     const { SupplierName, Quantity, Grade, ProductDetail} = values;
+    const [constraint,setconstraint]=useState(false);
   const [selectProductDetail,setproductdetail] = useState([]);
+  const [selectsupplier,setsupplierdetail] = useState([]);
   const [loadingOption, setLoadingOption] = useState(false);
   const [selectnewdetail,setselectnewdetail]=useState([]);
 
@@ -87,16 +89,73 @@ console.log(response)
         }
       });
   }
+  useEffect(()=>{
+getallAssignProduct()
+getallProductDetail()
+},[])
+console.log(selectsupplier.length);
+  const getallAssignProduct=()=>{
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProduct`)
+      .then((response) => {
+        if (response.length > 0) {
+
+console.log(response)
+        // if (response.length > 0) {
+        //   setproductdetail(response);
+        // } else if (response.length === 0) {
+        //   setproductdetail([]);
+        // }
+        console.log("AssignProduct",response)
+          const names = response.map((item)=>({
+            value:item.ProductDetail.map((detail=>detail._id)) , label :item.ProductDetail.map((detail=>detail.Description)),toshow:false,SupplierName:item.SupplierName.SupplierName,default_id:item.SupplierName._id
+          }
+         ));
+         console.log(names)
+          
+         setsupplierdetail(names);
+        } else if(response.length===0){
+          setsupplierdetail([]);
+        }
+      });
+  }
+console.log("This is it",selectsupplier)
 
   const [SupplierNamePlaceholder, setSupplierNamePlaceholder] = useState("")
   const [prod, setprod] = useState("")
+  const [data, Setdata] = useState([])
   const handleSelectSingle =(selectedOption)=>{
+    let count =0;
     console.log("Selected Specilty:", selectedOption);
     // Update speciality state with the selected option's value
+    selectsupplier.forEach(item => {
+      item.toshow = false;
+    });
+    for (let i = 0; i < selectsupplier.length; i++) {
+      if (selectsupplier[i].value.some(item => item === selectedOption.value)) {
+        selectsupplier[i].toshow = true;
+        count++;
+       
+      }
+    }
+    console.log("This is Count",count);
+   const temp= selectsupplier.filter((item)=>item.toshow)
+     Setdata(temp)
+
+    console.log("THis is the Id",selectedOption.value)
+    console.log("THis is the Supplier",selectsupplier)
+    
     setprod(selectedOption.value)
-    console.log(selectedOption.value)
+values.ProductDetail=selectedOption.value
+    
+    
     setSupplierNamePlaceholder(selectedOption.label)
+    
 }
+console.log(data)
+
+
 
   useEffect(() => {
     console.log(formErrors);
@@ -179,8 +238,13 @@ console.log(response)
       axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/supplierquote`,values)
         .then((res) => {
           console.log(res);
+          setValues(initialState);
+          setTempArray([])
+          values.SupplierName=[]
           // setmodal_list(!modal_list);
           setShowForm(false);
+          setSupplierNamePlaceholder("")
+          Setdata([])
           setLoadingOption(false);
           // setValues(initialState);
           // setblogDesc("");
@@ -196,8 +260,9 @@ console.log(response)
           // setCheckImagePhoto(false);
           // setPhotoAdd("");
           setFormErrors({});
-          setValues(initialState);
-        //   fetchCategories();
+         
+
+          fetchCategories();
           // setTypes("");
         //   setproductdetail("");
         })
@@ -208,19 +273,19 @@ console.log(response)
     }
 //   };
 
-//   const handleDelete = (e) => {
-//     e.preventDefault();
-//     axios
-//       .delete(
-//         `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/inquiry/${remove_id}`)
-//       .then((res) => {
-//         setmodal_delete(!modal_delete);
-//         fetchCategories();
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    axios
+      .delete(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/supplierquote/${remove_id}`)
+      .then((res) => {
+        setmodal_delete(!modal_delete);
+        fetchCategories();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
 //   const handleUpdate = (e) => {
 //     e.preventDefault();
@@ -281,7 +346,7 @@ console.log(response)
 //           // setCheckImagePhoto(false);
 //           // setPhotoAdd("");
 //           setFormErrors({});
-//           fetchCategories();
+          // fetchCategories();
 //           // setTypes("");
 //           setproductdetail("");
 //           setUpdateForm(false);
@@ -386,9 +451,9 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
     // fetchUsers(1); // fetch page 1 of users
   }, []);
 
-//   useEffect(() => {
-//     fetchCategories();
-//   }, [pageNo, perPage, column, sortDirection, query, filter]);
+  useEffect(() => {
+    fetchCategories();
+  }, [pageNo, perPage, column, sortDirection, query]);
 
   // const fetchCategories = async () => {
   //   setLoading(true);
@@ -416,16 +481,16 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/inquiry`, {
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/supplierquote`, {
         skip: skip,
         per_page: perPage,
         sorton: column,
         sortdir: sortDirection,
         match: query,
-        IsActive: filter,
       })
       .then((response) => {
         if (response.length > 0) {
+          console.log(response);
           let res = response[0];
           setLoading(false);
           setBlogs(res.data);
@@ -477,83 +542,102 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
    
   };
 
-//   const col = [
-//     {
-//         name: "Sr No",
-//         selector: (row,index) => index+1,
-//         sortable: true,
-//         sortField: "srno",
-//         minWidth: "150px",
-//       },
-//     {
-//       name: "Service Name",
-//       cell: (row) => row.serviceTypeDetails[0].ServiceName,
-//       sortable: true,
-//       sortField: "blogTitle",
-//       minWidth: "150px",
-//     },
-//     {
-//         name: "Name",
-//         cell: (row) => row.Name,
-//         sortable: true,
-//         sortField: "blogTitle",
-//         minWidth: "150px",
-//       }, {
-//         name: "email",
-//         cell: (row) => row.email,
-//         sortable: true,
-//         sortField: "blogTitle",
-//         minWidth: "150px",
-//       },{
-//         name: "Mobile Number",
-//         cell: (row) => row.mobile_no,
-//         sortable: true,
-//         sortField: "blogTitle",
-//         minWidth: "150px",
-//       },
-//     {
-//       name: "Status",
-//       selector: (row) => {
-//         return <p>{row.IsActive ? "Active" : "InActive"}</p>;
-//       },
-//       sortable: false,
-//       sortField: "Status",
-//     },
-//     {
-//       name: "Action",
-//       selector: (row) => {
-//         return (
-//           <React.Fragment>
-//             <div className="d-flex gap-2">
-//               <div className="edit">
-//                 <button
-//                   className="btn btn-sm btn-success edit-item-btn "
-//                   data-bs-toggle="modal"
-//                   data-bs-target="#showModal"
-//                   onClick={() => handleTog_edit(row,row._id)}
-//                 >
-//                   Edit
-//                 </button>
-//               </div>
+  const col = [
+    {
+        name: "Sr No",
+        selector: (row,index) => index+1,
+        sortable: true,
+        sortField: "srno",
+        minWidth: "150px",
+      },
+    {
+      name: "Product",
+      cell: (row) => row.ProductDetailTypes[0].Description,
+      sortable: true,
+      sortField: "blogTitle",
+      minWidth: "150px",
+    },
+    {
+        name: "Quantity",
+        cell: (row) => row.Quantity,
+        sortable: true,
+        sortField: "blogTitle",
+        minWidth: "150px",
+      }, {
+        name: "Grade",
+        cell: (row) => row.Grade,
+        sortable: true,
+        sortField: "blogTitle",
+        minWidth: "150px",
+      },{
+        name: "Supplier Name",
+        cell: (row) => {
+          return (
+            <div>
+              {row.SupplierDetailTypes.map((item, index) => (
+                <tr key={index}>
+              <td  >{item.SupplierName}</td>
+            </tr>
+              ))}
+            </div>
+          );
+        },
+        sortable: true,
+        sortField: "blogTitle",
+        minWidth: "150px",
+      },
+    // {
+    //   name: "Status",
+    //   selector: (row) => {
+    //     return <p>{row.IsActive ? "Active" : "InActive"}</p>;
+    //   },
+    //   sortable: false,
+    //   sortField: "Status",
+    // },
+    {
+      name: "Action",
+      selector: (row) => {
+        return (
+          <React.Fragment>
+            <div className="d-flex gap-2">
+              <div className="remove">
+                <button
+                  className="btn btn-sm btn-danger remove-item-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteRecordModal"
+                  onClick={() => tog_delete(row._id)}
+                >
+                  Remove 
+                </button>
+              </div>
+            </div>
+          </React.Fragment>
+        );
+      },
+      sortable: false,
+      minWidth: "180px",
+    },
+  ];
+const[tempArray, setTempArray] = useState([])
+const handleCheckboxChange=(itemKey, default_id)=>{
+  console.log(default_id)
+  console.log(tempArray.length)
+ 
+    if(tempArray.includes(default_id))
+    {
+      setTempArray(tempArray.filter((id)=>id !== default_id))
+      console.log(tempArray)
+    }
+    else{
+      setTempArray([...tempArray,default_id])
+    }
+ 
+  
+}
+console.log(tempArray)
+values.SupplierName=tempArray
+console.log(values)
 
-//               <div className="remove">
-//                 <button
-//                   className="btn btn-sm btn-danger remove-item-btn"
-//                   data-bs-toggle="modal"
-//                   data-bs-target="#deleteRecordModal"
-//                   onClick={() => tog_delete(row._id)}
-//                 >
-//                   Remove 
-//                 </button>
-//               </div>
-//             </div>
-//           </React.Fragment>
-//         );
-//       },
-//       sortable: false,
-//       minWidth: "180px",
-//     },
-//   ];
 
   document.title = "Service Detail|Shreeji Pharma";
 
@@ -577,7 +661,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                           display: showForm || updateForm ? "none" : "",
                         }}
                       >
-                        <div className="text-end mt-1">
+                        <div className="text-end mt-1" style={{visibility:"hidden"}}>
                           <Input
                             type="checkbox"
                             className="form-check-input"
@@ -715,29 +799,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                                         />
                                                     </div>
                                     </Col>
-                                  {/* <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        key={"Grade_" + _id}
-                                        type="text"
-                                        className={validClassName}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="Grade"
-                                        value={Grade}
-                                        onChange={handleChange}
-                                      />
-                                      <Label>
-                                      Grade{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.Name}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>      */}
+                               
                                   <Col md={3}>
                                   <Label>
                                       Grade
@@ -758,6 +820,8 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
 
                                      
                                     </Select>
+
+
                                    
                                     {/* {isSubmit && (
                                       <p className="text-danger">
@@ -770,7 +834,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                     <div className="form-floating mt-3  ">
                                       <Input
                                         key={"blogTitle_" + _id}
-                                        type="text"
+                                        type="number"
                                         // className={validClassEmail}
                                         placeholder="Enter blog title"
                                         required
@@ -779,7 +843,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                         onChange={handleChange}
                                       />
                                       <Label>
-                                        Grade{" "}
+                                      Quantity{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                       {/* {isSubmit && (
@@ -789,30 +853,22 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                       )} */}
                                     </div>
                                   </Col>
-                                  {/* <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassMobileNumber}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="mobile_no"
-                                        value={mobile_no}
-                                        onChange={handleChange}
-                                      />
-                                      <Label>
-                                      Mobile Number{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.mobile_no}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col> */}
-                               
+                                 <Col lg={6}>
+                                  {data.map((items,index)=>{
+                                    return(
+                                      <Row className="px-5" key={index}>
+                                        <Col lg={12}>
+                                       <Input 
+                                       defaultChecked={false}
+                                        type="checkbox"
+                                        onClick={()=>handleCheckboxChange(index,items.default_id)}
+                                       />
+                                       <Label className="ms-3">{items.SupplierName}</Label>
+                                        </Col>
+                                      </Row>
+                                    )
+                                  })}
+                                 </Col>
 
                                   {/* <Col lg={6}>
                                     <div className="form-floating mb-3">
@@ -972,7 +1028,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                 {/* UPDATE FORM  */}
                
                 {/* list */}
-                {/* <div
+                <div
                   style={{
                     display: showForm || updateForm ? "none" : "block",
                   }}
@@ -1003,7 +1059,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                       </div>
                     </div>
                   </CardBody>
-                </div> */}
+                </div>
               </Card>
             </Col>
           </Row>
@@ -1026,16 +1082,16 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
         }}
         centered
       >
-        {/* <ModalHeader
+        <ModalHeader
           className="bg-light p-3"
           toggle={() => {
             setmodal_delete(!modal_delete);
           }}
         >
           <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
-        </ModalHeader> */}
+        </ModalHeader>
 
-        {/* <form>
+        <form>
           <ModalBody>
             <div className="mt-2 text-center">
               <lord-icon
@@ -1071,7 +1127,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
               </button>
             </div>
           </ModalFooter>
-        </form> */}
+        </form>
       </Modal>
     </React.Fragment>
   );
