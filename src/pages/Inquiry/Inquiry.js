@@ -34,6 +34,7 @@ import {
 } from "../../functions/Setup/CompanyDetails";
 import {getinquiry,updateinquiry,createinquiry,listinquiry,removeinquiry} from "../../functions/Inquiry/Inquiry"
 import { listState, listCountry } from "../../functions/Location/Location";
+import {getInquiryProduct} from "../../functions/Inquiry/InquiryProduct"
 
 const initialState = {
   ProductDetail :"",
@@ -60,7 +61,8 @@ const initialState2={
   IsActive:true,
    ProductDetailLabel:"",
    BasePrice:"",
-   Group:""
+   Group:"",
+   RFQ_Status2:false, RFQ_Date:""
 }
 
 const Inquiry = () => {
@@ -123,7 +125,7 @@ const Inquiry = () => {
     ProductDetail2 ,
     Grade ,
     Quantity 
-    , ProductDetailLabel,BasePrice,Group
+    , ProductDetailLabel,BasePrice,Group,RFQ_Status2, RFQ_Date
   }= values2
 
   const [showForm, setShowForm] = useState(false);
@@ -147,6 +149,33 @@ const Inquiry = () => {
   };
 
   const [modal_edit, setmodal_edit] = useState(false);
+  const [rfqForm, setRfqForm] = useState(false)
+
+  const handleTog_RFQ = (_id) => {
+    console.log(_id)
+    setRfqForm(true)
+    setUpdateForm(false)
+    setIsSubmit(false);
+    setShowForm(false)
+    getInquiryProduct(_id).then((res)=>{
+      console.log(res)
+      setValues2({
+        ...values,
+        ProductDetailLabel :res.ProductDetailLabel,
+        
+        Grade:res.Grade,
+        Group:res.Group,
+        Quantity:res.Quantity,
+        RFQ_Date:res.RFQ_Date,
+        RFQ_Status2:res.RFQ_Status2,
+        BasePrice:res.BasePrice,
+        IsActive:res.IsActive,
+       
+        
+      });
+    })
+  };
+
   const handleTog_edit = (_id) => {
     // setmodal_edit(!modal_edit);
     setUpdateForm(true);
@@ -175,11 +204,14 @@ const Inquiry = () => {
           
         });
         initialState.InquiryNo= res._id
+        setAllProductDetail(res.ProductDetail)
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  console.log(values)
 
   useEffect(() => {
     fetchCategories();
@@ -471,7 +503,7 @@ if(Object.keys(errors).length===0){
                   data-bs-target="#showModal"
                   onClick={() => handleTog_edit(row._id)}
                 >
-                  Edit
+                  List
                 </button>
               </div>
 
@@ -641,7 +673,7 @@ const handleAddInquiry = (e) => {
 
                         <div
                           style={{
-                            display: showForm || updateForm ? "none" : "",
+                            display: showForm || updateForm || rfqForm ? "none" : "",
                           }}
                         >
                           <Row>
@@ -674,7 +706,7 @@ const handleAddInquiry = (e) => {
                        
                         <div
                           style={{
-                            display: showForm || updateForm ? "" : "none",
+                            display: showForm || updateForm ||rfqForm ? "" : "none",
                           }}
                         >
                           <Row>
@@ -684,6 +716,7 @@ const handleAddInquiry = (e) => {
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
                                     // setValues(initialState);
+                                    setRfqForm(false)
                                     setValues(initialState);
                                       setShowForm(false);
                                       setUpdateForm(false);
@@ -704,7 +737,7 @@ const handleAddInquiry = (e) => {
                         <div
                           className="search-box ms-2"
                           style={{
-                            display: showForm || updateForm ? "none" : "",
+                            display: showForm || updateForm || rfqForm ? "none" : "",
                           }}
                         >
                           <input
@@ -1289,11 +1322,58 @@ const handleAddInquiry = (e) => {
         </div>
     </Col>
 </Row>
+<Row>
+  {ProductDetail ? (
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Group</th>
+          <th scope="col">ProductName</th>
+          <th scope="col">Grade</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">RFQ Date</th>
+          <th scope="col">Generate RFQ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {ProductDetail.map((items, index) => (
+          <tr key={index}>
+            
+            <td>{items.Group}</td>
+            <td>{items.ProductDetailLabel}</td>
+            <td>{items.Grade}</td>
+            <td>{items.Quantity}</td>
+            <td>{items.RFQ_Date === "" ? "Not Generated" : items.RFQ_Date}</td>
 
-                                  <CardBody>
-                                    
-                    
-                  </CardBody>
+            <td>
+          
+          <React.Fragment>
+              <div className="edit">
+        <button
+          className="btn btn-sm btn-warning edit-item-btn "
+       
+      
+          onClick={(e) => {
+            e.preventDefault(); // Prevent default behavior
+            handleTog_RFQ(items._id);
+          }}
+        >
+         
+          Generate FRQ
+        </button>
+      </div>
+            </React.Fragment>
+        
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : null}
+</Row>
+
+
+                              
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -1337,9 +1417,76 @@ const handleAddInquiry = (e) => {
                           </CardBody>
                 </div>
 
+                  {/* rfq Form */}
+                  <div
+  style={{
+    display: !updateForm && rfqForm ? "block" : "none",
+  }}
+>{
+  console.log(showForm)
+}
+  <CardBody>
+    <Row>
+    <Col lg={4}>
+        <Label>
+        Product Detail  <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"ProductDetailLabel"}
+                type="text"
+                placeholder="Enter contact person"
+                required
+                name="ProductDetailLabel"
+                value={values2.ProductDetailLabel}
+                onChange={handleChange2}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+   
+    <Col lg={4}>
+        <Label>
+        Grade <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"Grade"}
+                type="text"
+                placeholder="Enter contact person"
+                required
+                name="Grade"
+                value={values2.Grade}
+                onChange={handleChange2}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+    <Col lg={4}>
+        <Label>
+        Quantity <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"Quantity"}
+                type="text"
+                placeholder="Enter contact person"
+                required
+                name="Quantity"
+                value={values2.Quantity}
+                onChange={handleChange2}
+                 // Added disabled attribute
+            />
+        </div>
+    </Col>
+    </Row>
+  </CardBody>
+</div>
+
+
                 {/* list  */}
                 <div
-                  style={{ display: showForm || updateForm ? "none" : "block" }}
+                  style={{ display: showForm || updateForm || rfqForm ? "none" : "block"  }}
                 >
                   <CardBody>
                     <div>
