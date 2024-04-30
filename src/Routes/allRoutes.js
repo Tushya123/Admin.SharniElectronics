@@ -6,7 +6,7 @@ import City from "../pages/LocationSetUp/City/City";
 import State from "../pages/LocationSetUp/State/State";
 import CompanyLocation from "../pages/LocationSetUp/CompanyLocation";
 import Login from "../pages/Authentication/Login";
-import CategoryMaster from "../pages/Category/CategoryMaster";
+import Category from "../pages/Category/Category";
 import Blogs from "../pages/Blogs/Blogs";
 import PromocodeMaster from "../pages/Subscription/PromocodeMaster";
 import ProductDetails from "../pages/Products/ProductsDetails";
@@ -32,6 +32,7 @@ import OtherProducts from "../pages/OtherProducts/OtherProducts";
 import Supplier from "../pages/SupplierSetup/SupplierSetup";
 import AssignProduct from "../pages/SupplierSetup/AssignProduct";
 import SupplierQuote from "../pages/SupplierQuote/SupplierQuote";
+import GalleryPhotos from "../pages/GalleryPhotos/GalleryPhotos";
 
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
@@ -43,7 +44,7 @@ const authProtectedRoutes = [
   { path: "/admin-user", component: <AdminUser /> },
   { path: "/company-details", component: <CompanyDetails /> },
   {path:"/contact",component:<ContactUs/>},
-  { path: "/category", component: <CategoryMaster /> },
+  { path: "/category", component: <Category /> },
   {path:"/review",component:<Review/>},
   { path: "/blogs", component: <Blogs /> },
   { path: "/banner", component: <Banner /> },
@@ -53,6 +54,7 @@ const authProtectedRoutes = [
   {path:"/getintouch",component:<GetInTouch/>},
   {path:"/roles",component:<Roles/>},
   {path:"/inquiry",component:<Inquiry/>},
+  {path:"/gallery-photos",component:<GalleryPhotos/>},
 
   {path:"/product-group",component:<ProductGroup/>},
   {path:"/product-detail",component:<ProductDetail/>},
