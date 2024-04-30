@@ -1,440 +1,211 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment-timezone";
+import axios from 'axios'
 import {
   Button,
+  Form,
   Card,
   CardBody,
   CardHeader,
-  Form,
   Col,
   Container,
-  ListGroup,
-  ListGroupItem,
-  Modal,
+  Row,
+  Label,
+  Input,
+  FormFeedback,
+  FormGroup,Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Label,
-  Input,
-  Row,
 } from "reactstrap";
+import  Select  from "react-select";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
-import axios from "axios";
+
+import UiContent from "../../Components/Common/UiContent";
 import DataTable from "react-data-table-component";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
+import myImage from "../../assets/images/logo/Image_not_available.png";
+
+import {
+  createCompanyDetails,
+  listCompanynDetails,
+  updateDetails,
+  getDetail,
+  CompanyFileUpload,
+} from "../../functions/Setup/CompanyDetails";
+import {getinquiry,updateinquiry,createinquiry,listinquiry,removeinquiry} from "../../functions/Inquiry/Inquiry"
+import { listState, listCountry } from "../../functions/Location/Location";
 
 const initialState = {
-    product: "",
-    IsActive: false,
-    mobile_no:"",
-    Name:"",
-    email:""
-  };
+  ProductDetail :"",
+  InquiryNo:"",
+  ContactPerson:"",
+  CompanyName:"",
+  Reference:"",
+  Address:"",
+  Country:"",
+  Phone:"",
+  Fax:"",
+  Mobile:"",
+  Email:"",
+  Comments:"",
+  IsActive:true,
+  RFQ_Status:false,
+  Status:false
+};
+
+const initialState2={
+  ProductDetail2 :"",
+  Grade :"",
+  Quantity:"" ,
+  IsActive:true,
+   ProductDetailLabel:"",
+   BasePrice:"",
+   Group:""
+}
 
 const Inquiry = () => {
-    const [values, setValues] = useState(initialState);
-    const { mobile_no, email, Name, IsActive,product } = values;
-  const [selectType,setSelectType] = useState([]);
-  // const [blogTitle, setblogTitle] = useState("");
-  // const [blogDesc, setblogDesc] = useState("");
-  // const [blogImage, setblogImage] = useState("");
-  // const [types,setTypes] = useState("");
-  // const [blogThumnailDesc, setblogThumnailDesc] = useState("");
-  // const [views, setViews] = useState(0);
-
-  const [loadingOption, setLoadingOption] = useState(false);
-
-  // const [likes, setlikes] = useState([]);
-  // const [comments, setcomments] = useState([]);
-  // const [userId, setuserId] = useState(localStorage.getItem("AdminUser"));
-//   const [IsActive, setIsActive] = useState(false);
-
+  
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
-
-  const [showForm, setShowForm] = useState(false);
-  const [updateForm, setUpdateForm] = useState(false);
-
   const [query, setQuery] = useState("");
+  const [blogs, setBlogs] = useState([]);
+ 
+  const [totalRows, setTotalRows] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(0);
+  const [column, setcolumn] = useState();
+  const [sortDirection, setsortDirection] = useState();
+  const [loading, setLoading] = useState(false);
+  const [loadingOption, setLoadingOption] = useState(false);
+  //validation
+  const [errSN, setErrSN] = useState(false);
+  // const [errCPN, setErrCPN] = useState(false);
+  const [errCountry, setErrCountry] = useState(false);
+  const [errState, setErrState] = useState(false);
+  const [errCity, setErrCity] = useState(false);
+  const [errPincode, setErrPincode] = useState(false);
+  const [errAddress1, setErrAddress1] = useState(false);
+  const [errAddress2, setErrAddress2] = useState(false);
+  const [errCNOffice, setErrCNOffice] = useState(false);
+  const [errCNSupport, setErrCNSupport] = useState(false);
+  const [errCNSales, setErrCNSales] = useState(false);
+  const [errEmailOffice, setErrEmailOffice] = useState(false);
+  const [errEmailSales, setErrEmailSales] = useState(false);
+  const [errEmailSupport, setErrEmailSupport] = useState(false);
+  const [errGST, setErrGST] = useState(false);
+  const [errWeb1, setErrWeb1] = useState(false);
 
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
 
-  const [blogs, setBlogs] = useState([]);
+  const [values, setValues] = useState(initialState);
+  const [values2, setValues2] = useState(initialState2);
+  const {
+    ProductDetail ,
+    
+    ContactPerson,
+    CompanyName,
+    Reference,
+    Address,
+    Country,
+    Phone,
+    Fax,
+    Mobile,
+    Email,
+    Comments,
+    IsActive,
+    RFQ_Status,
+    Status
+  } = values;
 
-  const getSelectType=()=>{
-    axios
-      .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`)
-      .then((response) => {
-console.log(response)
-        if (response.length > 0) {
-          setSelectType(response);
-        } else if (response.length === 0) {
-          setSelectType([]);
-        }
-      });
-  }
+  const{
+    ProductDetail2 ,
+    Grade ,
+    Quantity 
+    , ProductDetailLabel,BasePrice,Group
+  }= values2
 
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log("no errors");
-    }
-  }, [formErrors, isSubmit]);
+  const [showForm, setShowForm] = useState(false);
+  const [updateForm, setUpdateForm] = useState(false);
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const [details, setDetails] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+
+  const [modal_list, setmodal_list] = useState(false);
+  const tog_list = () => {
+    setmodal_list(!modal_list);
+    setIsSubmit(false);
+    setValues([]);
   };
-
-  const handleCheck = (e) => {
-    setValues({ ...values, IsActive: e.target.checked });
-  };
-//   const uploadImage = async (body) => {
-//     return await axios.post(
-//       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/cms-blog/image-upload`,
-//       body
-//     );
-//   };
-
-  // const updateBlogs = async (_id, values) => {
-  //   return await axios.put(
-  //     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/inquiry/${_id}`,
-  //     values
-  //   );
-  // };
-  
-  // const getBlogs = async (_id) => {
-  //   return await axios.get(
-  //     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/getbyid/inquiry/${_id}`
-  //   );
-  // };
-
-  //  const removeBlogs = async (_id) => {
-  //   return await axios.delete(
-  //     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/inquiry/${_id}`
-  //   );
-  // };
-
-//   function uploadAdapter(loader) {
-//     return {
-//       upload: () => {
-//         return new Promise((resolve, reject) => {
-//           const body = new FormData();
-//           loader.file
-//             .then((file) => {
-//               body.append("uploadImg", file);
-//               uploadImage(body)
-//                 .then((res) => {
-//                   console.log("res", res.url);
-//                   resolve({
-//                     default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
-//                   });
-//                 })
-//                 .catch((err) => console.log(err));
-//             })
-//             .catch((err) => reject(err));
-//         });
-//       },
-//     };
-//   }
-
-//   function uploadPlugin(editor) {
-//     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-//       return uploadAdapter(loader);
-//     };
-//   }
 
   const [modal_delete, setmodal_delete] = useState(false);
   const tog_delete = (_id) => {
     setmodal_delete(!modal_delete);
     setRemove_id(_id);
   };
-  const [newname,setoldname]=useState("");
 
   const [modal_edit, setmodal_edit] = useState(false);
-  const handleTog_edit = (row,_id) => {
+  const handleTog_edit = (_id) => {
     // setmodal_edit(!modal_edit);
-    // if(row.product===row.serviceTypeDetails[0]._id){
-        setoldname(row.serviceTypeDetails[0].ServiceName);
-    // }
-   
-    getSelectType();
-    setIsSubmit(false);
     setUpdateForm(true);
+    setIsSubmit(false);
     set_Id(_id);
-    
-   console.log('THis is it',row)
-    // setblogTitle(row.Description);
-    // setblogThumnailDesc(row.subtitle);
-    // setblogDesc(row.Detail);
-    // setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
-    // setIsActive(row.IsActive);
-    // setCheckImagePhoto(true);
-    setmodal_edit(!modal_edit);
-    setIsSubmit(false);
-    // set_Id(row._id);
-    setValues(row);
-  };
-  const [modal_list, setmodal_list] = useState(false);
-  const tog_list = () => {
-    setmodal_list(!modal_list);
-    setValues(initialState);
-    setIsSubmit(false);
-  };
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    setFormErrors({});
-    let errors = validate(values);
-    setFormErrors(errors);
-    setIsSubmit(true);
-
-    if (Object.keys(errors).length === 0) {
-      setLoadingOption(true);
-    //   const formdata = new FormData();
-
-    //   formdata.append("newImage", blogImage);
-    //   formdata.append("ServiceName",types);
-    //   formdata.append("Description", blogTitle);
-    //   // formdata.append("Detail", blogDesc);
-    //   formdata.append("IsActive", IsActive);
-      // formdata.append("subtitle", blogThumnailDesc);
-
-
-      axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/inquiry`,values)
-        .then((res) => {
-          console.log(res);
-          // setmodal_list(!modal_list);
-          setShowForm(false);
-          setLoadingOption(false);
-          // setValues(initialState);
-          // setblogDesc("");
-          // setblogTitle("");
-          // setlikes([]);
-          // setcomments([]);
-          // setuserId("");
-        //   setIsActive(false);
-          // setblogImage("");
-          // setblogThumnailDesc("");
-          // setViews(0);
-          setIsSubmit(false);
-          // setCheckImagePhoto(false);
-          // setPhotoAdd("");
-          setFormErrors({});
-          fetchCategories();
-          // setTypes("");
-          setSelectType("");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        tog_list();
-    }
-  };
-
-  const handleDelete = (e) => {
-    e.preventDefault();
-    axios
-      .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/inquiry/${remove_id}`)
+    getinquiry(_id)
       .then((res) => {
-        setmodal_delete(!modal_delete);
-        fetchCategories();
+        console.log(res);
+        setValues({
+          ...values,
+          ProductDetail :res.ProductDetail,
+          
+          ContactPerson:res.ContactPerson,
+          CompanyName:res.CompanyName,
+          Reference:res.Reference,
+          Address:res.Address,
+          Country:res.Country,
+          Phone:res.Phone,
+          Fax:res.Fax,
+          Mobile:res.Mobile,
+          Email:res.Email,
+          Comments:res.Comments,
+          IsActive:res.IsActive,
+          RFQ_Status:res.RFQ_Status,
+          Status:res.Status
+          
+        });
+        initialState.InquiryNo= res._id
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    let erros = validate(values);
-    setFormErrors(erros);
-    setIsSubmit(true);
-    // const likesString = JSON.stringify(likes);
-    // const commentString = JSON.stringify(comments);
+  useEffect(() => {
+    fetchCategories();
+    loadCountries();
+    loadStates();
+  }, []);
 
-    if (Object.keys(erros).length === 0) {
-      setLoadingOption(true);
-    //   const formdata = new FormData();
-
-    //   formdata.append("newImage", blogImage);
-    //   formdata.append("ServiceName",types);
-    //   formdata.append("Description", blogTitle);
-    //   // formdata.append("Detail", blogDesc);
-    //   formdata.append("IsActive", IsActive);
-    //   // formdata.append("subtitle", blogThumnailDesc);
-    console.log("the values",values);
-
-      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/inquiry/${_id}`,values)
-        .then((res) => {
-          // setmodal_edit(!modal_edit);
-        //   setPhotoAdd("");
-        //   setUpdateForm(false);
-        //   setLoadingOption(false);
-
-        //   setCheckImagePhoto(false);
-        //   // setValues(initialState);
-        //   setblogDesc("");
-        //   setblogTitle("");
-        //   setlikes([]);
-        //   setcomments([]);
-        //   setuserId("");
-        // //   setIsActive(false);
-        //   // setblogThumnailDesc("");
-        //   setViews(0);
-        //   setblogImage("");
-        //   fetchCategories();
-        //   setSelectType("");
-        //   setTypes("");
-        console.log(res);
-          // setmodal_list(!modal_list);
-          setShowForm(false);
-          setLoadingOption(false);
-          // setValues(initialState);
-          // setblogDesc("");
-          // setblogTitle("");
-          // setlikes([]);
-          // setcomments([]);
-          // setuserId("");
-        //   setIsActive(false);
-          // setblogImage("");
-          // setblogThumnailDesc("");
-          // setViews(0);
-          setIsSubmit(false);
-          // setCheckImagePhoto(false);
-          // setPhotoAdd("");
-          setFormErrors({});
-          fetchCategories();
-          // setTypes("");
-          setSelectType("");
-          setUpdateForm(false);
-          setShowForm(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log("no errors");
     }
-  };
+  }, [formErrors, isSubmit]);
 
-  const [errEM, setErrEM] = useState(false);
-  const [errNA, setErrNA] = useState(false);
-  const [errMN, setErrMN] = useState(false);
-  const [errPR, setErrPR] = useState(false);
-  // const handlePhoneNumberChange = (e) => {
-  //   const value = e.target.value;
-  //   // Check if the input only contains digits
-  //   if (/^[0-9]*$/.test(value)) {
-  //     setPhoneNumber(value);
-  //     setIsValid(true);
-  //   } else {
-  //     setIsValid(false);
-  //   }
+  // const fetchCategories = () => {
+  //   listCompanynDetails().then((res) => {
+  //     setDetails(res);
+  //     console.log(details);
+  //   });
   // };
-
-  const validate = (values) => {
-    const errors = {};
-    // if (types === "") {
-    //   errors.types = "Service Name is required!";
-    //   setErrSN(true);
-    // }
-    // else{
-    //   setErrSN(false);
-    // }
-
-    if (values.Name === "") {
-      errors.Name = "Name is Required!";
-      setErrNA(true);
-    }
-    if (values.Name !== "") {
-      setErrNA(false);
-    }
-
-    if (!/\S+@\S+\.\S+/.test(values.email)) {
-      errors.email = "Email address is invalid";
-      // Assuming you have a setter function for the error state of Email field
-      setErrEM(true);
-    }
-    else{
-      setErrEM(false)
-    }
-
-   if(values.product===""){
-    errors.product="Please Select a Product";
-    setErrPR(true)
-   }
-   else{
-    setErrPR(false);
-   }
-
-   if(values.mobile_no.length===10){
-    setErrMN(false);
-   }
-   else{
-    errors.mobile_no="Please Enter a Correct Mobile Number";
-    setErrMN(true);
-   }
-   
-
-   
-
-    return errors;
-  };
-
-  const validClassName =
-errNA && isSubmit ? "form-control is-invalid" : "form-control";
-
-  const validClassEmail =
-    errEM && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassMobileNumber =
-    errMN && isSubmit ? "form-control is-invalid" : "form-control";
-
-  const validClassProduct =
-    errPR && isSubmit ? "form-control is-invalid" : "form-control";
-  
-
-
-  const [loading, setLoading] = useState(false);
-  const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(10);
-  const [pageNo, setPageNo] = useState(0);
-  const [column, setcolumn] = useState();
-  const [sortDirection, setsortDirection] = useState();
-
   const handleSort = (column, sortDirection) => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
   };
-
-  useEffect(() => {
-    // fetchUsers(1); // fetch page 1 of users
-  }, []);
-
   useEffect(() => {
     fetchCategories();
   }, [pageNo, perPage, column, sortDirection, query, filter]);
-
-  // const fetchCategories = async () => {
-  //   setLoading(true);
-
-  //   await axios
-  //     .get(
-  //       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`)
-  //     .then((response) => {
-  //       if (response.length > 0) {
-  //         setLoading(false);
-  //         console.log(response)
-  //         setBlogs(response);
-  //       } else if (response.length === 0) {
-  //         setBlogs([]);
-  //       }
-  //     });
-
-  //   setLoading(false);
-  // };
   const fetchCategories = async () => {
     setLoading(true);
     let skip = (pageNo - 1) * perPage;
@@ -452,8 +223,10 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
         IsActive: filter,
       })
       .then((response) => {
+        console.log(response.length)
         if (response.length > 0) {
           let res = response[0];
+          console.log("Response:",res.data)
           setLoading(false);
           setBlogs(res.data);
           setTotalRows(res.count);
@@ -467,118 +240,223 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
   const handlePageChange = (page) => {
     setPageNo(page);
   };
-
-  const [photoAdd, setPhotoAdd] = useState();
-  const [checkImagePhoto, setCheckImagePhoto] = useState(false);
-
-  // const PhotoUpload = (e) => {
-  //   if (e.target.files.length > 0) {
-  //     const image = new Image();
-
-  //     let imageurl = URL.createObjectURL(e.target.files[0]);
-  //     console.log("img", e.target.files[0]);
-
-  //     setPhotoAdd(imageurl);
-  //     // setValues({ ...values, blogImage: e.target.files[0] });
-  //     // setblogImage(e.target.files[0]);
-  //     setCheckImagePhoto(true);
-  //   }
-  // };
-
   const handlePerRowsChange = async (newPerPage, page) => {
     // setPageNo(page);
     setPerPage(newPerPage);
   };
   const handleFilter = (e) => {
     setFilter(e.target.checked);
+    console.log("lol",e.target.value)
+  };
+  const loadCountries = () => {
+    listCountry().then((res) => setCountries(res));
+  };
+
+  const loadStates = () => {
+    listState().then((res) => {
+      setStates(res);
+      console.log(res);
+    });
+  };
+
+  const handleChange2 = (e) => {
+    setValues2({ ...values2, [e.target.name]: e.target.value });
+  };
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // setFormErrors(validate(values));
+    let errors = validate(values);
+    setFormErrors(errors);
+    setIsSubmit(true);
+    values.ProductDetail=allProductId
+    console.log(values)
+if(Object.keys(errors).length===0){
+
+
+    createinquiry(values)
+      .then((res) => {
+        setValues(initialState);
+        setShowForm(false);
+        setUpdateForm(false);
+        fetchCategories();
+        setAllProductId([]); // Assuming _id is in res.data
+    setAllProductDetail([]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   };
 
   const handleAddCancel = (e) => {
     e.preventDefault();
-    setIsSubmit(false);
-    // setPhotoAdd("");
-    // setCheckImagePhoto(false);
     setShowForm(false);
     setUpdateForm(false);
-    // setblogThumnailDesc("");
-    // setViews(0);
-    // setValues(initialState);
-    // setblogDesc("");
-    // setblogTitle("");
-    // setlikes([]);
-    // setcomments([]);
-    // setuserId("");
-    // // setIsActive(false);
-    // setblogImage("");
-    // setTypes("");
-    setSelectType("");
-    // setTypes("");
-    setValues(initialState)
+    setValues(initialState);
+    setIsSubmit(false);
+  };
+  const handleDelete = (e) => { 
+    e.preventDefault();
+    axios
+      .delete(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/inquiry/${remove_id}`)
+      .then((res) => {
+        setmodal_delete(!modal_delete);
+        fetchCategories();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleUpdate = (e) => {
+    // debugger;
+    e.preventDefault();
+    let errors = validate(values);
+    setFormErrors(errors);
+    console.log("errors", errors);
+    setIsSubmit(true);
+    if (Object.keys(errors).length === 0) {
+      updateinquiry(_id, values)
+        .then((res) => {
+          setUpdateForm(false);
+          setShowForm(false);
+          setValues(initialState);
+          fetchCategories();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handleUpdateCancel = (e) => {
     e.preventDefault();
-    setoldname("");
-    setIsSubmit(false);
-    setPhotoAdd("");
-    setUpdateForm(false);
     setShowForm(false);
-    // setblogThumnailDesc("");
-    // setViews(0);
-    // setCheckImagePhoto(false);
-    // // setValues(initialState);
-    // setblogDesc("");
-    // setblogTitle("");
-    // setlikes([]);
-    // setcomments([]);
-    // setuserId("");
-    // // setIsActive(false);
-    // setblogImage("");
-    setSelectType("");
-    // setTypes("");
+    setUpdateForm(false);
+    setIsSubmit(false);
+    setValues(initialState);
   };
 
-  const col = [
+  const handleCheck = (e) => {
+    setValues({ ...values, IsActive: e.target.checked });
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    
+
+    return errors;
+  };
+
+  const validClassSN =
+    errSN && isSubmit ? "form-control is-invalid" : "form-control";
+  
+  const validClassCountry =
+    errCountry && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassState =
+    errState && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassCity =
+    errCity && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassAddress1 =
+    errAddress1 && isSubmit ? "form-control is-invalid" : "form-control";const validClassAddress2 =
+    errAddress2 && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassPincode =
+    errPincode && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassCNOffice =
+    errCNOffice && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassCNSales =
+    errCNSales && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassCNSupport =
+    errCNSupport && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassEmailOffice =
+    errEmailOffice && isSubmit ? "form-control is-invalid" : "form-control";
+  // const validClassEmailSales =
+  //   errEmailSales && isSubmit ? "form-control is-invalid" : "form-control";
+  // const validClassEmailSupport =
+  //   errEmailSupport && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassWeb1 =
+    errWeb1 && isSubmit ? "form-control is-invalid" : "form-control";
+  // const validClassGST =
+  //   errGST && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const columns = [
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-        minWidth: "150px",
-      },
-    {
-      name: "Service Name",
-      cell: (row) => row.serviceTypeDetails[0].ServiceName,
+      name: "Sr No",
+      selector: (row,index) => index+1,
       sortable: true,
-      sortField: "blogTitle",
+      sortField: "srno",
       minWidth: "150px",
     },
     {
-        name: "Name",
-        cell: (row) => row.Name,
-        sortable: true,
-        sortField: "blogTitle",
-        minWidth: "150px",
-      }, {
-        name: "email",
-        cell: (row) => row.email,
-        sortable: true,
-        sortField: "blogTitle",
-        minWidth: "150px",
-      },{
-        name: "Mobile Number",
-        cell: (row) => row.mobile_no,
-        sortable: true,
-        sortField: "blogTitle",
-        minWidth: "150px",
-      },
+      name: "ContactPerson",
+      cell: (row) => row.ContactPerson,
+      sortable: true,
+      sortField: "ContactPerson",
+      minWidth: "150px",
+    },
+    {
+      name: "Email",
+      cell: (row) => row.Email,
+      sortable: true,
+      sortField: "Email",
+      minWidth: "150px",
+    },
+    {
+      name: "Inquiry No",
+      cell: (row) => row._id,
+      sortable: true,
+      sortField: "_id",
+      minWidth: "150px",
+    },
+    {
+      name: "Inquiry Date",
+      cell: (row) => row.createdAt.split("T")[0],
+      sortable: true,
+      sortField: "createdAt",
+      minWidth: "150px",
+    },
+  
+     
     {
       name: "Status",
       selector: (row) => {
-        return <p>{row.IsActive ? "Active" : "InActive"}</p>;
+        return <p>{row.Status ? "Done" : "InProcess"}</p>;
       },
       sortable: false,
       sortField: "Status",
+    },
+    {
+      name: "RFQ_Status",
+      selector: (row) => {
+        return <p>{row.Status ? "Generated" : "Not Generated"}</p>;
+      },
+      sortable: false,
+      sortField: "RFQ_Status",
+    },
+    {
+      name: "Quote",
+      selector: (row) => {
+        return (
+          <React.Fragment>
+              <div className="edit">
+        <button
+          className="btn btn-sm btn-warning edit-item-btn "
+          data-bs-toggle="modal"
+          data-bs-target="#showModal"
+          onClick={() => handleTog_edit(row._id)}
+        >
+          Quote
+        </button>
+      </div>
+            </React.Fragment>
+        )
+      
+      },
+      
     },
     {
       name: "Action",
@@ -591,7 +469,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                   className="btn btn-sm btn-success edit-item-btn "
                   data-bs-toggle="modal"
                   data-bs-target="#showModal"
-                  onClick={() => handleTog_edit(row,row._id)}
+                  onClick={() => handleTog_edit(row._id)}
                 >
                   Edit
                 </button>
@@ -604,7 +482,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                   data-bs-target="#deleteRecordModal"
                   onClick={() => tog_delete(row._id)}
                 >
-                  Remove 
+                  Remove
                 </button>
               </div>
             </div>
@@ -615,30 +493,117 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
       minWidth: "180px",
     },
   ];
+  const [selectProductDetail,setproductdetail] = useState([]);
+  const [prod, setprod] = useState("")
+  const getallProductDetail=()=>{
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/projectdetail`)
+      .then((response) => {
+        if (response.length > 0) {
 
-  document.title = "Service Detail|Shreeji Pharma";
+console.log(response)
+        // if (response.length > 0) {
+        //   setproductdetail(response);
+        // } else if (response.length === 0) {
+        //   setproductdetail([]);
+        // }
+        console.log(response)
+          const names = response.map((item)=>({
+            value:item._id , label :item.Description,group:item.ProductDetail.ProductGroup
+          }
+         ));
+          
+         setproductdetail(names);
+        } else if(response.length===0){
+            setproductdetail([]);
+        }
+      });
+  }
+  const [SupplierNamePlaceholder, setSupplierNamePlaceholder] = useState("")
+  const handleSelectSingle =(selectedOption)=>{
+    console.log("Selected Specilty:", selectedOption);
+    // Update speciality state with the selected option's value
+    setprod(selectedOption.label)
+    console.log(selectedOption.value)
+    setSupplierNamePlaceholder(selectedOption.label)
+    values2.ProductDetail2 =selectedOption.value
+    values2.ProductDetailLabel=selectedOption.label
+    values2.Group=selectedOption.group
+}
+const gradearray=[
+  {label:"BP",value:"BP"},
+  {label:"USP",value:"USP"},
+  {label:"EP",value:"EP"},
+  {label:"Other",value:"Other"}
+]
+ 
+const handleSelect=(selectoptions) =>{
+  console.log(selectoptions)
+   setValues2({...values2,Grade:selectoptions.value})
+}
+
+const [allProductDetail, setAllProductDetail]= useState([])
+const [allProductId, setAllProductId]= useState([])
+const handleAddInquiry = (e) => {
+  e.preventDefault();
+  setFormErrors({});
+ 
+
+
+    axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/InquiryProduct`, values2)
+  .then((res) => {
+    console.log(res);
+    setSupplierNamePlaceholder("");
+    // Spread operator is not necessary here, use push to add the new id to the array
+    setAllProductId(prevState => [...prevState, res.data._id]); // Assuming _id is in res.data
+    setAllProductDetail(prevState => [...prevState, res.data]);
+    setLoadingOption(false);
+    setValues2(initialState2);
+     
+
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+      
+  }
+  console.log(allProductDetail,allProductId)
+  document.title = "Company Details | Shreeji Pharma";
 
   return (
-    <React.Fragment>
+    <>
+      <UiContent />
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Service Detail"  />
+          <BreadCrumb
+            
+            title="Company Details"
+          
+          />
 
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
-                    <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Service Detail</h2>
+                    <Col className="col-sm"  lg={4} md={6} sm={6}>
+                      <h2 className="card-title mb-0 fs-4 mt-2">
+                        Company Details
+                      </h2>
                     </Col>
+
                     <Col lg={4} md={6} sm={6}>
-                      <div
-                        style={{
-                          display: showForm || updateForm ? "none" : "",
-                        }}
-                      >
-                        <div className="text-end mt-1">
+                      
+                        
+                          <div
+                            style={{
+                              display: !showForm || updateForm ? "" : "none",
+                            }}
+                          >{console.log(showForm)}
+                      {console.log(updateForm)}
+                           <div className="text-end mt-1">
                           <Input
                             type="checkbox"
                             className="form-check-input"
@@ -651,11 +616,29 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                             Active
                           </Label>
                         </div>
-                      </div>
-                    </Col>
-                    <Col className="col-sm-auto" lg={4} md={12} sm={12}>
+                        </div>
+                        </Col>
+                            {/* <Row>
+                              <Col lg={12}>
+                                <div className="text-end">
+                                  <button
+                                    className="btn bg-success text-light mb-3 "
+                                    onClick={() => {
+                                      setValues(initialState);
+                                      setShowForm(false);
+                                      setUpdateForm(false);
+                                    }}
+                                  >
+                                    <i class="ri-list-check align-bottom me-1"></i>{" "}
+                                    List
+                                  </button>
+                                </div>
+                              </Col>
+                            </Row> */}
+                            <Col className="col-sm-auto" lg={4} md={12} sm={12}>
                       <div className="d-flex justify-content-sm-end">
                         {/* add btn */}
+
                         <div
                           style={{
                             display: showForm || updateForm ? "none" : "",
@@ -669,16 +652,10 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                     color="success"
                                     className="add-btn me-1"
                                     onClick={() => {
-                                      getSelectType();
+                                      getallProductDetail();
+                                      setValues(initialState);
                                       setShowForm(!showForm);
-                                      // setValues(initialState);
-                                      // setblogDesc("");
-                                      // setblogTitle("");
-                                      // setlikes([]);
-                                      // setcomments([]);
-                                      // setuserId("");
-                                    //   setIsActive(false);
-                                      // setblogImage("");
+                                      setUpdateForm(false);
                                       // setFileId(Math.random() * 100000);
                                     }}
                                     // onClick={() => tog_list()}
@@ -694,7 +671,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                         </div>
 
                         {/* update list btn */}
-
+                       
                         <div
                           style={{
                             display: showForm || updateForm ? "" : "none",
@@ -707,15 +684,10 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
                                     // setValues(initialState);
-                                    // setblogDesc("");
-                                    // setblogTitle("");
-                                    // setlikes([]);
-                                    // setcomments([]);
-                                    // setuserId("");
-                                    // // setIsActive(false);
-                                    // setblogImage("");
-                                    setShowForm(false);
-                                    setUpdateForm(false);
+                                    setValues(initialState);
+                                      setShowForm(false);
+                                      setUpdateForm(false);
+                                      
                                     // setFileId(Math.random() * 100000);
                                   }}
                                 >
@@ -744,10 +716,13 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                         </div>
                       </div>
                     </Col>
+                        
+                        
+                    
+                  
                   </Row>
                 </CardHeader>
-
-                {/* ADD FORM  */}
+                
                 <div
                   style={{
                     display: showForm && !updateForm ? "block" : "none",
@@ -762,206 +737,282 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                <Col lg={6}>
-                                <Label>
-                                        Service Name{" "}
+                                <Col lg={4} md={6}>
+                                                    <div className="mb-3">
+                                                    <Label>
+                                Select Product: {" "}
                                         <span className="text-danger">*</span>
                                       </Label>
-                                    <Input name="product" id="" type="select" onChange={handleChange} className={validClassProduct} style={{height:"55px"}}>
-                                        <option>Select Type</option> {console.log(selectType)}
-                                        {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id
-}>{item
-.ServiceName}</option>
-                                        )}
-                                    </Input>
-                                    {isSubmit && (
-                                      <p className="text-danger">
+                                       <Select
+                                       placeholder={SupplierNamePlaceholder}
+                                                            value={prod}
+                                                            onChange={handleSelectSingle}
+                                                            options={selectProductDetail}
+                                                        />
+                                                    </div>
+                                    </Col>
+                                    <Col md={3}>
+                                  <Label>
+                                      Grade
+                                      <span className="text-danger">*</span>
+                                    </Label>
+                                  <div className="form-floating mb-3">
+                                    <Select
+                                    //   className={validClassCountry}
+                                      name={Grade}
+                                      value={Grade}
+                                      data-choices
+                                      data-choices-sorting="true"
+                                      onChange={handleSelect}
+                                      options={gradearray}
+                                      placeholder={Grade}
+                                    >
                                      
-                                        {formErrors.product}
-                                      </p>
-                                    )}
+
+                                     
+                                    </Select>
                                    
-                                  </Col>
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
+                                    {/* {isSubmit && (
+                                      <p className="text-danger">
+                                        {formErrors.Country}
+                                      </p>
+                                    )} */}
+                                  </div>
+                                </Col>
+                                <Col lg={3}>
+                                <Label>
+                                        Quantity{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                    <div className="form-floating  ">
+                                      
                                       <Input
                                         key={"blogTitle_" + _id}
                                         type="text"
-                                        className={validClassName}
+                                      
                                         placeholder="Enter blog title"
                                         required
-                                        name="Name"
-                                        value={Name}
-                                        onChange={handleChange}
+                                        name="Quantity"
+                                        value={Quantity}
+                                        onChange={handleChange2}
                                       />
-                                      <Label>
-                                        Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.Name}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>     
-                                  <Col lg={6}>
-                                    <div className="form-floating mt-3  ">
-                                      <Input
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassEmail}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="email"
-                                        value={email}
-                                        onChange={handleChange}
-                                      />
-                                      <Label>
-                                        Email{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
+                                      
+                                      {/* {isSubmit && (
                                         <p className="text-danger">
                                           {formErrors.email}
                                         </p>
-                                      )}
+                                      )} */}
                                     </div>
                                   </Col>
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassMobileNumber}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="mobile_no"
-                                        value={mobile_no}
-                                        onChange={handleChange}
-                                      />
-                                      <Label>
-                                      Mobile Number{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.mobile_no}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>
-                               
-
-                                  {/* <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        type="textarea"
-                                        className={validClassBTD}
-                                        style={{ height: "100px" }}
-                                        placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
-                                        onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
-                                        }}
-                                      />
-                                      <Label className="form-label">
-                                        Sub Title
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col> */}
-{/* 
-                                  <Col lg={12}>
-                                    <Card>
-                                      <Label>
-                                        Description
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      <CardBody>
-
-                                        <CKEditor
-                                          key={"blogDesc_" + _id}
-                                          editor={ClassicEditor}
-                                          data={blogDesc}
-                                          config={{
-                                            extraPlugins: [uploadPlugin],
-                                          }}
-                                          onChange={(event, editor) => {
-                                            const data = editor.getData();
-
-                                            setblogDesc(data);
-                                            console.log(blogDesc);
-                                          }}
-                                        />
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.blogDesc}
-                                          </p>
-                                        )}
-                                      </CardBody>
-                                    </Card>
-                                  </Col> */}
-
-                                  {/* <Col lg={6}>
-                                    <label>
-                                      Image{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-
-                                    <Input
-                                      key={"blogImage_" + _id}
-                                      type="file"
-                                      name="blogImage"
-                                      className={validClassBI}
-                                      // accept="images/*"
-                                      accept=".jpg, .jpeg, .png"
-                                      onChange={PhotoUpload}
-                                    />
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.blogImage}
-                                      </p>
-                                    )}
-                                    {checkImagePhoto ? (
-                                      <img
-                                        //   src={image ?? myImage}
-                                        className="m-2"
-                                        src={photoAdd}
-                                        alt="Profile"
-                                        width="180"
-                                        height="200"
-                                      />
-                                    ) : null}
-                                  </Col> */}
-
-                                  <div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          onChange={handleCheck}
+                                  <Col lg={2}>
+                                  <div className="hstack gap-2 justify-content-end">
+                                      <button
+                                       
+                                        type="submit"
+                                        className="btn btn-success mt-4  m-1"
+                                        id="add-btn"
+                                        onClick={ handleAddInquiry}
+                                      >
+                                        Submit
+                                      </button>
                                       
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div>
+                                    </div>
+                                  </Col>
+                                  {allProductDetail ? (
+                                        <div>
+                                            <Row>
+                                              {allProductDetail.map((item,index)=>(
+                                                <tr key={index}>
+                                                  <td>
+                                                    {item.Group}
+                                                  </td>
+                                                  <td>
+                                                    {item.ProductDetailLabel}
+                                                  </td>
+                                                  <td>
+                                                    {item.Quantity}
+                                                  </td>
+                                                  <td>
+                                                    {item.Grade}
+                                                  </td>
+                                                </tr>
+                                              ))}
+                                            </Row>
+                                        </div>
+                                    ) : null}
+                                 <Row>
+                                 <Col lg={3}>
+    <Label>
+        Contact Person <span className="text-danger">*</span>
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"contactPerson"}
+            type="text"
+            placeholder="Enter contact person"
+            required
+            name="ContactPerson"
+            value={ContactPerson}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Company Name <span className="text-danger">*</span>
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"companyName"}
+            type="text"
+            placeholder="Enter company name"
+            required
+            name="CompanyName"
+            value={CompanyName}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Reference
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"reference"}
+            type="text"
+            placeholder="Enter reference"
+            name="Reference"
+            value={Reference}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+<Col lg={3}>
+    <Label>
+        Address <span className="text-danger">*</span>
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"address"}
+            type="text"
+            placeholder="Enter address"
+            required
+            name="Address"
+            value={Address}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Country <span className="text-danger">*</span>
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"country"}
+            type="text"
+            placeholder="Enter country"
+            required
+            name="Country"
+            value={Country}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Phone <span className="text-danger">*</span>
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"phone"}
+            type="tel"
+            placeholder="Enter phone number"
+            required
+            name="Phone"
+            value={Phone}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Fax
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"fax"}
+            type="tel"
+            placeholder="Enter fax number"
+            name="Fax"
+            value={Fax}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Mobile <span className="text-danger">*</span>
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"mobile"}
+            type="tel"
+            placeholder="Enter mobile number"
+            required
+            name="Mobile"
+            value={Mobile}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Email <span className="text-danger">*</span>
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"email"}
+            type="email"
+            placeholder="Enter email"
+            required
+            name="Email"
+            value={Email}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+<Col lg={3}>
+    <Label>
+        Comments
+    </Label>
+    <div className="form-floating">
+        <Input
+            key={"comments"}
+            type="textarea"
+            placeholder="Enter comments"
+            name="Comments"
+            value={Comments}
+            onChange={handleChange}
+        />
+    </div>
+</Col>
+
+
+                                 </Row>
+                                  <CardBody>
+                                    
+                    
+                  </CardBody>
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -986,7 +1037,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                         type="submit"
                                         className="btn btn-success  m-1"
                                         id="add-btn"
-                                        onClick={handleClick}
+                                        onClick={handleSubmit}
                                       >
                                         Submit
                                       </button>
@@ -1008,222 +1059,241 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                     </React.Fragment>
                   </CardBody>
                 </div>
+                
 
-                {/* UPDATE FORM  */}
+                {/* update form */}
                 <div
                   style={{
                     display: !showForm && updateForm ? "block" : "none",
                   }}
                 >
                   <CardBody>
-                    <React.Fragment>
-                      <Col xxl={12}>
-                        <Card className="">
-                          <CardBody>
                             <div className="live-preview">
                               <Form>
-                              <Row>
-                                <Col lg={6}>
-                                <Label>
-                                        Service Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                    <Input name="product" id="" type="select" onChange={handleChange} className={validClassProduct}>
-
-                                         {/* {console.log(selectType)} */}
-                                         {/* <option>{newname}</option> */}
-                                        {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id} selected={item._id === product}>{item
-.ServiceName}</option>
-                                        )}
-                                    </Input>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                      
-                                        {formErrors.product}
-                                      </p>
-                                    )}
-                                   
-                                  </Col>
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassName}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="Name"
-                                        value={Name}
-                                        onChange={handleChange}
-                                      />
-                                      <Label>
-                                        Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.Name}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>     
-                                  <Col lg={6}>
-                                    <div className="form-floating mt-3  ">
-                                      <Input
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassEmail}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="email"
-                                        value={email}
-                                        onChange={handleChange}
-                                      />
-                                      <Label>
-                                        Email{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.email}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassMobileNumber}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="mobile_no"
-                                        value={mobile_no}
-                                        onChange={handleChange}
-                                      />
-                                      <Label>
-                                      Mobile Number{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.mobile_no}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col>
+                                <Row>
                                
-
-                                  {/* <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        type="textarea"
-                                        className={validClassBTD}
-                                        style={{ height: "100px" }}
-                                        placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
-                                        onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
-                                        }}
-                                      />
-                                      <Label className="form-label">
-                                        Sub Title
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col> */}
-{/* 
-                                  <Col lg={12}>
-                                    <Card>
-                                      <Label>
-                                        Description
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      <CardBody>
-
-                                        <CKEditor
-                                          key={"blogDesc_" + _id}
-                                          editor={ClassicEditor}
-                                          data={blogDesc}
-                                          config={{
-                                            extraPlugins: [uploadPlugin],
-                                          }}
-                                          onChange={(event, editor) => {
-                                            const data = editor.getData();
-
-                                            setblogDesc(data);
-                                            console.log(blogDesc);
-                                          }}
-                                        />
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.blogDesc}
-                                          </p>
-                                        )}
-                                      </CardBody>
-                                    </Card>
-                                  </Col> */}
-
-                                  {/* <Col lg={6}>
-                                    <label>
-                                      Image{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-
-                                    <Input
-                                      key={"blogImage_" + _id}
-                                      type="file"
-                                      name="blogImage"
-                                      className={validClassBI}
-                                      // accept="images/*"
-                                      accept=".jpg, .jpeg, .png"
-                                      onChange={PhotoUpload}
-                                    />
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.blogImage}
-                                      </p>
-                                    )}
-                                    {checkImagePhoto ? (
-                                      <img
-                                        //   src={image ?? myImage}
-                                        className="m-2"
-                                        src={photoAdd}
-                                        alt="Profile"
-                                        width="180"
-                                        height="200"
-                                      />
+                                  {allProductDetail ? (
+                                        <div>
+                                            <Row>
+                                              {allProductDetail.map((item,index)=>(
+                                                <tr key={index}>
+                                                  <td>
+                                                    {item.Group}
+                                                  </td>
+                                                  <td>
+                                                    {item.ProductDetailLabel}
+                                                  </td>
+                                                  <td>
+                                                    {item.Quantity}
+                                                  </td>
+                                                  <td>
+                                                    {item.Grade}
+                                                  </td>
+                                                </tr>
+                                              ))}
+                                            </Row>
+                                        </div>
                                     ) : null}
-                                  </Col> */}
+                                 <Row>
+                                 <Col lg={3}>
+        <Label>
+           Inquiry Number: <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"contactPerson"}
+                type="text"
+                placeholder="Enter contact person"
+                required
+                name="ContactPerson"
+                value={initialState.InquiryNo}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+    <Col lg={3}>
+        <Label>
+            Contact Person <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"contactPerson"}
+                type="text"
+                placeholder="Enter contact person"
+                required
+                name="ContactPerson"
+                value={ContactPerson}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
 
-                                  <div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          onChange={handleCheck}
-                                      
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div>
+    <Col lg={3}>
+        <Label>
+            Company Name <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"companyName"}
+                type="text"
+                placeholder="Enter company name"
+                required
+                name="CompanyName"
+                value={CompanyName}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Reference
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"reference"}
+                type="text"
+                placeholder="Enter reference"
+                name="Reference"
+                value={Reference}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Address <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"address"}
+                type="text"
+                placeholder="Enter address"
+                required
+                name="Address"
+                value={Address}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Country <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"country"}
+                type="text"
+                placeholder="Enter country"
+                required
+                name="Country"
+                value={Country}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Phone <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"phone"}
+                type="tel"
+                placeholder="Enter phone number"
+                required
+                name="Phone"
+                value={Phone}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Fax
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"fax"}
+                type="tel"
+                placeholder="Enter fax number"
+                name="Fax"
+                value={Fax}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Mobile <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"mobile"}
+                type="tel"
+                placeholder="Enter mobile number"
+                required
+                name="Mobile"
+                value={Mobile}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Email <span className="text-danger">*</span>
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"email"}
+                type="email"
+                placeholder="Enter email"
+                required
+                name="Email"
+                value={Email}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+
+    <Col lg={3}>
+        <Label>
+            Comments
+        </Label>
+        <div className="form-floating">
+            <Input
+                key={"comments"}
+                type="textarea"
+                placeholder="Enter comments"
+                name="Comments"
+                value={Comments}
+                onChange={handleChange}
+                disabled // Added disabled attribute
+            />
+        </div>
+    </Col>
+</Row>
+
+                                  <CardBody>
+                                    
+                    
+                  </CardBody>
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -1248,14 +1318,14 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                                         type="submit"
                                         className="btn btn-success  m-1"
                                         id="add-btn"
-                                        onClick={handleUpdate}
+                                        onClick={handleSubmit}
                                       >
-                                        Update
+                                        Submit
                                       </button>
                                       <button
                                         type="button"
                                         className="btn btn-outline-danger m-1"
-                                        onClick={handleUpdateCancel}
+                                        onClick={handleAddCancel}
                                       >
                                         Cancel
                                       </button>
@@ -1265,23 +1335,18 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
                               </Form>
                             </div>
                           </CardBody>
-                        </Card>
-                      </Col>
-                    </React.Fragment>
-                  </CardBody>
                 </div>
 
-                {/* list */}
+                {/* list  */}
                 <div
-                  style={{
-                    display: showForm || updateForm ? "none" : "block",
-                  }}
+                  style={{ display: showForm || updateForm ? "none" : "block" }}
                 >
                   <CardBody>
                     <div>
                       <div className="table-responsive table-card mt-1 mb-1 text-right">
+                        {/* <Table columns={col} dataSource={details}></Table> */}
                         <DataTable
-                          columns={col}
+                          columns={columns}
                           data={blogs}
                           progressPending={loading}
                           sortServer
@@ -1309,20 +1374,11 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
           </Row>
         </Container>
       </div>
-
-      {/*Remove Modal*/}
       <Modal
         isOpen={modal_delete}
         toggle={() => {
           tog_delete();
-          // setValues([]);
-        //   setblogDesc("");
-        //   setblogTitle("");
-        //   setlikes([]);
-        //   setcomments([]);
-        //   setuserId("");
-        // //   setIsActive(false);
-        //   setblogImage("");
+          setValues([]);
         }}
         centered
       >
@@ -1373,7 +1429,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
           </ModalFooter>
         </form>
       </Modal>
-    </React.Fragment>
+    </>
   );
 };
 
