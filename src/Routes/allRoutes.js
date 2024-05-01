@@ -31,8 +31,8 @@ import Feature from "../pages/Feature/Feature";
 import CmsMaster from "../pages/CMS/CmsMaster";
 import OtherProducts from "../pages/OtherProducts/OtherProducts";
 import Supplier from "../pages/SupplierSetup/SupplierSetup";
-import AssignProduct from "../pages/SupplierSetup/AssignProduct";
 import SupplierQuote from "../pages/SupplierQuote/SupplierQuote";
+import AssignProduct from "../pages/SupplierSetup/AssignProduct"; 
 import GalleryPhotos from "../pages/GalleryPhotos/GalleryPhotos";
 
 const authProtectedRoutes = [

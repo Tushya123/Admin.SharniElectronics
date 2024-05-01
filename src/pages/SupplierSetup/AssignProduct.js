@@ -679,13 +679,14 @@ const AssignProduct = () => {
     },
   ];
 
-  document.title = "Service Detail|Shreeji Pharma";
+  document.title = "Assign Product|Shreeji Pharma";
 
   return (
+    
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Service Detail"  />
+          <BreadCrumb  title="Assign Product"  />
 
           <Row>
             <Col lg={12}>
@@ -1279,7 +1280,7 @@ const AssignProduct = () => {
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+          <span style={{ marginRight: "210px" }}>Remove Assign Product</span>
         </ModalHeader>
 
         <form>
