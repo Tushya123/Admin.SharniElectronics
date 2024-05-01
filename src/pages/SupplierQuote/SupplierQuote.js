@@ -28,10 +28,8 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const initialState = {
     ProductDetail: "",
     Grade: "",
-    // IsActive: false,
     Quantity:"",
     SupplierName:[],
-    // email:""
   };
 
 const SupplierQuote = () => {
@@ -72,11 +70,6 @@ const SupplierQuote = () => {
         if (response.length > 0) {
 
 console.log(response)
-        // if (response.length > 0) {
-        //   setproductdetail(response);
-        // } else if (response.length === 0) {
-        //   setproductdetail([]);
-        // }
         console.log(response)
           const names = response.map((item)=>({
             value:item._id , label :item.Description,
@@ -246,16 +239,7 @@ console.log(data)
           setSupplierNamePlaceholder("")
           Setdata([])
           setLoadingOption(false);
-          // setValues(initialState);
-          // setblogDesc("");
-          // setblogTitle("");
-          // setlikes([]);
-          // setcomments([]);
-          // setuserId("");
-        //   setIsActive(false);
-          // setblogImage("");
-          // setblogThumnailDesc("");
-          // setViews(0);
+         
           setIsSubmit(false);
           // setCheckImagePhoto(false);
           // setPhotoAdd("");
@@ -287,91 +271,11 @@ console.log(data)
       });
   };
 
-//   const handleUpdate = (e) => {
-//     e.preventDefault();
-//     let erros = validate(values);
-//     setFormErrors(erros);
-//     setIsSubmit(true);
-//     // const likesString = JSON.stringify(likes);
-//     // const commentString = JSON.stringify(comments);
-
-//     if (Object.keys(erros).length === 0) {
-//       setLoadingOption(true);
-//     //   const formdata = new FormData();
-
-//     //   formdata.append("newImage", blogImage);
-//     //   formdata.append("ServiceName",types);
-//     //   formdata.append("Description", blogTitle);
-//     //   // formdata.append("Detail", blogDesc);
-//     //   formdata.append("IsActive", IsActive);
-//     //   // formdata.append("subtitle", blogThumnailDesc);
-//     console.log("the values",values);
-
-//       axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/inquiry/${_id}`,values)
-//         .then((res) => {
-//           // setmodal_edit(!modal_edit);
-//         //   setPhotoAdd("");
-//         //   setUpdateForm(false);
-//         //   setLoadingOption(false);
-
-//         //   setCheckImagePhoto(false);
-//         //   // setValues(initialState);
-//         //   setblogDesc("");
-//         //   setblogTitle("");
-//         //   setlikes([]);
-//         //   setcomments([]);
-//         //   setuserId("");
-//         // //   setIsActive(false);
-//         //   // setblogThumnailDesc("");
-//         //   setViews(0);
-//         //   setblogImage("");
-//         //   fetchCategories();
-//         //   setproductdetail("");
-//         //   setTypes("");
-//         console.log(res);
-//           // setmodal_list(!modal_list);
-//           setShowForm(false);
-//           setLoadingOption(false);
-//           // setValues(initialState);
-//           // setblogDesc("");
-//           // setblogTitle("");
-//           // setlikes([]);
-//           // setcomments([]);
-//           // setuserId("");
-//         //   setIsActive(false);
-//           // setblogImage("");
-//           // setblogThumnailDesc("");
-//           // setViews(0);
-//           setIsSubmit(false);
-//           // setCheckImagePhoto(false);
-//           // setPhotoAdd("");
-//           setFormErrors({});
-          // fetchCategories();
-//           // setTypes("");
-//           setproductdetail("");
-//           setUpdateForm(false);
-//           setShowForm(false);
-//         })
-//         .catch((err) => {
-//           console.log(err);
-//         });
-//     }
-//   };
-
   const [errEM, setErrEM] = useState(false);
   const [errNA, setErrNA] = useState(false);
   const [errMN, setErrMN] = useState(false);
   const [errPR, setErrPR] = useState(false);
-  // const handlePhoneNumberChange = (e) => {
-  //   const value = e.target.value;
-  //   // Check if the input only contains digits
-  //   if (/^[0-9]*$/.test(value)) {
-  //     setPhoneNumber(value);
-  //     setIsValid(true);
-  //   } else {
-  //     setIsValid(false);
-  //   }
-  // };
+
 
   const validate = (values) => {
     const errors = {};
@@ -869,115 +773,6 @@ console.log(values)
                                     )
                                   })}
                                  </Col>
-
-                                  {/* <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        type="textarea"
-                                        className={validClassBTD}
-                                        style={{ height: "100px" }}
-                                        placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
-                                        onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
-                                        }}
-                                      />
-                                      <Label className="form-label">
-                                        Sub Title
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col> */}
-{/* 
-                                  <Col lg={12}>
-                                    <Card>
-                                      <Label>
-                                        Description
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      <CardBody>
-
-                                        <CKEditor
-                                          key={"blogDesc_" + _id}
-                                          editor={ClassicEditor}
-                                          data={blogDesc}
-                                          config={{
-                                            extraPlugins: [uploadPlugin],
-                                          }}
-                                          onChange={(event, editor) => {
-                                            const data = editor.getData();
-
-                                            setblogDesc(data);
-                                            console.log(blogDesc);
-                                          }}
-                                        />
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.blogDesc}
-                                          </p>
-                                        )}
-                                      </CardBody>
-                                    </Card>
-                                  </Col> */}
-
-                                  {/* <Col lg={6}>
-                                    <label>
-                                      Image{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-
-                                    <Input
-                                      key={"blogImage_" + _id}
-                                      type="file"
-                                      name="blogImage"
-                                      className={validClassBI}
-                                      // accept="images/*"
-                                      accept=".jpg, .jpeg, .png"
-                                      onChange={PhotoUpload}
-                                    />
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.blogImage}
-                                      </p>
-                                    )}
-                                    {checkImagePhoto ? (
-                                      <img
-                                        //   src={image ?? myImage}
-                                        className="m-2"
-                                        src={photoAdd}
-                                        alt="Profile"
-                                        width="180"
-                                        height="200"
-                                      />
-                                    ) : null}
-                                  </Col> */}
-
-                                  {/* <div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          onChange={handleCheck}
-                                      
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div> */}
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
