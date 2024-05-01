@@ -21,6 +21,7 @@ import GetInTouch from "../pages/GetInTouch/GetInTouch";
 import UserSignIn from "../pages/UserSignIn/usersignin";
 import Roles from "../pages/Roles/Roles";
 import Inquiry from "../pages/Inquiry/Inquiry";
+import Preferences from "../pages/Preferences/Preferences";
 
 import ProductGroup from "../pages/ProductGroup/ProductGroup";
 import ProductDetail from "../pages/ProductDetail/ProductDetail";
@@ -63,6 +64,7 @@ const authProtectedRoutes = [
   {path:"/supplier",component:<Supplier/>},
   {path:"/assign-product", component:<AssignProduct />},
   {path:"/supplier-quote",component:<SupplierQuote/>},
+  {path:"/preferences",component:<Preferences/>},
 
 
 
