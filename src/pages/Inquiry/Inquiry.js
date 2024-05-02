@@ -25,13 +25,6 @@ import DataTable from "react-data-table-component";
 
 import myImage from "../../assets/images/logo/Image_not_available.png";
 
-import {
-  createCompanyDetails,
-  listCompanynDetails,
-  updateDetails,
-  getDetail,
-  CompanyFileUpload,
-} from "../../functions/Setup/CompanyDetails";
 import {getinquiry,updateinquiry,createinquiry,listinquiry,removeinquiry} from "../../functions/Inquiry/Inquiry"
 import { listState, listCountry } from "../../functions/Location/Location";
 import {getInquiryProduct} from "../../functions/Inquiry/InquiryProduct"
@@ -59,19 +52,25 @@ const initialState2={
   Grade :"",
   Quantity:"" ,
   IsActive:true,
+  SupplierName:[],
    ProductDetailLabel:"",
    BasePrice:"",
    Group:"",
-   RFQ_Status2:false, RFQ_Date:""
+   RFQ_Status2:false, 
+   RFQ_Date:""
 }
 
 const Inquiry = () => {
+
+
   
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
   const [query, setQuery] = useState("");
   const [blogs, setBlogs] = useState([]);
+  const [selectsupplier,setsupplierdetail] = useState([]);
+  const [selectnewdetail,setselectnewdetail]=useState([]);
  
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -125,7 +124,7 @@ const Inquiry = () => {
     ProductDetail2 ,
     Grade ,
     Quantity 
-    , ProductDetailLabel,BasePrice,Group,RFQ_Status2, RFQ_Date
+    , ProductDetailLabel,BasePrice,Group,RFQ_Status2, RFQ_Date,SupplierName
   }= values2
 
   const [showForm, setShowForm] = useState(false);
@@ -147,9 +146,42 @@ const Inquiry = () => {
     setmodal_delete(!modal_delete);
     setRemove_id(_id);
   };
+  const getallAssignProduct=()=>{
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProduct`)
+      .then((response) => {
+        if (response.length > 0) {
+
+console.log(response)
+        // if (response.length > 0) {
+        //   setproductdetail(response);
+        // } else if (response.length === 0) {
+        //   setproductdetail([]);
+        // }
+        console.log("AssignProduct",response)
+          const names = response.map((item)=>({
+            value:item.ProductDetail.map((detail=>detail._id)) , label :item.ProductDetail.map((detail=>detail.Description)),toshow:false,SupplierName:item.SupplierName.SupplierName,default_id:item.SupplierName._id
+          }
+         ));
+         console.log(names)
+          
+         setsupplierdetail(names);
+        } else if(response.length===0){
+          setsupplierdetail([]);
+        }
+      });
+  }
+  useEffect(()=>{
+    getallProductDetail()
+    getallAssignProduct()
+    },[])
 
   const [modal_edit, setmodal_edit] = useState(false);
   const [rfqForm, setRfqForm] = useState(false)
+  
+  const [data, Setdata] = useState([])
+  const [rfq, setrfq] = useState("")
 
   const handleTog_RFQ = (_id) => {
     console.log(_id)
@@ -157,12 +189,40 @@ const Inquiry = () => {
     setUpdateForm(false)
     setIsSubmit(false);
     setShowForm(false)
+    setrfq(_id);
     getInquiryProduct(_id).then((res)=>{
       console.log(res)
+      let count =0;
+    // Update speciality state with the selected option's value
+    selectsupplier.forEach(item => {
+      item.toshow = false;
+    });
+    console.log(res.ProductDetail)
+    for (let i = 0; i < selectsupplier.length; i++) {
+      if (selectsupplier[i].value.some(item => item === res.ProductDetail)) {
+        selectsupplier[i].toshow = true;
+        count++;
+       
+      }
+    }
+    console.log(res.ProductDetail)
+    console.log(selectsupplier)
+    console.log("This is Count",count);
+   const temp= selectsupplier.filter((item)=>item.toshow)
+     Setdata(temp)
+
+    console.log("THis is the Id", res.ProductDetail)
+    console.log("THis is the Supplier",selectsupplier)
+    
+//     setprod(res.ProductDetail)
+// values.ProductDetail=res.ProductDetail
+    
+    
+    // setSupplierNamePlaceholder(selectedOption.label)
       setValues2({
-        ...values,
+        ...values2,
         ProductDetailLabel :res.ProductDetailLabel,
-        
+        ProductDetail2:res.ProductDetail,
         Grade:res.Grade,
         Group:res.Group,
         Quantity:res.Quantity,
@@ -170,6 +230,7 @@ const Inquiry = () => {
         RFQ_Status2:res.RFQ_Status2,
         BasePrice:res.BasePrice,
         IsActive:res.IsActive,
+        
        
         
       });
@@ -225,12 +286,7 @@ const Inquiry = () => {
     }
   }, [formErrors, isSubmit]);
 
-  // const fetchCategories = () => {
-  //   listCompanynDetails().then((res) => {
-  //     setDetails(res);
-  //     console.log(details);
-  //   });
-  // };
+
   const handleSort = (column, sortDirection) => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
@@ -321,6 +377,31 @@ if(Object.keys(errors).length===0){
         console.log(err);
       });
     }
+  };  
+  const handleSubmitRFQ = (e) => {
+    e.preventDefault();
+    // setFormErrors(validate(values));
+    let errors = validate(values);
+    setFormErrors(errors);
+    setIsSubmit(true);
+    values.ProductDetail=allProductId
+    console.log(values)
+if(Object.keys(errors).length===0){
+
+
+    createinquiry(values)
+      .then((res) => {
+        setValues(initialState);
+        setShowForm(false);
+        setUpdateForm(false);
+        fetchCategories();
+        setAllProductId([]); // Assuming _id is in res.data
+    setAllProductDetail([]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   };
 
   const handleAddCancel = (e) => {
@@ -328,6 +409,13 @@ if(Object.keys(errors).length===0){
     setShowForm(false);
     setUpdateForm(false);
     setValues(initialState);
+    setIsSubmit(false);
+  };
+  const handleRFQCancel = (e) => {
+     
+    setUpdateForm(true);
+    setShowForm(false);
+     
     setIsSubmit(false);
   };
   const handleDelete = (e) => { 
@@ -577,6 +665,34 @@ const handleSelect=(selectoptions) =>{
 
 const [allProductDetail, setAllProductDetail]= useState([])
 const [allProductId, setAllProductId]= useState([])
+const handleUpdateInquiry = () => {
+ 
+ const currentData=new Date();
+console.log(values2)
+values2.RFQ_Date=currentData;
+console.log(currentData)
+values2.RFQ_Status2=true
+    axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/InquiryProduct/${rfq}`, values2)
+  .then((res) => {
+    setUpdateForm(true);
+    setShowForm(false);
+    console.log(res);
+    setSupplierNamePlaceholder("");
+    setAllProductDetail(allProductDetail);
+    // Spread operator is not necessary here, use push to add the new id to the array
+    // setAllProductId(prevState => [...prevState, res.data._id]); // Assuming _id is in res.data
+    // setAllProductDetail(prevState => [...prevState, res.data]);
+    setLoadingOption(false);
+    setValues2(initialState2);
+     
+
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+      
+  }
 const handleAddInquiry = (e) => {
   e.preventDefault();
   setFormErrors({});
@@ -602,6 +718,26 @@ const handleAddInquiry = (e) => {
       
   }
   console.log(allProductDetail,allProductId)
+  const[tempArray, setTempArray] = useState([])
+const handleCheckboxChange=(itemKey, default_id)=>{
+  console.log(default_id)
+  console.log(tempArray.length)
+ 
+    if(tempArray.includes(default_id))
+    {
+      setTempArray(tempArray.filter((id)=>id !== default_id))
+      console.log(tempArray)
+    }
+    else{
+      setTempArray([...tempArray,default_id])
+    }
+ 
+  
+}
+console.log(tempArray)
+values2.SupplierName=tempArray
+console.log(values)
+
   document.title = "Company Details | Shreeji Pharma";
 
   return (
@@ -851,6 +987,7 @@ const handleAddInquiry = (e) => {
                                       
                                     </div>
                                   </Col>
+                                  {console.log("Product is",allProductDetail)}
                                   {allProductDetail ? (
                                         <div>
                                             <Row>
@@ -1343,7 +1480,8 @@ const handleAddInquiry = (e) => {
             <td>{items.ProductDetailLabel}</td>
             <td>{items.Grade}</td>
             <td>{items.Quantity}</td>
-            <td>{items.RFQ_Date === "" ? "Not Generated" : items.RFQ_Date}</td>
+            {console.log(items.RFQ_Date)}
+            <td>{(items.RFQ_Date === ""||items.RFQ_Date===null||items.RFQ_Date===undefined) ? "Not Generated" : items.RFQ_Date.split("T")[0]}</td>
 
             <td>
           
@@ -1359,7 +1497,7 @@ const handleAddInquiry = (e) => {
           }}
         >
          
-          Generate FRQ
+          Generate RFQ
         </button>
       </div>
             </React.Fragment>
@@ -1394,14 +1532,14 @@ const handleAddInquiry = (e) => {
 
                                   <Col lg={12}>
                                     <div className="hstack gap-2 justify-content-end">
-                                      <button
+                                      {/* <button
                                         type="submit"
                                         className="btn btn-success  m-1"
                                         id="add-btn"
                                         onClick={handleSubmit}
                                       >
                                         Submit
-                                      </button>
+                                      </button> */}
                                       <button
                                         type="button"
                                         className="btn btn-outline-danger m-1"
@@ -1479,6 +1617,41 @@ const handleAddInquiry = (e) => {
             />
         </div>
     </Col>
+    <Col lg={6}>
+                                  {data.map((items,index)=>{
+                                    return(
+                                      <Row className="px-5" key={index}>
+                                        <Col lg={12}>
+                                       <Input 
+                                       defaultChecked={false}
+                                        type="checkbox"
+                                        onClick={()=>handleCheckboxChange(index,items.default_id)}
+                                       />
+                                       <Label className="ms-3">{items.SupplierName}</Label>
+                                        </Col>
+                                      </Row>
+                                    )
+                                  })}
+                                 </Col>
+                                 <Col lg={12}>
+                                    <div className="hstack gap-2 justify-content-end">
+                                      <button
+                                        type="submit"
+                                        className="btn btn-success  m-1"
+                                        id="add-btn"
+                                        onClick={handleUpdateInquiry}
+                                      >
+                                        Update
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="btn btn-outline-danger m-1"
+                                        onClick={handleRFQCancel}
+                                      >
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </Col>
     </Row>
   </CardBody>
 </div>
