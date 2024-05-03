@@ -23,9 +23,6 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
-
-
 const ProductDetail = () => {
   
 
@@ -86,7 +83,7 @@ const ProductDetail = () => {
 
   const uploadImage = async (body) => {
     return await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/cms-blog/image-upload`,
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/ckeditorproduct/imageupload`,
       body
     );
   };
@@ -117,12 +114,12 @@ const ProductDetail = () => {
           const body = new FormData();
           loader.file
             .then((file) => {
-              body.append("uploadImg", file);
+              body.append("uploadImage", file);
               uploadImage(body)
                 .then((res) => {
                   console.log("res", res.url);
                   resolve({
-                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
+                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/productCkEditor/${res.url}`,
                   });
                 })
                 .catch((err) => console.log(err));
@@ -154,14 +151,14 @@ const ProductDetail = () => {
     set_Id(_id);
     setTypes(row.ProductDetail);
     setblogTitle(row.Description);
-    // setblogThumnailDesc(row.subtitle);
+    setblogThumnailDesc(row.Detail);
     setblogDesc(row.Detail);
-    // setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
+    setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
     setIsActive(row.IsActive);
-    setBP(row.BP);
-    setEP(row.EP);
-    setUSP(row.USP);
-    setOther(row.Other);
+    // setBP(row.BP);
+    // setEP(row.EP);
+    // setUSP(row.USP);
+    // setOther(row.Other);
    
     setCheckImagePhoto(true);
   };
@@ -180,12 +177,12 @@ const ProductDetail = () => {
       // formdata.append("newImage", blogImage);
       formdata.append("ProductDetail",types);
       formdata.append("Description", blogTitle);
-      // formdata.append("Detail", blogDesc);
+      formdata.append("Detail", blogThumnailDesc);
       formdata.append("IsActive", IsActive);
-      formdata.append("Other", Other);
-      formdata.append("BP", BP);
-      formdata.append("EP", EP);
-      formdata.append("USP", USP);
+      // formdata.append("Other", Other);
+      // formdata.append("BP", BP);
+      // formdata.append("EP", EP);
+      // formdata.append("USP", USP);
       // formdata.append("subtitle", blogThumnailDesc);
 
 
@@ -209,7 +206,7 @@ const ProductDetail = () => {
           setUSP(false);
           
           setblogImage("");
-          // setblogThumnailDesc("");
+          setblogThumnailDesc("");
           setViews(0);
           setIsSubmit(false);
           setCheckImagePhoto(false);
@@ -256,10 +253,11 @@ const ProductDetail = () => {
       formdata.append("Description", blogTitle);
       // formdata.append("Detail", blogDesc);
       formdata.append("IsActive", IsActive);
-      formdata.append("Other", Other);
-      formdata.append("BP", BP);
-      formdata.append("EP", EP);
-      formdata.append("USP", USP);
+      formdata.append("Detail", blogThumnailDesc);
+      // formdata.append("Other", Other);
+      // formdata.append("BP", BP);
+      // formdata.append("EP", EP);
+      // formdata.append("USP", USP);
       // formdata.append("subtitle", blogThumnailDesc);
 
       axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/projectdetail/${_id}`,formdata)
@@ -283,7 +281,7 @@ const ProductDetail = () => {
           setOther(false);
           setBP(false);
           setUSP(false);
-          // setblogThumnailDesc("");
+          setblogThumnailDesc("");
           setViews(0);
           setblogImage("");
           fetchCategories();
@@ -315,7 +313,7 @@ const ProductDetail = () => {
     }
 
     if (blogTitle === "") {
-      errors.blogTitle = "Title is required!";
+      errors.blogTitle = "Product Name is required!";
       setErrBT(true);
     }
     if (blogTitle !== "") {
@@ -466,7 +464,7 @@ const ProductDetail = () => {
     setCheckImagePhoto(false);
     setShowForm(false);
     setUpdateForm(false);
-    // setblogThumnailDesc("");
+    setblogThumnailDesc("");
     setViews(0);
     // setValues(initialState);
     setblogDesc("");
@@ -493,7 +491,7 @@ const ProductDetail = () => {
     setPhotoAdd("");
     setUpdateForm(false);
     setShowForm(false);
-    // setblogThumnailDesc("");
+    setblogThumnailDesc("");
     setViews(0);
     setCheckImagePhoto(false);
     setIsActive(false);
@@ -523,14 +521,14 @@ const ProductDetail = () => {
         minWidth: "150px",
       },
     {
-      name: "Product Detail",
+      name: "Product Group",
       cell: (row) => row.ProductDetailTypes[0].ProductGroup,
       sortable: true,
       sortField: "blogTitle",
       minWidth: "150px",
     },
     {
-        name: "Title",
+        name: "Product Name",
         cell: (row) => row.Description,
         sortable: true,
         sortField: "blogTitle",
@@ -738,28 +736,33 @@ const ProductDetail = () => {
                                 <Row>
                                 <Col lg={6}>
                                 <Label>
-                                Product Detail{" "}
+                                Select Group:{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                     <Input name="Type" id="" type="select" onChange={(e) => {
                                           setTypes(e.target.value);
                                         }}>
-                                        <option>Select Type</option>
+                                        <option>Select Group</option>
                                         {selectType && selectType.map((item,index)=>
                                         <option key={index} value={item._id}>{item.ProductGroup}</option>
                                         )}
                                     </Input>
-                                    {/* {isSubmit && (
+                                    {isSubmit && (
                                       <p className="text-danger">
                                       {console.log(formErrors.types)}
                                         {formErrors.types}
                                       </p>
-                                    )} */}
+                                    )}
                                    
                                   </Col>
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
+                                  <Col lg={6}> 
+                                  <Label>
+                                        Product Name{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                    <div className="form-floating mb-3 p-0">
                                       <Input
+                                      style={{height:'35px'}}
                                         key={"blogTitle_" + _id}
                                         type="text"
                                         className={validClassBT}
@@ -771,305 +774,46 @@ const ProductDetail = () => {
                                           setblogTitle(e.target.value);
                                         }}
                                       />
-                                      <Label>
-                                        Title{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
+                                     
                                       {isSubmit && (
                                         <p className="text-danger">
                                           {formErrors.blogTitle}
                                         </p>
                                       )}
                                     </div>
+                                    
                                   </Col>
-
-                                  {/* <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        type="textarea"
-                                        className={validClassBTD}
-                                        style={{ height: "100px" }}
-                                        placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
-                                        onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
-                                        }}
-                                      />
-                                      <Label className="form-label">
-                                        Sub Title
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col> */}
-{/* 
                                   <Col lg={12}>
                                     <Card>
                                       <Label>
-                                        Description
+                                        Detail
                                         <span className="text-danger">*</span>
                                       </Label>
                                       <CardBody>
-
+                                        {/* <Form method="post"> */}
                                         <CKEditor
-                                          key={"blogDesc_" + _id}
+                                          key={"cmsDesc" + _id}
                                           editor={ClassicEditor}
-                                          data={blogDesc}
+                                          data={blogThumnailDesc}
                                           config={{
                                             extraPlugins: [uploadPlugin],
                                           }}
                                           onChange={(event, editor) => {
                                             const data = editor.getData();
 
-                                            setblogDesc(data);
-                                            console.log(blogDesc);
+                                            setblogThumnailDesc(data);
+                                            console.log(blogThumnailDesc);
                                           }}
                                         />
                                         {isSubmit && (
                                           <p className="text-danger">
-                                            {formErrors.blogDesc}
+                                            {formErrors.cmsDesc}
                                           </p>
                                         )}
                                       </CardBody>
                                     </Card>
-                                  </Col> */}
+                                  </Col>
 
-                                  {/* <Col lg={6}>
-                                    <label>
-                                      Image{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-
-                                    <Input
-                                      key={"blogImage_" + _id}
-                                      type="file"
-                                      name="blogImage"
-                                      className={validClassBI}
-                                      // accept="images/*"
-                                      accept=".jpg, .jpeg, .png"
-                                      onChange={PhotoUpload}
-                                    />
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.blogImage}
-                                      </p>
-                                    )}
-                                    {checkImagePhoto ? (
-                                      <img
-                                        //   src={image ?? myImage}
-                                        className="m-2"
-                                        src={photoAdd}
-                                        alt="Profile"
-                                        width="180"
-                                        height="200"
-                                      />
-                                    ) : null}
-                                  </Col> */}
-
-                                  {/* <div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setIsActive(e.target.checked);
-                                          }}
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div>
-                                  <div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"BP_" + _id}
-                                          type="checkbox"
-                                          name="BP"
-                                          value={BP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setBP(e.target.checked);
-                                          }}
-                                          checked={BP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          BP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div><div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"USP_" + _id}
-                                          type="checkbox"
-                                          name="USP"
-                                          value={USP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setUSP(e.target.checked);
-                                          }}
-                                          checked={USP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          USP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div><div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"EP_" + _id}
-                                          type="checkbox"
-                                          name="EP"
-                                          value={EP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setEP(e.target.checked);
-                                          }}
-                                          checked={EP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          EP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div><div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"Other_" + _id}
-                                          type="checkbox"
-                                          name="Other"
-                                          value={Other}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setOther(e.target.checked);
-                                          }}
-                                          checked={Other}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Other
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div> */}
-                                  <Col lg={6} style={{marginTop:"35px"}}>
-                                      <Row>
-                                      <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"BP_" + _id}
-                                          type="checkbox"
-                                          name="BP"
-                                          value={BP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setBP(e.target.checked);
-                                          }}
-                                          checked={BP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          BP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"USP_" + _id}
-                                          type="checkbox"
-                                          name="USP"
-                                          value={USP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setUSP(e.target.checked);
-                                          }}
-                                          checked={USP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          USP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"EP_" + _id}
-                                          type="checkbox"
-                                          name="EP"
-                                          value={EP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setEP(e.target.checked);
-                                          }}
-                                          checked={EP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          EP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"Other_" + _id}
-                                          type="checkbox"
-                                          name="Other"
-                                          value={Other}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setOther(e.target.checked);
-                                          }}
-                                          checked={Other}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Other
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                      </Row>
-                                    </Col>
                                     <div className="mt-5">
                                     <Col lg={2}>
                                       <div className="form-check mb-2">
@@ -1092,7 +836,9 @@ const ProductDetail = () => {
                                         </Label>
                                       </div>
                                     </Col>
-                                  </div><Col></Col>
+                                  </div><Col>
+
+                                  </Col>
                                  
 
                                   {loadingOption && (
@@ -1157,7 +903,7 @@ const ProductDetail = () => {
                                 <Row>
                                 <Col lg={6}>
                                 <Label>
-                                Product Detail{" "}
+                                Select Group:{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                     <Input name="Type" id="" type="select" value={types} onChange={(e) => {
@@ -1173,9 +919,13 @@ const ProductDetail = () => {
                                       </p>
                                     )}
                                   </Col>
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
+                                  <Col lg={6}> <Label>
+                                        Product Name{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                    <div className="form-floating mb-3 p-0">
                                       <Input
+                                      style={{height:'35px'}}
                                         key={"blogTitle_" + _id}
                                         type="text"
                                         className={validClassBT}
@@ -1187,216 +937,45 @@ const ProductDetail = () => {
                                           setblogTitle(e.target.value);
                                         }}
                                       />
-                                      <Label>
-                                        Title{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
+                                     
                                       {isSubmit && (
                                         <p className="text-danger">
                                           {formErrors.blogTitle}
                                         </p>
                                       )}
                                     </div>
+                                    
                                   </Col>
-
-                                  {/* <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        type="textarea"
-                                        className={validClassBTD}
-                                        style={{ height: "100px" }}
-                                        placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
-                                        onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
-                                        }}
-                                      />
-                                      <Label className="form-label">
-                                        Sub Title
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </Col> */}
-
-                                  {/* <Col lg={12}>
+                                  <Col lg={12}>
                                     <Card>
                                       <Label>
-                                        Description
+                                        Detail
                                         <span className="text-danger">*</span>
                                       </Label>
                                       <CardBody>
-                                        
+                                        {/* <Form method="post"> */}
                                         <CKEditor
-                                          key={"blogDesc_" + _id}
+                                          key={"cmsDesc" + _id}
                                           editor={ClassicEditor}
-                                          data={blogDesc}
+                                          data={blogThumnailDesc}
                                           config={{
                                             extraPlugins: [uploadPlugin],
                                           }}
                                           onChange={(event, editor) => {
                                             const data = editor.getData();
 
-                                            setblogDesc(data);
-                                            console.log(blogDesc);
+                                            setblogThumnailDesc(data);
+                                            console.log(blogThumnailDesc);
                                           }}
                                         />
                                         {isSubmit && (
                                           <p className="text-danger">
-                                            {formErrors.blogDesc}
+                                            {formErrors.cmsDesc}
                                           </p>
                                         )}
                                       </CardBody>
                                     </Card>
-                                  </Col> */}
-
-                                  {/* <Col lg={6}>
-                                    <label>
-                                      Image{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-
-                                    <Input
-                                      key={"blogImage_" + _id}
-                                      type="file"
-                                      name="blogImage"
-                                      className={validClassBI}
-                                      // accept="images/*"
-                                      accept=".jpg, .jpeg, .png"
-                                      onChange={PhotoUpload}
-                                    />
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.blogImage}
-                                      </p>
-                                    )}
-                                    {checkImagePhoto ? (
-                                      <img
-                                        //   src={image ?? myImage}
-                                        className="m-2"
-                                        src={photoAdd}
-                                        alt="Profile"
-                                        width="180"
-                                        height="200"
-                                      />
-                                    ) : null}
-                                  {/* </Col> */}
-                                    <Col lg={6} style={{marginTop:"35px"}}>
-                                      <Row>
-                                      <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"BP_" + _id}
-                                          type="checkbox"
-                                          name="BP"
-                                          value={BP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setBP(e.target.checked);
-                                          }}
-                                          checked={BP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          BP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"USP_" + _id}
-                                          type="checkbox"
-                                          name="USP"
-                                          value={USP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setUSP(e.target.checked);
-                                          }}
-                                          checked={USP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          USP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"EP_" + _id}
-                                          type="checkbox"
-                                          name="EP"
-                                          value={EP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setEP(e.target.checked);
-                                          }}
-                                          checked={EP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          EP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"Other_" + _id}
-                                          type="checkbox"
-                                          name="Other"
-                                          value={Other}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setOther(e.target.checked);
-                                          }}
-                                          checked={Other}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Other
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                      </Row>
-                                    </Col>
-
-                                  {/* <div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          onChange={(e) => {
-                                            setIsActive(e.target.checked);
-                                          }}
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div> */}
-
+                                  </Col>
                                   <div className="mt-5">
                                     <Col lg={2}>
                                       <div className="form-check mb-2">
@@ -1420,101 +999,7 @@ const ProductDetail = () => {
                                       </div>
                                     </Col>
                                   </div><Col>
-
-                                 
-                                  {/* <div className="mt-1">
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"BP_" + _id}
-                                          type="checkbox"
-                                          name="BP"
-                                          value={BP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setBP(e.target.checked);
-                                          }}
-                                          checked={BP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          BP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div>
-                                  <div className="mt-1">
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"USP_" + _id}
-                                          type="checkbox"
-                                          name="USP"
-                                          value={USP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setUSP(e.target.checked);
-                                          }}
-                                          checked={USP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          USP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div><div className="mt-1">
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"EP_" + _id}
-                                          type="checkbox"
-                                          name="EP"
-                                          value={EP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setEP(e.target.checked);
-                                          }}
-                                          checked={EP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          EP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div><div className="mt-1">
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"Other_" + _id}
-                                          type="checkbox"
-                                          name="Other"
-                                          value={Other}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setOther(e.target.checked);
-                                          }}
-                                          checked={Other}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Other
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div> */}
                                   </Col>
-                                 
-
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
                                       <div

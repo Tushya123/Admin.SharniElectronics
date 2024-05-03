@@ -36,19 +36,13 @@ import { listState, listCountry } from "../../functions/Location/Location";
 
 const initialState = {
   SupplierName: "",
-  Website1: "",
+  CompanyName: "",
   ContactNo_Office: "",
-  ContactNo_Sales: "",
-  ContactNo_Support: "",
+
   EmailID_Office: "",
-  EmailID_Sales: "",
-  EmailID_Support: "",
+  
   Country:"",
-  State: "",
-  City: "",
-  Address1: "",
-  Address2: "",
-  Pincode: "",
+  
 
   IsActive: true,
 };
@@ -275,6 +269,7 @@ const Supplier = () => {
   const [errCountry, setErrCountry] = useState(false);
   const [errState, setErrState] = useState(false);
   const [errCity, setErrCity] = useState(false);
+  const [companyname, setCompanyName] = useState(false);
   const [errPincode, setErrPincode] = useState(false);
   const [errAddress1, setErrAddress1] = useState(false);
   const [errAddress2, setErrAddress2] = useState(false);
@@ -295,18 +290,11 @@ const Supplier = () => {
     SupplierName,
   Website1,
   ContactNo_Office,
-  ContactNo_Sales,
-  ContactNo_Support,
+  CompanyName,
   EmailID_Office,
-  EmailID_Sales,
-  EmailID_Support,
+  
   Country,
-  State,
-  City,
-  Address1,
-  Address2,
-  Pincode,
-
+  
   IsActive,
   } = values;
 
@@ -341,20 +329,15 @@ const Supplier = () => {
         console.log(res);
         setValues({
           ...values,
-          Pincode: res.Pincode,
+          
           SupplierName: res.SupplierName,
-          Address2: res.Address2,
-          Address1: res.Address1,
-          State: res.State,
-          City: res.City,
+          
+         
           Country: res.Country,
           ContactNo_Office: res.ContactNo_Office,
-          ContactNo_Sales: res.ContactNo_Sales,
-          ContactNo_Support: res.ContactNo_Support,
           EmailID_Office: res.EmailID_Office,
-          EmailID_Sales: res.EmailID_Sales,
-          EmailID_Support: res.EmailID_Support,
-          Website1: res.Website1,
+          
+          CompanyName: res.CompanyName,
           IsActive: res.IsActive,
         });
       })
@@ -540,35 +523,13 @@ if(Object.keys(errors).length===0){
     } else {
       setErrCountry(false);
     }
-    if (!values.State) {
-      errors.State = "State name is required!";
-      setErrState(true);
-    } else {
-      setErrState(false);
-    }
-    if (!values.City) {
-      errors.City = "City name is required!";
-      setErrCity(true);
-    } else {
-      setErrCity(false);
-    }
-    if (!values.Pincode) {
-      errors.Pincode = "Pincode is required!";
-      setErrPincode(true);
-    } else {
-      setErrPincode(false);
-    }
-    if (!values.Address1) {
-      errors.Address1 = "Address1 is required!";
+    
+    if (!values.CompanyName) {
+      errors.CompanyName = "Company Name is required!";
       setErrAddress1(true);
     } else {
       setErrAddress1(false);
-    } if (!values.Address2) {
-      errors.Address2 = "Address2 is required!";
-      setErrAddress2(true);
-    } else {
-      setErrAddress2(false);
-    }
+    } 
     if (!values.EmailID_Office) {
       errors.EmailID_Office = "Email is required!";
       setErrEmailOffice(true);
@@ -578,24 +539,6 @@ if(Object.keys(errors).length===0){
     } else {
       setErrEmailOffice(false);
     }
-    // if (!values.EmailID_Sales) {
-    //   errors.EmailID_Sales = "Email is required!";
-    //   setErrEmailSales(true);
-    // } else if (!regex.test(values.EmailID_Sales)) {
-    //   errors.EmailID_Sales = "This is not a valid email format!";
-    //   setErrEmailSales(true);
-    // } else {
-    //   setErrEmailSales(false);
-    // }
-    // if (!values.EmailID_Support) {
-    //   errors.EmailID_Support = "Email is required!";
-    //   setErrEmailSupport(true);
-    // } else if (!regex.test(values.EmailID_Support)) {
-    //   errors.EmailID_Support = "This is not a valid email format!";
-    //   setErrEmailSupport(true);
-    // } else {
-    //   setErrEmailSupport(false);
-    // }
     if (!values.ContactNo_Office) {
       errors.ContactNo_Office = "Contact No. is required";
       setErrCNOffice(true);
@@ -605,51 +548,7 @@ if(Object.keys(errors).length===0){
     } else {
       setErrCNOffice(false);
     }
-    if (values.ContactNo_Sales) {
-      // errors.ContactNo_Sales = "Contact No. is required";
-      // setErrCNSales(true);
-      if (!phone.test(values.ContactNo_Sales)) {
-        errors.ContactNo_Sales = "This is not a valid Contact Number";
-        setErrCNSales(true);
-      } else {
-        setErrCNSales(false);
-      }
-    }
-
-    if (values.ContactNo_Support) {
-      // errors.ContactNo_Support = "Contact No. is required";
-      // setErrCNSupport(true);
-
-      if (!phone.test(values.ContactNo_Support)) {
-        errors.ContactNo_Support = "This is not a valid Contact Number";
-        setErrCNSupport(true);
-      } else {
-        setErrCNSupport(false);
-      }
-    }
-
-    // if (!values.GSTNo) {
-    //   errors.GSTNo = "GST No is required!";
-    //   setErrGST(true);
-    // } else {
-    //   setErrGST(false);
-    // }
-    if (!values.Website1) {
-      errors.Website1 = "website is required!";
-      setErrWeb1(true);
-    }
-    // if (!values.Favicon) {
-    //   errors.Favicon = "Favicon is required!";
-    // }
-    // if (!values.Icon) {
-    //   errors.Icon = "Icon is required!";
-    // }
-    // if (!values.Logo) {
-    //   errors.Logo = "Logo is required!";
-    // }
-    // if (!values.DigitalSignature) {
-    //   errors.DigitalSignature = "Digital Signature is required!";
-    // }
+    
 
     return errors;
   };
@@ -663,7 +562,7 @@ if(Object.keys(errors).length===0){
     errState && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassCity =
     errCity && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassAddress1 =
+  const validClassCompanyName =
     errAddress1 && isSubmit ? "form-control is-invalid" : "form-control";const validClassAddress2 =
     errAddress2 && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassPincode =
@@ -701,19 +600,25 @@ if(Object.keys(errors).length===0){
       minWidth: "150px",
     },
 
+    // {
+    //   name: "Country",
+    //   selector: (row) => {
+    //     for (let i = 0; i < countriesArray.length; i++) {
+    //       if (countriesArray[i].value === row.Country) {
+    //         return countriesArray[i].label; // Return the label when a match is found
+    //       }
+    //     }
+    //     return row.Country; // Return the original value if no match is found
+    //   },
+    //   minWidth: "180px",
+    // }
     {
       name: "Country",
-      selector: (row) => {
-        for (let i = 0; i < countriesArray.length; i++) {
-          if (countriesArray[i].value === row.Country) {
-            return countriesArray[i].label; // Return the label when a match is found
-          }
-        }
-        return row.Country; // Return the original value if no match is found
-      },
-      minWidth: "180px",
-    }
-,    
+      cell: (row) => row.Country,
+      sortable: true,
+      sortField: "SupplierName",
+      minWidth: "150px",
+    },
     {
       name: "Office Contact No.",
       cell: (row) => row.ContactNo_Office,
@@ -1017,112 +922,30 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
+                               
                                 <Col md={3}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="text"
-                                      className={validClassState}
-                                      placeholder="Enter city name"
-                                      name="State"
-                                      value={State}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      State<span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.State}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-
-                                <Col md={3}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className={validClassCity}
-                                      placeholder="Enter city name"
-                                      name="City"
-                                      value={City}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      City<span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.City}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-                                <Col md={3}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="number"
-                                      className={validClassPincode}
-                                      placeholder="Enter pincode"
-                                      name="Pincode"
-                                      value={Pincode}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      Pincode
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Pincode}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-                                <Col md={12}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="textarea"
-                                      className={validClassAddress1}
+                                      className={validClassCompanyName}
                                       placeholder="Enter address"
-                                      style={{ height: "100px" }}
-                                      name="Address1"
-                                      value={Address1}
+                                   
+                                      name="CompanyName"
+                                      value={CompanyName}
                                       onChange={handleChange}
                                     />
                                     <Label>
-                                      Address1
+                                      Company Name
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.Address1}
+                                        {formErrors.CompanyName}
                                       </p>
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={12}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="textarea"
-                                      className={validClassAddress2}
-                                      placeholder="Enter address"
-                                      style={{ height: "100px" }}
-                                      name="Address2"
-                                      value={Address2}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      Address2
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Address2}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
+                                
 
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
@@ -1145,42 +968,7 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="tel"
-                                      className={validClassCNSales}
-                                      placeholder="Enter contact no. of sales"
-                                      name="ContactNo_Sales"
-                                      value={ContactNo_Sales}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Sales ContactNo</Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.ContactNo_Sales}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col> 
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="tel"
-                                      className={validClassCNSupport}
-                                      placeholder="Enter contact no. of support"
-                                      name="ContactNo_Support"
-                                      value={ContactNo_Support}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Support ContactNo</Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.ContactNo_Support}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
+                                
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
@@ -1203,97 +991,7 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="email"
-                                      className="form-control"
-                                      placeholder="example@gmail.com"
-                                      id="emailidInput"
-                                      name="EmailID_Sales"
-                                      value={EmailID_Sales}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Sales EmailID</Label>
-                                    {isSubmit && (
-                                <p className="text-danger">
-                                  {formErrors.EmailID_Sales}
-                                </p>
-                              )}
-                                  </div>
-                                </Col>
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="email"
-                                      className="form-control"
-                                      placeholder="example@gmail.com"
-                                      id="emailidInput"
-                                      name="EmailID_Support"
-                                      value={EmailID_Support}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Support EmailID</Label>
-                                    {isSubmit && (
-                                <p className="text-danger">
-                                  {formErrors.EmailID_Support}
-                                </p>
-                              )}
-                                  </div>
-                                </Col>
-
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className={validClassWeb1}
-                                      placeholder="Enter website1"
-                                      name="Website1"
-                                      value={Website1}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      Website
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Website1}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-                                {/* <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Enter website2"
-                                      name="Website2"
-                                      value={Website2}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Website2</Label>
-                                    {isSubmit && (
-                                <p className="text-danger">
-                                  {formErrors.Website2}
-                                </p>
-                              )}
-                                  </div>
-                                </Col> */}
-                                {/* <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Enter GST No."
-                                      name="GSTNo"
-                                      value={GSTNo}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>GST No.</Label>
-                                  </div>
-                                </Col> */}
+                                
 
                                 <Row>
                                   <Col lg={6}>
@@ -1378,28 +1076,7 @@ if(Object.keys(errors).length===0){
                                     </div>
                                   </FormGroup>
                                 </Col>
-                                {/* <Col lg={6}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className={validClassCPN}
-                                      placeholder="Enter contact person name"
-                                      name="ContactPersonName"
-                                      value={ContactPersonName}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      Contact Person Name
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.ContactPersonName}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col> */}
-
+                                
                                 <Col md={3}>
                                   <div className="form-floating mb-3">
                                     <select
@@ -1435,112 +1112,30 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
+                                
                                 <Col md={3}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="text"
-                                      className={validClassState}
-                                      placeholder="Enter State name"
-                                      name="State"
-                                      value={State}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      State<span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.State}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-
-                                <Col md={3}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className={validClassCity}
-                                      placeholder="Enter city name"
-                                      name="City"
-                                      value={City}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      City<span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.City}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-                                <Col md={3}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="number"
-                                      className={validClassPincode}
-                                      placeholder="Enter pincode"
-                                      name="Pincode"
-                                      value={Pincode}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      Pincode
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Pincode}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-                                <Col md={12}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="textarea"
-                                      className={validClassAddress1}
+                                      className={validClassCompanyName}
                                       placeholder="Enter address"
-                                      style={{ height: "100px" }}
-                                      name="Address1"
-                                      value={Address1}
-                                      onChange={handleChange}
+                                      
+                                      name="CompanyName"
+                                      value={CompanyName}
+                                      onChange={handleChange} 
                                     />
                                     <Label>
-                                      Address1
+                                    CompanyName
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.Address1}
+                                        {formErrors.CompanyName}
                                       </p>
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={12}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="textarea"
-                                      className={validClassAddress2}
-                                      placeholder="Enter address"
-                                      style={{ height: "100px" }}
-                                      name="Address2"
-                                      value={Address2}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      Address2
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Address2}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
+                               
 
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
@@ -1563,42 +1158,7 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="tel"
-                                      className={validClassCNSales}
-                                      placeholder="Enter contact no. of sales"
-                                      name="ContactNo_Sales"
-                                      value={ContactNo_Sales}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Sales ContactNo</Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.ContactNo_Sales}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="tel"
-                                      className={validClassCNSupport}
-                                      placeholder="Enter contact no. of support"
-                                      name="ContactNo_Support"
-                                      value={ContactNo_Support}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Support ContactNo</Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.ContactNo_Support}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
+                               
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
@@ -1621,98 +1181,9 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="email"
-                                      className="form-control"
-                                      placeholder="example@gmail.com"
-                                      id="emailidInput"
-                                      name="EmailID_Sales"
-                                      value={EmailID_Sales}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Sales EmailID</Label>
-                                    {isSubmit && (
-                                <p className="text-danger">
-                                  {formErrors.EmailID_Sales}
-                                </p>
-                              )}
-                                  </div>
-                                </Col>
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="email"
-                                      className="form-control"
-                                      placeholder="example@gmail.com"
-                                      id="emailidInput"
-                                      name="EmailID_Support"
-                                      value={EmailID_Support}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Support EmailID</Label>
-                                    {isSubmit && (
-                                <p className="text-danger">
-                                  {formErrors.EmailID_Support}
-                                </p>
-                              )}
-                                  </div>
-                                </Col>
-
-                                <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className={validClassWeb1}
-                                      placeholder="Enter website1"
-                                      name="Website1"
-                                      value={Website1}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>
-                                      Website
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Website1}
-                                      </p>
-                                    )}
-                                  </div>
-                                </Col>
-                                {/* <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Enter website2"
-                                      name="Website2"
-                                      value={Website2}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>Website2</Label>
-                                    {isSubmit && (
-                                <p className="text-danger">
-                                  {formErrors.Website2}
-                                </p>
-                              )}
-                                  </div>
-                                </Col> */}
-                                {/* <Col md={4}>
-                                  <div className="form-floating mb-3">
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Enter GST No."
-                                      name="GSTNo"
-                                      value={GSTNo}
-                                      onChange={handleChange}
-                                    />
-                                    <Label>GST No.</Label>
-                                  </div>
-                                </Col> */}
-
+                                
+                                
+                               
                                 <Row>
                                   <Col lg={6}>
                                     <div className="mb-3">

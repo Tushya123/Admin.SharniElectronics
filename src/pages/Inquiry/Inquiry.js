@@ -34,22 +34,18 @@ const initialState = {
   InquiryNo:"",
   ContactPerson:"",
   CompanyName:"",
-  Reference:"",
-  Address:"",
+ 
   Country:"",
-  Phone:"",
-  Fax:"",
+  
   Mobile:"",
   Email:"",
   Comments:"",
   IsActive:true,
-  RFQ_Status:false,
-  Status:false
 };
 
 const initialState2={
   ProductDetail2 :"",
-  Grade :"",
+
   Quantity:"" ,
   IsActive:true,
   SupplierName:[],
@@ -107,22 +103,20 @@ const Inquiry = () => {
     
     ContactPerson,
     CompanyName,
-    Reference,
-    Address,
+  
+ 
     Country,
-    Phone,
-    Fax,
+ 
     Mobile,
     Email,
     Comments,
     IsActive,
-    RFQ_Status,
-    Status
+ 
   } = values;
 
   const{
     ProductDetail2 ,
-    Grade ,
+  
     Quantity 
     , ProductDetailLabel,BasePrice,Group,RFQ_Status2, RFQ_Date,SupplierName
   }= values2
@@ -154,11 +148,7 @@ const Inquiry = () => {
         if (response.length > 0) {
 
 console.log(response)
-        // if (response.length > 0) {
-        //   setproductdetail(response);
-        // } else if (response.length === 0) {
-        //   setproductdetail([]);
-        // }
+      
         console.log("AssignProduct",response)
           const names = response.map((item)=>({
             value:item.ProductDetail.map((detail=>detail._id)) , label :item.ProductDetail.map((detail=>detail.Description)),toshow:false,SupplierName:item.SupplierName.SupplierName,default_id:item.SupplierName._id
@@ -214,16 +204,12 @@ console.log(response)
     console.log("THis is the Id", res.ProductDetail)
     console.log("THis is the Supplier",selectsupplier)
     
-//     setprod(res.ProductDetail)
-// values.ProductDetail=res.ProductDetail
-    
-    
-    // setSupplierNamePlaceholder(selectedOption.label)
+
       setValues2({
         ...values2,
         ProductDetailLabel :res.ProductDetailLabel,
         ProductDetail2:res.ProductDetail,
-        Grade:res.Grade,
+   
         Group:res.Group,
         Quantity:res.Quantity,
         RFQ_Date:res.RFQ_Date,
@@ -234,8 +220,13 @@ console.log(response)
        
         
       });
-    })
+      
+
+
+    }
+  )
   };
+  console.log("Nice",ProductDetail2)
 
   const handleTog_edit = (_id) => {
     // setmodal_edit(!modal_edit);
@@ -251,17 +242,14 @@ console.log(response)
           
           ContactPerson:res.ContactPerson,
           CompanyName:res.CompanyName,
-          Reference:res.Reference,
-          Address:res.Address,
+          
           Country:res.Country,
-          Phone:res.Phone,
-          Fax:res.Fax,
+         
           Mobile:res.Mobile,
           Email:res.Email,
           Comments:res.Comments,
           IsActive:res.IsActive,
-          RFQ_Status:res.RFQ_Status,
-          Status:res.Status
+         
           
         });
         initialState.InquiryNo= res._id
@@ -355,7 +343,7 @@ console.log(response)
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // setFormErrors(validate(values));
+    setFormErrors(validate(values));
     let errors = validate(values);
     setFormErrors(errors);
     setIsSubmit(true);
@@ -380,7 +368,7 @@ if(Object.keys(errors).length===0){
   };  
   const handleSubmitRFQ = (e) => {
     e.preventDefault();
-    // setFormErrors(validate(values));
+    setFormErrors(validate(values));
     let errors = validate(values);
     setFormErrors(errors);
     setIsSubmit(true);
@@ -406,16 +394,23 @@ if(Object.keys(errors).length===0){
 
   const handleAddCancel = (e) => {
     e.preventDefault();
+    setSupplierNamePlaceholder("");
+    setAllProductDetail([]);
+    setAllProductId([])
     setShowForm(false);
     setUpdateForm(false);
     setValues(initialState);
+    setValues2(initialState2)
     setIsSubmit(false);
   };
   const handleRFQCancel = (e) => {
-     
+    e.preventDefault();
+    setSupplierNamePlaceholder("");
+    setAllProductDetail([]);
+    setAllProductId([])
     setUpdateForm(true);
     setShowForm(false);
-     
+    setValues2(initialState2)
     setIsSubmit(false);
   };
   const handleDelete = (e) => { 
@@ -455,8 +450,13 @@ if(Object.keys(errors).length===0){
 
   const handleUpdateCancel = (e) => {
     e.preventDefault();
+    setValues2(initialState2)
+    setSupplierNamePlaceholder("");
+    setAllProductDetail([]);
+    setAllProductId([])
+    setRfqForm(false)
     setShowForm(false);
-    setUpdateForm(false);
+    setUpdateForm(false)
     setIsSubmit(false);
     setValues(initialState);
   };
@@ -482,7 +482,8 @@ if(Object.keys(errors).length===0){
   const validClassCity =
     errCity && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassAddress1 =
-    errAddress1 && isSubmit ? "form-control is-invalid" : "form-control";const validClassAddress2 =
+    errAddress1 && isSubmit ? "form-control is-invalid" : "form-control";
+    const validClassAddress2 =
     errAddress2 && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassPincode =
     errPincode && isSubmit ? "form-control is-invalid" : "form-control";
@@ -538,45 +539,6 @@ if(Object.keys(errors).length===0){
       sortable: true,
       sortField: "createdAt",
       minWidth: "150px",
-    },
-  
-     
-    {
-      name: "Status",
-      selector: (row) => {
-        return <p>{row.Status ? "Done" : "InProcess"}</p>;
-      },
-      sortable: false,
-      sortField: "Status",
-    },
-    {
-      name: "RFQ_Status",
-      selector: (row) => {
-        return <p>{row.Status ? "Generated" : "Not Generated"}</p>;
-      },
-      sortable: false,
-      sortField: "RFQ_Status",
-    },
-    {
-      name: "Quote",
-      selector: (row) => {
-        return (
-          <React.Fragment>
-              <div className="edit">
-        <button
-          className="btn btn-sm btn-warning edit-item-btn "
-          data-bs-toggle="modal"
-          data-bs-target="#showModal"
-          onClick={() => handleTog_edit(row._id)}
-        >
-          Quote
-        </button>
-      </div>
-            </React.Fragment>
-        )
-      
-      },
-      
     },
     {
       name: "Action",
@@ -651,17 +613,9 @@ console.log(response)
     values2.ProductDetailLabel=selectedOption.label
     values2.Group=selectedOption.group
 }
-const gradearray=[
-  {label:"BP",value:"BP"},
-  {label:"USP",value:"USP"},
-  {label:"EP",value:"EP"},
-  {label:"Other",value:"Other"}
-]
+
  
-const handleSelect=(selectoptions) =>{
-  console.log(selectoptions)
-   setValues2({...values2,Grade:selectoptions.value})
-}
+
 
 const [allProductDetail, setAllProductDetail]= useState([])
 const [allProductId, setAllProductId]= useState([])
@@ -678,7 +632,7 @@ values2.RFQ_Status2=true
     setShowForm(false);
     console.log(res);
     setSupplierNamePlaceholder("");
-    setAllProductDetail(allProductDetail);
+    // setAllProductDetail(allProductDetail);
     // Spread operator is not necessary here, use push to add the new id to the array
     // setAllProductId(prevState => [...prevState, res.data._id]); // Assuming _id is in res.data
     // setAllProductDetail(prevState => [...prevState, res.data]);
@@ -717,7 +671,7 @@ const handleAddInquiry = (e) => {
 
       
   }
-  console.log(allProductDetail,allProductId)
+  console.log("This is it",allProductDetail,allProductId)
   const[tempArray, setTempArray] = useState([])
 const handleCheckboxChange=(itemKey, default_id)=>{
   console.log(default_id)
@@ -920,34 +874,7 @@ console.log(values)
                                                         />
                                                     </div>
                                     </Col>
-                                    <Col md={3}>
-                                  <Label>
-                                      Grade
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                  <div className="form-floating mb-3">
-                                    <Select
-                                    //   className={validClassCountry}
-                                      name={Grade}
-                                      value={Grade}
-                                      data-choices
-                                      data-choices-sorting="true"
-                                      onChange={handleSelect}
-                                      options={gradearray}
-                                      placeholder={Grade}
-                                    >
-                                     
-
-                                     
-                                    </Select>
-                                   
-                                    {/* {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Country}
-                                      </p>
-                                    )} */}
-                                  </div>
-                                </Col>
+                                 
                                 <Col lg={3}>
                                 <Label>
                                         Quantity{" "}
@@ -1002,9 +929,7 @@ console.log(values)
                                                   <td>
                                                     {item.Quantity}
                                                   </td>
-                                                  <td>
-                                                    {item.Grade}
-                                                  </td>
+                                                  
                                                 </tr>
                                               ))}
                                             </Row>
@@ -1045,37 +970,8 @@ console.log(values)
     </div>
 </Col>
 
-<Col lg={3}>
-    <Label>
-        Reference
-    </Label>
-    <div className="form-floating">
-        <Input
-            key={"reference"}
-            type="text"
-            placeholder="Enter reference"
-            name="Reference"
-            value={Reference}
-            onChange={handleChange}
-        />
-    </div>
-</Col>
-<Col lg={3}>
-    <Label>
-        Address <span className="text-danger">*</span>
-    </Label>
-    <div className="form-floating">
-        <Input
-            key={"address"}
-            type="text"
-            placeholder="Enter address"
-            required
-            name="Address"
-            value={Address}
-            onChange={handleChange}
-        />
-    </div>
-</Col>
+
+
 
 <Col lg={3}>
     <Label>
@@ -1094,38 +990,8 @@ console.log(values)
     </div>
 </Col>
 
-<Col lg={3}>
-    <Label>
-        Phone <span className="text-danger">*</span>
-    </Label>
-    <div className="form-floating">
-        <Input
-            key={"phone"}
-            type="tel"
-            placeholder="Enter phone number"
-            required
-            name="Phone"
-            value={Phone}
-            onChange={handleChange}
-        />
-    </div>
-</Col>
 
-<Col lg={3}>
-    <Label>
-        Fax
-    </Label>
-    <div className="form-floating">
-        <Input
-            key={"fax"}
-            type="tel"
-            placeholder="Enter fax number"
-            name="Fax"
-            value={Fax}
-            onChange={handleChange}
-        />
-    </div>
-</Col>
+
 
 <Col lg={3}>
     <Label>
@@ -1256,9 +1122,7 @@ console.log(values)
                                                   <td>
                                                     {item.Quantity}
                                                   </td>
-                                                  <td>
-                                                    {item.Grade}
-                                                  </td>
+                                                 
                                                 </tr>
                                               ))}
                                             </Row>
@@ -1318,40 +1182,7 @@ console.log(values)
         </div>
     </Col>
 
-    <Col lg={3}>
-        <Label>
-            Reference
-        </Label>
-        <div className="form-floating">
-            <Input
-                key={"reference"}
-                type="text"
-                placeholder="Enter reference"
-                name="Reference"
-                value={Reference}
-                onChange={handleChange}
-                disabled // Added disabled attribute
-            />
-        </div>
-    </Col>
-
-    <Col lg={3}>
-        <Label>
-            Address <span className="text-danger">*</span>
-        </Label>
-        <div className="form-floating">
-            <Input
-                key={"address"}
-                type="text"
-                placeholder="Enter address"
-                required
-                name="Address"
-                value={Address}
-                onChange={handleChange}
-                disabled // Added disabled attribute
-            />
-        </div>
-    </Col>
+    
 
     <Col lg={3}>
         <Label>
@@ -1371,40 +1202,7 @@ console.log(values)
         </div>
     </Col>
 
-    <Col lg={3}>
-        <Label>
-            Phone <span className="text-danger">*</span>
-        </Label>
-        <div className="form-floating">
-            <Input
-                key={"phone"}
-                type="tel"
-                placeholder="Enter phone number"
-                required
-                name="Phone"
-                value={Phone}
-                onChange={handleChange}
-                disabled // Added disabled attribute
-            />
-        </div>
-    </Col>
-
-    <Col lg={3}>
-        <Label>
-            Fax
-        </Label>
-        <div className="form-floating">
-            <Input
-                key={"fax"}
-                type="tel"
-                placeholder="Enter fax number"
-                name="Fax"
-                value={Fax}
-                onChange={handleChange}
-                disabled // Added disabled attribute
-            />
-        </div>
-    </Col>
+    
 
     <Col lg={3}>
         <Label>
@@ -1460,16 +1258,17 @@ console.log(values)
     </Col>
 </Row>
 <Row>
+{console.log("lol",ProductDetail)}
   {ProductDetail ? (
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">Group</th>
           <th scope="col">ProductName</th>
-          <th scope="col">Grade</th>
+      
           <th scope="col">Quantity</th>
-          <th scope="col">RFQ Date</th>
-          <th scope="col">Generate RFQ</th>
+          
+          {/* <th scope="col">Generate RFQ</th> */}
         </tr>
       </thead>
       <tbody>
@@ -1478,31 +1277,18 @@ console.log(values)
             
             <td>{items.Group}</td>
             <td>{items.ProductDetailLabel}</td>
-            <td>{items.Grade}</td>
+          
             <td>{items.Quantity}</td>
-            {console.log(items.RFQ_Date)}
-            <td>{(items.RFQ_Date === ""||items.RFQ_Date===null||items.RFQ_Date===undefined) ? "Not Generated" : items.RFQ_Date.split("T")[0]}</td>
-
-            <td>
+           
           
           <React.Fragment>
               <div className="edit">
-        <button
-          className="btn btn-sm btn-warning edit-item-btn "
-       
+        
       
-          onClick={(e) => {
-            e.preventDefault(); // Prevent default behavior
-            handleTog_RFQ(items._id);
-          }}
-        >
-         
-          Generate RFQ
-        </button>
       </div>
             </React.Fragment>
         
-            </td>
+            
           </tr>
         ))}
       </tbody>
@@ -1543,7 +1329,7 @@ console.log(values)
                                       <button
                                         type="button"
                                         className="btn btn-outline-danger m-1"
-                                        onClick={handleAddCancel}
+                                        onClick={handleUpdateCancel}
                                       >
                                         Cancel
                                       </button>
@@ -1583,23 +1369,7 @@ console.log(values)
         </div>
     </Col>
    
-    <Col lg={4}>
-        <Label>
-        Grade <span className="text-danger">*</span>
-        </Label>
-        <div className="form-floating">
-            <Input
-                key={"Grade"}
-                type="text"
-                placeholder="Enter contact person"
-                required
-                name="Grade"
-                value={values2.Grade}
-                onChange={handleChange2}
-                disabled // Added disabled attribute
-            />
-        </div>
-    </Col>
+  
     <Col lg={4}>
         <Label>
         Quantity <span className="text-danger">*</span>
@@ -1655,6 +1425,8 @@ console.log(values)
     </Row>
   </CardBody>
 </div>
+
+
 
 
                 {/* list  */}

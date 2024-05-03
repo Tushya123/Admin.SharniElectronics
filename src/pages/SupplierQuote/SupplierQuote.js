@@ -27,14 +27,14 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const initialState = {
     ProductDetail: "",
-    Grade: "",
+  
     Quantity:"",
     SupplierName:[],
   };
 
 const SupplierQuote = () => {
     const [values, setValues] = useState(initialState);
-    const { SupplierName, Quantity, Grade, ProductDetail} = values;
+    const { SupplierName, Quantity, ProductDetail} = values;
     const [constraint,setconstraint]=useState(false);
   const [selectProductDetail,setproductdetail] = useState([]);
   const [selectsupplier,setsupplierdetail] = useState([]);
@@ -55,12 +55,7 @@ const SupplierQuote = () => {
   const [remove_id, setRemove_id] = useState("");
 
   const [blogs, setBlogs] = useState([]);
-  const gradearray=[
-    {label:"BP",value:"BP"},
-    {label:"USP",value:"USP"},
-    {label:"EP",value:"EP"},
-    {label:"Other",value:"Other"}
-]
+
 
   const getallProductDetail=()=>{
     axios
@@ -160,10 +155,7 @@ console.log(data)
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-  const handleSelect=(selectoptions) =>{
-    console.log(selectoptions)
-     setValues({...values,Grade:selectoptions.value})
-  }
+ 
 
   const handleCheck = (e) => {
     setValues({ ...values, IsActive: e.target.checked });
@@ -467,12 +459,6 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
         sortable: true,
         sortField: "blogTitle",
         minWidth: "150px",
-      }, {
-        name: "Grade",
-        cell: (row) => row.Grade,
-        sortable: true,
-        sortField: "blogTitle",
-        minWidth: "150px",
       },{
         name: "Supplier Name",
         cell: (row) => {
@@ -704,36 +690,7 @@ console.log(values)
                                                     </div>
                                     </Col>
                                
-                                  <Col md={3}>
-                                  <Label>
-                                      Grade
-                                      <span className="text-danger">*</span>
-                                    </Label>
-                                  <div className="form-floating mb-3">
-                                    <Select
-                                    //   className={validClassCountry}
-                                      name={Grade}
-                                      value={Grade}
-                                      data-choices
-                                      data-choices-sorting="true"
-                                      onChange={handleSelect}
-                                      options={gradearray}
-                                      placeholder={Grade}
-                                    >
-                                     
-
-                                     
-                                    </Select>
-
-
-                                   
-                                    {/* {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.Country}
-                                      </p>
-                                    )} */}
-                                  </div>
-                                </Col>
+                               
                                   <Col lg={4}>
                                     <div className="form-floating mt-3  ">
                                       <Input
