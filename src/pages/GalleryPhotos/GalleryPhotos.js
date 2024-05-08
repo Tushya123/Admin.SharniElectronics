@@ -23,28 +23,19 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-const ProductDetail = () => {
-  
+import {getGalleryPhotosByParams,getGalleryPhotos,updateGalleryPhotos,listGalleryPhotos,removeGalleryPhotos,createGalleryPhotos} from "../../functions/GalleryPhotos/GalleryPhotos"
 
+
+const GalleryPhotos = () => {
   const [selectType,setSelectType] = useState([]);
-  const [blogTitle, setblogTitle] = useState("");
-  const [blogDesc, setblogDesc] = useState("");
+
   const [blogImage, setblogImage] = useState("");
   const [types,setTypes] = useState("");
-  const [blogThumnailDesc, setblogThumnailDesc] = useState("");
-  const [views, setViews] = useState(0);
+
 
   const [loadingOption, setLoadingOption] = useState(false);
 
-  const [likes, setlikes] = useState([]);
-  const [comments, setcomments] = useState([]);
-  const [userId, setuserId] = useState(localStorage.getItem("AdminUser"));
   const [IsActive, setIsActive] = useState(false);
-  const [Other, setOther] = useState(false);
-  const [EP, setEP] = useState(false);
-  const [USP, setUSP] = useState(false);
-  const [BP, setBP] = useState(false);
- 
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -63,7 +54,7 @@ const ProductDetail = () => {
   const getSelectType=()=>{
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`)
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Category`)
       .then((response) => {
         if (response.length > 0) {
           setSelectType(response);
@@ -81,61 +72,6 @@ const ProductDetail = () => {
   }, [formErrors, isSubmit]);
 
 
-  const uploadImage = async (body) => {
-    return await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/ckeditorproduct/imageupload`,
-      body
-    );
-  };
-
-  const updateBlogs = async (_id, values) => {
-    return await axios.put(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/blogs/${_id}`,
-      values
-    );
-  };
-  
-  const getBlogs = async (_id) => {
-    return await axios.get(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/blogs/${_id}`
-    );
-  };
-
-   const removeBlogs = async (_id) => {
-    return await axios.delete(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/blogs/${_id}`
-    );
-  };
-
-  function uploadAdapter(loader) {
-    return {
-      upload: () => {
-        return new Promise((resolve, reject) => {
-          const body = new FormData();
-          loader.file
-            .then((file) => {
-              body.append("uploadImage", file);
-              uploadImage(body)
-                .then((res) => {
-                  console.log("res", res.url);
-                  resolve({
-                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/productCkEditor/${res.url}`,
-                  });
-                })
-                .catch((err) => console.log(err));
-            })
-            .catch((err) => reject(err));
-        });
-      },
-    };
-  }
-
-  function uploadPlugin(editor) {
-    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return uploadAdapter(loader);
-    };
-  }
-
   const [modal_delete, setmodal_delete] = useState(false);
   const tog_delete = (_id) => {
     setmodal_delete(!modal_delete);
@@ -144,29 +80,21 @@ const ProductDetail = () => {
 
   const [modal_edit, setmodal_edit] = useState(false);
   const handleTog_edit = (row,_id) => {
-    // setmodal_edit(!modal_edit);
     getSelectType();
     setIsSubmit(false);
     setUpdateForm(true);
     set_Id(_id);
-    setTypes(row.ProductDetail);
-    setblogTitle(row.Description);
-    setblogThumnailDesc(row.Detail);
-    setblogDesc(row.Detail);
+    setblogImage(row.imageURL);
+    setTypes(row.Category);
     setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
     setIsActive(row.IsActive);
-    // setBP(row.BP);
-    // setEP(row.EP);
-    // setUSP(row.USP);
-    // setOther(row.Other);
-   
     setCheckImagePhoto(true);
   };
 
   const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    let errors = validate(blogTitle,types);
+    let errors = validate(blogImage,types);
     setFormErrors(errors);
     setIsSubmit(true);
 
@@ -174,40 +102,20 @@ const ProductDetail = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      // formdata.append("newImage", blogImage);
-      formdata.append("ProductDetail",types);
-      formdata.append("Description", blogTitle);
-      formdata.append("Detail", blogThumnailDesc);
+      formdata.append("newImage", blogImage);
+      formdata.append("Category",types);
       formdata.append("IsActive", IsActive);
-      // formdata.append("Other", Other);
-      // formdata.append("BP", BP);
-      // formdata.append("EP", EP);
-      // formdata.append("USP", USP);
-      // formdata.append("subtitle", blogThumnailDesc);
+  
 
 
-      axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/projectdetail`,formdata)
+      createGalleryPhotos(formdata)
         .then((res) => {
           console.log(res);
-          // setmodal_list(!modal_list);
+          
           setShowForm(false);
           setLoadingOption(false);
-          // setValues(initialState);
-          setblogDesc("");
-          setblogTitle("");
-          setlikes([]);
-          setEP(false);
-          setcomments([]);
-          setuserId("");
           setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setBP(false);
-          setUSP(false);
-          
           setblogImage("");
-          setblogThumnailDesc("");
-          setViews(0);
           setIsSubmit(false);
           setCheckImagePhoto(false);
           setPhotoAdd("");
@@ -224,9 +132,7 @@ const ProductDetail = () => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    axios
-      .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/projectdetail/${remove_id}`)
+    removeGalleryPhotos(remove_id)
       .then((res) => {
         setmodal_delete(!modal_delete);
         fetchCategories();
@@ -238,29 +144,20 @@ const ProductDetail = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    let erros = validate(blogTitle,types);
+    let erros = validate(blogImage,types);
     setFormErrors(erros);
     setIsSubmit(true);
-    const likesString = JSON.stringify(likes);
-    const commentString = JSON.stringify(comments);
 
     if (Object.keys(erros).length === 0) {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      // formdata.append("newImage", blogImage);
-      formdata.append("ProductDetail",types);
-      formdata.append("Description", blogTitle);
-      // formdata.append("Detail", blogDesc);
+      formdata.append("newImage", blogImage);
+      formdata.append("Category",types);
+     
       formdata.append("IsActive", IsActive);
-      formdata.append("Detail", blogThumnailDesc);
-      // formdata.append("Other", Other);
-      // formdata.append("BP", BP);
-      // formdata.append("EP", EP);
-      // formdata.append("USP", USP);
-      // formdata.append("subtitle", blogThumnailDesc);
 
-      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/projectdetail/${_id}`,formdata)
+      updateGalleryPhotos(formdata)
         .then((res) => {
           // setmodal_edit(!modal_edit);
           setPhotoAdd("");
@@ -268,21 +165,12 @@ const ProductDetail = () => {
           setLoadingOption(false);
 
           setCheckImagePhoto(false);
-          // setValues(initialState);
-          setblogDesc("");
-          setEP(false);
-          setblogTitle("");
-          setlikes([]);
-          setcomments([]);
-          setuserId("");
+     
+          setCheckImagePhoto(false);
+          setblogImage("");
+          setPhotoAdd("");
           setIsActive(false);
-          setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setBP(false);
-          setUSP(false);
-          setblogThumnailDesc("");
-          setViews(0);
+ 
           setblogImage("");
           fetchCategories();
           setSelectType("");
@@ -300,48 +188,25 @@ const ProductDetail = () => {
   const [errBI, setErrBI] = useState(false);
   const [errSN,setErrSN]=useState(false);
 
-  const validate = (
-    // blogDesc,
-     blogTitle,types) => {
+  const validate = (blogImage,types) => {
     const errors = {};
     if (types === "") {
-      errors.types = "Product Group is required!";
+      errors.types = "Category is required!";
       setErrSN(true);
     }
     else{
       setErrSN(false);
     }
 
-    if (blogTitle === "") {
-      errors.blogTitle = "Product Name is required!";
-      setErrBT(true);
-    }
-    if (blogTitle !== "") {
-      setErrBT(false);
-    }
 
-    // if (blogDesc === "") {
-    //   errors.blogDesc = "Blog Description is required!";
-    //   setErrBD(true);
-    // }
-    // if (blogDesc !== "") {
-    //   setErrBD(false);
-    // }
-    // if (blogThumnailDesc === "") {
-    //   errors.blogThumnailDesc = "Blog Thumbnail Description is required!";
-    //   setErrBTD(true);
-    // }
-    // if (blogThumnailDesc !== "") {
-    //   setErrBTD(false);
-    // }
 
-    // if (blogImage === "") {
-    //   errors.blogImage = "Blog Image is required!";
-    //   setErrBI(true);
-    // }
-    // if (blogImage !== "") {
-    //   setErrBI(false);
-    // }
+    if (blogImage === "") {
+      errors.blogImage = "Gallery Image is required!";
+      setErrBI(true);
+    }
+    if (blogImage !== "") {
+      setErrBI(false);
+    }
 
     return errors;
   };
@@ -379,24 +244,6 @@ const ProductDetail = () => {
     fetchCategories();
   }, [pageNo, perPage, column, sortDirection, query, filter]);
 
-  // const fetchCategories = async () => {
-  //   setLoading(true);
-
-  //   await axios
-  //     .get(
-  //       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`)
-  //     .then((response) => {
-  //       if (response.length > 0) {
-  //         setLoading(false);
-  //         console.log(response)
-  //         setBlogs(response);
-  //       } else if (response.length === 0) {
-  //         setBlogs([]);
-  //       }
-  //     });
-
-  //   setLoading(false);
-  // };
   const fetchCategories = async () => {
     setLoading(true);
     let skip = (pageNo - 1) * perPage;
@@ -404,8 +251,7 @@ const ProductDetail = () => {
       skip = 0;
     }
 
-    await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`, {
+    getGalleryPhotosByParams({
         skip: skip,
         per_page: perPage,
         sorton: column,
@@ -414,10 +260,8 @@ const ProductDetail = () => {
         IsActive: filter,
       })
       .then((response) => {
-        console.log(response.length)
         if (response.length > 0) {
           let res = response[0];
-          console.log("Hii",res.data)
           setLoading(false);
           setBlogs(res.data);
           setTotalRows(res.count);
@@ -464,20 +308,9 @@ const ProductDetail = () => {
     setCheckImagePhoto(false);
     setShowForm(false);
     setUpdateForm(false);
-    setblogThumnailDesc("");
-    setViews(0);
-    // setValues(initialState);
-    setblogDesc("");
-    setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setEP(false)
-          setBP(false);
-          setUSP(false);
-    setblogTitle("");
-    setlikes([]);
-    setcomments([]);
-    setuserId("");
+    setCheckImagePhoto(false);
+    setblogImage("");
+    setPhotoAdd("");
     setIsActive(false);
     setblogImage("");
     setTypes("");
@@ -491,25 +324,24 @@ const ProductDetail = () => {
     setPhotoAdd("");
     setUpdateForm(false);
     setShowForm(false);
-    setblogThumnailDesc("");
-    setViews(0);
     setCheckImagePhoto(false);
-    setIsActive(false);
-          setErrBD(false);
-          setEP(false)
-          setOther(false);
-          setBP(false);
-          setUSP(false);
-    // setValues(initialState);
-    setblogDesc("");
-    setblogTitle("");
-    setlikes([]);
-    setcomments([]);
-    setuserId("");
+    setblogImage("");
+    setPhotoAdd("");
     setIsActive(false);
     setblogImage("");
     setSelectType("");
     setTypes("");
+  };
+  const renderImage = (uploadimage) => {
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+
+    return (
+      <img
+        src={imageUrl}
+        alt="Image"
+        style={{ width: "75px", height: "75px", padding: "5px" }}
+      />
+    );
   };
 
   const col = [
@@ -521,17 +353,17 @@ const ProductDetail = () => {
         minWidth: "150px",
       },
     {
-      name: "Product Group",
-      cell: (row) => row.ProductDetailTypes[0].ProductGroup,
+      name: "Category Name",
+      cell: (row) => row.GalleryTypeDetails.Category,
       sortable: true,
       sortField: "blogTitle",
       minWidth: "150px",
     },
     {
-        name: "Product Name",
-        cell: (row) => row.Description,
+        name: "Image",
+        selector: (row) => renderImage(row.imageURL),
         sortable: true,
-        sortField: "blogTitle",
+        sortField: "password",
         minWidth: "150px",
       },
     {
@@ -578,7 +410,7 @@ const ProductDetail = () => {
     },
   ];
 
-  document.title = "Service Detail|Shreeji Pharma";
+  document.title = "Service Detail|Contact to Owner";
 
   return (
     <React.Fragment>
@@ -592,7 +424,7 @@ const ProductDetail = () => {
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Product Detail</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Gallery Details</h2>
                     </Col>
                     <Col lg={4} md={6} sm={6}>
                       <div
@@ -633,18 +465,8 @@ const ProductDetail = () => {
                                     onClick={() => {
                                       getSelectType();
                                       setShowForm(!showForm);
-                                      // setValues(initialState);
-                                      setblogDesc("");
-                                      setblogTitle("");
-                                      setlikes([]);
-                                      setcomments([]);
-                                      setuserId("");
+                                     
                                       setIsActive(false);
-                                      setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setBP(false);
-          setUSP(false);
                                       setblogImage("");
                                       // setFileId(Math.random() * 100000);
                                     }}
@@ -673,18 +495,8 @@ const ProductDetail = () => {
                                 <button
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
-                                    // setValues(initialState);
-                                    setblogDesc("");
-                                    setblogTitle("");
-                                    setlikes([]);
-                                    setcomments([]);
-                                    setuserId("");
+                
                                     setIsActive(false);
-                                    setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setBP(false);
-          setUSP(false);
                                     setblogImage("");
                                     setShowForm(false);
                                     setUpdateForm(false);
@@ -736,15 +548,15 @@ const ProductDetail = () => {
                                 <Row>
                                 <Col lg={6}>
                                 <Label>
-                                Select Group:{" "}
+                                        Category Name{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                     <Input name="Type" id="" type="select" onChange={(e) => {
                                           setTypes(e.target.value);
                                         }}>
-                                        <option>Select Group</option>
+                                        <option>Select Type</option>
                                         {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id}>{item.ProductGroup}</option>
+                                        <option key={index} value={item._id}>{item.Category}</option>
                                         )}
                                     </Input>
                                     {isSubmit && (
@@ -755,67 +567,41 @@ const ProductDetail = () => {
                                     )}
                                    
                                   </Col>
-                                  <Col lg={6}> 
-                                  <Label>
-                                        Product Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                    <div className="form-floating mb-3 p-0">
-                                      <Input
-                                      style={{height:'35px'}}
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassBT}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="blogTitle"
-                                        value={blogTitle}
-                                        onChange={(e) => {
-                                          setblogTitle(e.target.value);
-                                        }}
+
+                                  <Col lg={6}>
+                                    <label>
+                                      Image{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+
+                                    <Input
+                                      key={"blogImage_" + _id}
+                                      type="file"
+                                      name="blogImage"
+                                      className={validClassBI}
+                                      // accept="images/*"
+                                      accept=".jpg, .jpeg, .png"
+                                      onChange={PhotoUpload}
+                                    />
+                                    {isSubmit && (
+                                      <p className="text-danger">
+                                        {formErrors.blogImage}
+                                      </p>
+                                    )}
+                                    {checkImagePhoto ? (
+                                      <img
+                                        //   src={image ?? myImage}
+                                        className="m-2"
+                                        src={photoAdd}
+                                        alt="Profile"
+                                        width="180"
+                                        height="200"
                                       />
-                                     
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogTitle}
-                                        </p>
-                                      )}
-                                    </div>
-                                    
-                                  </Col>
-                                  <Col lg={12}>
-                                    <Card>
-                                      <Label>
-                                        Detail
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      <CardBody>
-                                        {/* <Form method="post"> */}
-                                        <CKEditor
-                                          key={"cmsDesc" + _id}
-                                          editor={ClassicEditor}
-                                          data={blogThumnailDesc}
-                                          config={{
-                                            extraPlugins: [uploadPlugin],
-                                          }}
-                                          onChange={(event, editor) => {
-                                            const data = editor.getData();
-
-                                            setblogThumnailDesc(data);
-                                            console.log(blogThumnailDesc);
-                                          }}
-                                        />
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.cmsDesc}
-                                          </p>
-                                        )}
-                                      </CardBody>
-                                    </Card>
+                                    ) : null}
                                   </Col>
 
-                                    <div className="mt-5">
-                                    <Col lg={2}>
+                                  <div className="mt-5">
+                                    <Col lg={6}>
                                       <div className="form-check mb-2">
                                         <Input
                                           key={"IsActive_" + _id}
@@ -836,10 +622,7 @@ const ProductDetail = () => {
                                         </Label>
                                       </div>
                                     </Col>
-                                  </div><Col>
-
-                                  </Col>
-                                 
+                                  </div>
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -903,14 +686,14 @@ const ProductDetail = () => {
                                 <Row>
                                 <Col lg={6}>
                                 <Label>
-                                Select Group:{" "}
+                                        Category Name{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                     <Input name="Type" id="" type="select" value={types} onChange={(e) => {
                                           setTypes(e.target.value); 
                                         }}>
                                         {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id}>{item.ProductGroup}</option>
+                                        <option key={index} value={item._id}>{item.Category}</option>
                                         )}
                                     </Input>
                                     {isSubmit && (
@@ -919,72 +702,49 @@ const ProductDetail = () => {
                                       </p>
                                     )}
                                   </Col>
-                                  <Col lg={6}> <Label>
-                                        Product Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                    <div className="form-floating mb-3 p-0">
-                                      <Input
-                                      style={{height:'35px'}}
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassBT}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="blogTitle"
-                                        value={blogTitle}
-                                        onChange={(e) => {
-                                          setblogTitle(e.target.value);
-                                        }}
-                                      />
-                                     
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogTitle}
-                                        </p>
-                                      )}
-                                    </div>
-                                    
-                                  </Col>
-                                  <Col lg={12}>
-                                    <Card>
-                                      <Label>
-                                        Detail
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      <CardBody>
-                                        {/* <Form method="post"> */}
-                                        <CKEditor
-                                          key={"cmsDesc" + _id}
-                                          editor={ClassicEditor}
-                                          data={blogThumnailDesc}
-                                          config={{
-                                            extraPlugins: [uploadPlugin],
-                                          }}
-                                          onChange={(event, editor) => {
-                                            const data = editor.getData();
+                                  
 
-                                            setblogThumnailDesc(data);
-                                            console.log(blogThumnailDesc);
-                                          }}
-                                        />
-                                        {isSubmit && (
-                                          <p className="text-danger">
-                                            {formErrors.cmsDesc}
-                                          </p>
-                                        )}
-                                      </CardBody>
-                                    </Card>
+                                  <Col lg={6}>
+                                    <label>
+                                      Image{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+
+                                    <Input
+                                      key={"blogImage_" + _id}
+                                      type="file"
+                                      name="blogImage"
+                                      className={validClassBI}
+                                      // accept="images/*"
+                                      accept=".jpg, .jpeg, .png"
+                                      onChange={PhotoUpload}
+                                    />
+                                    {isSubmit && (
+                                      <p className="text-danger">
+                                        {formErrors.blogImage}
+                                      </p>
+                                    )}
+                                    {checkImagePhoto ? (
+                                      <img
+                                        //   src={image ?? myImage}
+                                        className="m-2"
+                                        src={photoAdd}
+                                        alt="Profile"
+                                        width="180"
+                                        height="200"
+                                      />
+                                    ) : null}
                                   </Col>
+
+
                                   <div className="mt-5">
-                                    <Col lg={2}>
+                                    <Col lg={6}>
                                       <div className="form-check mb-2">
                                         <Input
                                           key={"IsActive_" + _id}
                                           type="checkbox"
                                           name="IsActive"
                                           value={IsActive}
-                                          // onChange={handleCheck}
                                           onChange={(e) => {
                                             setIsActive(e.target.checked);
                                           }}
@@ -998,8 +758,8 @@ const ProductDetail = () => {
                                         </Label>
                                       </div>
                                     </Col>
-                                  </div><Col>
-                                  </Col>
+                                  </div>
+
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
                                       <div
@@ -1090,12 +850,7 @@ const ProductDetail = () => {
         isOpen={modal_delete}
         toggle={() => {
           tog_delete();
-          // setValues([]);
-          setblogDesc("");
-          setblogTitle("");
-          setlikes([]);
-          setcomments([]);
-          setuserId("");
+         
           setIsActive(false);
           setblogImage("");
         }}
@@ -1141,7 +896,6 @@ const ProductDetail = () => {
                 type="button"
                 className="btn btn-outline-danger"
                 onClick={() => setmodal_delete(false)}
-                
               >
                 Close
               </button>
@@ -1153,4 +907,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default GalleryPhotos;

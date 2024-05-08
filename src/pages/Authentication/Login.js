@@ -15,7 +15,7 @@ import {
 import { Alert } from "react-bootstrap";
 
 
-import logo from "../../assets/images/logo/contact to owner.png";
+import logo from "../../assets/images/logo/logo-Shreeji-Pharma.png";
 
 
 import { ToastContainer, toast } from "react-toastify";

@@ -6,7 +6,7 @@ import City from "../pages/LocationSetUp/City/City";
 import State from "../pages/LocationSetUp/State/State";
 import CompanyLocation from "../pages/LocationSetUp/CompanyLocation";
 import Login from "../pages/Authentication/Login";
-import CategoryMaster from "../pages/Category/CategoryMaster";
+import Category from "../pages/Category/Category";
 import Blogs from "../pages/Blogs/Blogs";
 import PromocodeMaster from "../pages/Subscription/PromocodeMaster";
 import ProductDetails from "../pages/Products/ProductsDetails";
@@ -20,7 +20,8 @@ import NewProject from "../pages/CMS/NewProject";
 import GetInTouch from "../pages/GetInTouch/GetInTouch";
 import UserSignIn from "../pages/UserSignIn/usersignin";
 import Roles from "../pages/Roles/Roles";
-import Inquiry from "../pages/Inquiry/Inquiry";
+import ProductInquiry from "../pages/Inquiry/ProductInquiry";
+import Preferences from "../pages/Preferences/Preferences";
 
 import ProductGroup from "../pages/ProductGroup/ProductGroup";
 import ProductDetail from "../pages/ProductDetail/ProductDetail";
@@ -30,8 +31,11 @@ import Feature from "../pages/Feature/Feature";
 import CmsMaster from "../pages/CMS/CmsMaster";
 import OtherProducts from "../pages/OtherProducts/OtherProducts";
 import Supplier from "../pages/SupplierSetup/SupplierSetup";
-import AssignProduct from "../pages/SupplierSetup/AssignProduct";
 import SupplierQuote from "../pages/SupplierQuote/SupplierQuote";
+import AssignProduct from "../pages/SupplierSetup/AssignProduct"; 
+import GalleryPhotos from "../pages/GalleryPhotos/GalleryPhotos";
+import ContactInquiry from "../pages/Inquiry/ContactInquiry";
+import SupplierWiseProductReport from "../pages/Report/SupplierWiseProduct";
 
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
@@ -43,7 +47,7 @@ const authProtectedRoutes = [
   { path: "/admin-user", component: <AdminUser /> },
   { path: "/company-details", component: <CompanyDetails /> },
   {path:"/contact",component:<ContactUs/>},
-  { path: "/category", component: <CategoryMaster /> },
+  { path: "/category", component: <Category /> },
   {path:"/review",component:<Review/>},
   { path: "/blogs", component: <Blogs /> },
   { path: "/banner", component: <Banner /> },
@@ -52,7 +56,8 @@ const authProtectedRoutes = [
   { path: "/product-details", component: <ProductDetails /> },
   {path:"/getintouch",component:<GetInTouch/>},
   {path:"/roles",component:<Roles/>},
-  {path:"/inquiry",component:<Inquiry/>},
+  {path:"/product-inquiry",component:<ProductInquiry/>},
+  {path:"/gallery-photos",component:<GalleryPhotos/>},
 
   {path:"/product-group",component:<ProductGroup/>},
   {path:"/product-detail",component:<ProductDetail/>},
@@ -61,6 +66,9 @@ const authProtectedRoutes = [
   {path:"/supplier",component:<Supplier/>},
   {path:"/assign-product", component:<AssignProduct />},
   {path:"/supplier-quote",component:<SupplierQuote/>},
+  {path:"/preferences",component:<Preferences/>},
+  {path:"/contact-inquiry",component:<ContactInquiry/>},
+  {path:"/supplier-wise-product",component:<SupplierWiseProductReport/>},
 
 
 

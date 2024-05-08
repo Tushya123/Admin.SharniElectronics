@@ -9,7 +9,7 @@ import {
 
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
-import logo from "../../assets/images/logo/contact to owner.png";
+import logo from "../../assets/images/logo/logo-Shreeji-Pharma.png";
 
 const ProfileDropdown = () => {
   const { user } = useSelector((state) => ({

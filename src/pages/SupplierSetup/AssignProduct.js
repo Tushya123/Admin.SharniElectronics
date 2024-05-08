@@ -24,9 +24,6 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
-
-
 const AssignProduct = () => {
   
   const [SupplierName, setSupplierName] = useState("");
@@ -64,6 +61,7 @@ const AssignProduct = () => {
 
   const [blogs, setBlogs] = useState([]);
   const [blogs2, setBlogs2] = useState([]);
+  const [blogs3, setBlogs3] = useState([]);
 
   const getSelectType=()=>{
     axios
@@ -104,6 +102,7 @@ const AssignProduct = () => {
           console.log(response[0].data);
           setProduct(response);
           setBlogs2(response[0].data);
+          setBlogs3(response[0].data);
           setTotalRows2(response.count);
           setLoading(false);
         } 
@@ -114,7 +113,6 @@ const AssignProduct = () => {
       })
       .catch((error) => {
         console.error("Error fetching product details:", error);
-        // Handle error appropriately
       });
   };
   
@@ -189,21 +187,20 @@ const AssignProduct = () => {
 
   const [modal_edit, setmodal_edit] = useState(false);
   const handleTog_edit = (row,_id) => {
+   
     // setmodal_edit(!modal_edit);
+    console.log("The row is",row.ProductDetail);
     getSelectType();
     setIsSubmit(false);
     setUpdateForm(true);
     set_Id(_id);
+    setProductDetail(row.ProductDetail)
+    console.log("Idsss",_id)
+    
     // setTypes(row.ProductDetail);
-    setblogTitle(row.Description);
-    // setblogThumnailDesc(row.subtitle);
-    setblogDesc(row.Detail);
-    // setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
-    setIsActive(row.IsActive);
-    setBP(row.BP);
-    setEP(row.EP);
-    setUSP(row.USP);
-    setOther(row.Other);
+   setSupplierName(row.SupplierName);
+   setSupplierNamePlaceholder(row.SupplierDetailTypes[0].SupplierName)
+   
    
     setCheckImagePhoto(true);
   };
@@ -222,21 +219,16 @@ const AssignProduct = () => {
       // formdata.append("newImage", blogImage);
       formdata.append("ProductDetail",ProductDetail);
       formdata.append("SupplierName", SupplierName);
-      // formdata.append("Detail", blogDesc);
-      // formdata.append("IsActive", IsActive);
-      // formdata.append("Other", Other);
-      // formdata.append("BP", BP);
-      // formdata.append("EP", EP);
-      // formdata.append("USP", USP);
-      // formdata.append("subtitle", blogThumnailDesc);
+     
 
 
       axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/AssignProduct`,formdata)
         .then((res) => {
           console.log(res);
           setSelectType([])
-          setProductDetail("")
+          setProductDetail([])
           setSupplierNamePlaceholder("")
+          setSupplierName("");
           // setmodal_list(!modal_list);
           setShowForm(false);
           setLoadingOption(false);
@@ -272,31 +264,32 @@ const AssignProduct = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    let erros = validate(blogTitle,types);
-    setFormErrors(erros);
+    setFormErrors({});
+    let errors = validate(ProductDetail,SupplierName);
+    setFormErrors(errors);
     setIsSubmit(true);
-    const likesString = JSON.stringify(likes);
-    const commentString = JSON.stringify(comments);
 
-    if (Object.keys(erros).length === 0) {
+    if (Object.keys(errors).length === 0) {
       setLoadingOption(true);
       const formdata = new FormData();
-
+      console.log("ProductDetail",ProductDetail,"SupplierName",SupplierName)
       // formdata.append("newImage", blogImage);
-      formdata.append("ProductDetail",types);
-      formdata.append("Description", blogTitle);
-      // formdata.append("Detail", blogDesc);
-      formdata.append("IsActive", IsActive);
-      formdata.append("Other", Other);
-      formdata.append("BP", BP);
-      formdata.append("EP", EP);
-      formdata.append("USP", USP);
-      // formdata.append("subtitle", blogThumnailDesc);
+      formdata.append("ProductDetail",ProductDetail);
+      formdata.append("SupplierName", SupplierName);
+     
+console.log("Idsss",_id)
 
-      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/projectdetail/${_id}`,formdata)
+      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/AssignProduct/${_id}`,formdata)
         .then((res) => {
-          // setmodal_edit(!modal_edit);
+          console.log(res);
+          setIsSubmit(false);
+          setUpdateForm(false);
+          setShowForm(false);
           setSelectType([])
+          setSelectType([])
+          setProductDetail([])
+          setSupplierNamePlaceholder("")
+          setSupplierName("");
           setProductDetail("")
           setSupplierNamePlaceholder("")
           // setmodal_list(!modal_list);
@@ -483,6 +476,10 @@ const AssignProduct = () => {
 
   const handleAddCancel = (e) => {
     e.preventDefault();
+    setSelectType([])
+    setProductDetail([])
+    setSupplierNamePlaceholder("")
+    setSupplierName("");
     setIsSubmit(false);
     setPhotoAdd("");
     setCheckImagePhoto(false);
@@ -511,6 +508,10 @@ const AssignProduct = () => {
 
   const handleUpdateCancel = (e) => {
     e.preventDefault();
+    setSelectType([])
+    setProductDetail([])
+    setSupplierNamePlaceholder("")
+    setSupplierName("");
     setIsSubmit(false);
     setPhotoAdd("");
     setUpdateForm(false);
@@ -548,7 +549,20 @@ const AssignProduct = () => {
 
   const handleCheckboxChange = (rowId) => {
     console.log(rowId)
+    console.log("THis is:",ProductDetail)
     // Check if the checkbox is already checked
+    if (ProductDetail.includes(rowId)) {
+      // If checked, remove it from the array
+      setProductDetail(ProductDetail.filter((id) => id !== rowId));
+    } else {
+      // If not checked, add it to the array
+      setProductDetail([...ProductDetail, rowId]);
+    }
+  };
+  const handleCheckboxChange1 = (rowId) => {
+    console.log("THis is it",rowId)
+    // Check if the checkbox is already checked
+    
     if (ProductDetail.includes(rowId)) {
       // If checked, remove it from the array
       setProductDetail(ProductDetail.filter((id) => id !== rowId));
@@ -598,15 +612,75 @@ const AssignProduct = () => {
    
   onClick={() => handleCheckboxChange(row._id)}
 />
-<label
-  className="btn btn-sm edit-item-btn"
-  htmlFor={`checkbox-${row._id}`}
-  data-bs-toggle="modal"
-  data-bs-target="#showModal"
-  onClick={() => handleTog_edit(row, row._id)}
->
-  {/* Add any content inside the label that you want to display */}
-</label>
+
+
+              </div>
+
+               
+            </div>
+          </React.Fragment>
+        );
+      },
+      sortable: false,
+      minWidth: "180px",
+    },
+  ];  
+  const col3 = [
+
+
+    {
+        name: "Sr No",
+        selector: (row,index) => index+1,
+        sortable: true,
+        sortField: "srno",
+        minWidth: "150px",
+      },
+
+
+  
+    {
+      name: "Group name",
+      cell: (row) => row.ProductDetailTypes[0].ProductGroup,
+      sortable: true,
+      sortField: "blogTitle",
+      minWidth: "150px",
+    },
+    {
+      name: "SupplierName",
+      cell: (row) => row.Description,
+      sortable: true,
+      sortField: "blogTitle",
+      minWidth: "150px",
+    },
+   
+    {
+      name: "Action",
+      selector: (row) => {
+        console.log(row)
+        let isChecked=false;
+        for(let i=0;i<ProductDetail.length;i++){
+          if(row._id === ProductDetail[i]){
+            isChecked=true;
+            break;
+          }
+        }
+        
+        console.log("New",row.ProductDetailTypes[0]._id)
+        console.log("New1",ProductDetail)
+        console.log("isChecked:", isChecked);
+        return (
+          <React.Fragment>
+            <div className="d-flex gap-2">
+              <div className="edit">
+              <input
+  type="checkbox"
+  checked={isChecked}
+  className="form-check-input"
+  id={`checkbox-${row._id}`}
+   
+  onClick={() => handleCheckboxChange1(row._id)}
+/>
+
 
               </div>
 
@@ -650,14 +724,18 @@ const AssignProduct = () => {
           <React.Fragment>
             <div className="d-flex gap-2">
               <div className="edit">
-                <button
-                  className="btn btn-sm btn-success edit-item-btn "
-                  data-bs-toggle="modal"
-                  data-bs-target="#showModal"
-                  onClick={() => handleTog_edit(row,row._id)}
-                >
-                  Edit
-                </button>
+              <button
+  className="btn btn-sm btn-success edit-item-btn"
+  data-bs-toggle="modal"
+  data-bs-target="#showModal"
+  onClick={() => {
+    handleTog_edit(row, row._id);
+    getProductDetails(); // Call getProductDetails() here
+  }}
+>
+  Edit
+</button>
+
               </div>
 
               <div className="remove">
@@ -679,13 +757,14 @@ const AssignProduct = () => {
     },
   ];
 
-  document.title = "Service Detail|Shreeji Pharma";
+  document.title = "Assign Product|Shreeji Pharma";
 
   return (
+    
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Service Detail"  />
+          <BreadCrumb  title="Assign Product"  />
 
           <Row>
             <Col lg={12}>
@@ -754,7 +833,7 @@ const AssignProduct = () => {
                                     // id="create-btn"
                                   >
                                     <i className="ri-add-line align-bottom me-1"></i>
-                                    Asign Product
+                                    Assign Product
                                   </Button>
                                 </div>
                               </div>
@@ -855,48 +934,7 @@ const AssignProduct = () => {
                                                 </Col>
                                    
                                   </Col>
-                                   {/* <Col lg={12}>
-                                    <Label>
-                                      Select Product
-                                    </Label>
-                                    {product.map((item, index)=>{
-                                        return(
-                                          <div className="form-check" key={index}>
-                                          <Input className="form-check-input" type="checkbox" id={index}  />                                                           /
-                                          <Label className="form-check-label" htmlFor="formCheck2">
-                                             {item.Description}
-                                          </Label>
-                                      </div>
-                                        )
-                                    }
-                                    
-                                     )}
-                                  
-                                    </Col> */}
- 
-                                    {/* <div className="mt-5">
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setIsActive(e.target.checked);
-                                          }}
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div> */}
+                                   
                                   <Col>
                                   </Col>
                                   <CardBody>
@@ -979,198 +1017,65 @@ const AssignProduct = () => {
                     display: !showForm && updateForm ? "block" : "none",
                   }}
                 >
-                  <CardBody>
+                 <CardBody>
                     <React.Fragment>
                       <Col xxl={12}>
                         <Card className="">
+                          {/* <PreviewCardHeader title="Billing Product Form" /> */}
                           <CardBody>
                             <div className="live-preview">
                               <Form>
                                 <Row>
                                 <Col lg={6}>
-                                <Label>
+                               
+                                      
+                                      <Col lg={6} md={6}>
+                                                    <div className="mb-3">
+                                                    <Label>
                                 Assign Products{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
-                                    <Input name="Type" id="" type="select" value={types} onChange={(e) => {
-                                          setTypes(e.target.value); 
-                                        }}>
-                                        {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id}>{item.ProductGroup}</option>
-                                        )}
-                                    </Input>
-                                    {isSubmit && (
-                                      <p className="text-danger">
-                                        {formErrors.types}
-                                      </p>
-                                    )}
+                                       <Select
+                                       isDisabled={true}
+                                       placeholder={SupplierNamePlaceholder}
+                                                            value={SupplierName}
+                                                            onChange={handleSelectSingle}
+                                                            options={selectType}
+                                                        />
+                                                    </div>
+                                                </Col>
+                                   
                                   </Col>
-                                  <Col lg={6}>
-                                    <div className="form-floating mb-3">
-                                      <Input
-                                        key={"blogTitle_" + _id}
-                                        type="text"
-                                        className={validClassBT}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="blogTitle"
-                                        value={blogTitle}
-                                        onChange={(e) => {
-                                          setblogTitle(e.target.value);
-                                        }}
-                                      />
-                                      <Label>
-                                        Title{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogTitle}
-                                        </p>
-                                      )}
-                                    </div>
+                                   
+                                  <Col>
                                   </Col>
-
-                                 
-                                    <Col lg={6} style={{marginTop:"35px"}}>
-                                      <Row>
-                                      <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"BP_" + _id}
-                                          type="checkbox"
-                                          name="BP"
-                                          value={BP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setBP(e.target.checked);
-                                          }}
-                                          checked={BP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          BP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"USP_" + _id}
-                                          type="checkbox"
-                                          name="USP"
-                                          value={USP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setUSP(e.target.checked);
-                                          }}
-                                          checked={USP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          USP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"EP_" + _id}
-                                          type="checkbox"
-                                          name="EP"
-                                          value={EP}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setEP(e.target.checked);
-                                          }}
-                                          checked={EP}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          EP
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"Other_" + _id}
-                                          type="checkbox"
-                                          name="Other"
-                                          value={Other}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setOther(e.target.checked);
-                                          }}
-                                          checked={Other}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Other
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                      </Row>
-                                    </Col>
-
-                                  {/* <div className="mt-5">
-                                    <Col lg={6}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          onChange={(e) => {
-                                            setIsActive(e.target.checked);
-                                          }}
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div> */}
-
-                                  <div className="mt-5">
-                                    <Col lg={2}>
-                                      <div className="form-check mb-2">
-                                        <Input
-                                          key={"IsActive_" + _id}
-                                          type="checkbox"
-                                          name="IsActive"
-                                          value={IsActive}
-                                          // onChange={handleCheck}
-                                          onChange={(e) => {
-                                            setIsActive(e.target.checked);
-                                          }}
-                                          checked={IsActive}
-                                        />
-                                        <Label
-                                          className="form-check-label"
-                                          htmlFor="activeCheckBox"
-                                        >
-                                          Is Active
-                                        </Label>
-                                      </div>
-                                    </Col>
-                                  </div><Col>
-
-                                
-                                  </Col>
-                                 
+                                  <CardBody>
+                                    
+                    <div>
+                      <div className="table-responsive table-card mt-1 mb-1 text-right">
+                        <DataTable
+                          columns={col3}
+                          data={blogs3}
+                          progressPending={loading}
+                          sortServer
+                          onSort={(column, sortDirection, sortedRows) => {
+                            handleSort(column, sortDirection);
+                          }}
+                          pagination
+                          paginationServer
+                          paginationTotalRows={totalRows}
+                          paginationRowsPerPageOptions={[
+                            10,
+                            50,
+                            100,
+                            totalRows,
+                          ]}
+                          onChangeRowsPerPage={handlePerRowsChange}
+                          onChangePage={handlePageChange}
+                        />
+                      </div>
+                    </div>
+                  </CardBody>
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -1190,10 +1095,10 @@ const AssignProduct = () => {
                                   )}
 
                                   <Col lg={12}>
-                                    <div className="text-end">
+                                    <div className="hstack gap-2 justify-content-end">
                                       <button
                                         type="submit"
-                                        className=" btn btn-success m-1"
+                                        className="btn btn-success  m-1"
                                         id="add-btn"
                                         onClick={handleUpdate}
                                       >
@@ -1211,7 +1116,7 @@ const AssignProduct = () => {
                                 </Row>
                               </Form>
                             </div>
-                          </CardBody>
+                          </CardBody>{" "}
                         </Card>
                       </Col>
                     </React.Fragment>
@@ -1279,7 +1184,7 @@ const AssignProduct = () => {
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+          <span style={{ marginRight: "210px" }}>Remove Assign Product</span>
         </ModalHeader>
 
         <form>

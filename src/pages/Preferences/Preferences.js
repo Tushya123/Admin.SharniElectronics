@@ -20,26 +20,27 @@ import BreadCrumb from "../../Components/Common/BreadCrumb";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 
-// import {
-//   createContact,
-//   removeContact,
-//   updateContact,
-//   getContact,
-// } from '../../functions/Conatct1/Contacct'
+import {
+  updateSubscriber,listSubscriber,createSubscribers,deleteSubscribers,getSpecificSubscriber,
+  removeSubscribers
+} from "../../functions/Preferences/Preferences";
 
 const initialState = {
-  ProductGroup: "",
+  QuoteEmail: "",
+  InquiryEmail: "",
   IsActive: false,
 };
 
-const ProductGroup = () => {
+const Preferences = () => {
   const [values, setValues] = useState(initialState);
-  const { ProductGroup, IsActive } = values;
+  const { QuoteEmail,InquiryEmail, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
-
+  const [showForm, setShowForm] = useState(false);
+  const [updateForm, setUpdateForm] = useState(false);
   const [errCN, setErrCN] = useState(false);
+  const [errDN, setErrDN] = useState(false);
 
   const [query, setQuery] = useState("");
 
@@ -63,120 +64,108 @@ const ProductGroup = () => {
   };
 
   const [modal_delete, setmodal_delete] = useState(false);
-  const tog_delete = (row) => {
-    setmodal_delete(!modal_delete);
-    set_Id(row._id);
-  };
+    const tog_delete = (_id) => {
+      setmodal_delete(!modal_delete);
+      setRemove_id(_id);
+    };
 
   const [modal_edit, setmodal_edit] = useState(false);
-  const handleTog_edit = (row, _id) => {
-    console.log("ididiidididididididi", row);
-    setmodal_edit(!modal_edit);
-    setIsSubmit(false);
-    set_Id(row._id);
-    setValues(row);
-    // getContact(_id)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setValues({
-    //       ...values,
-    //       contactno: res.contactno,
-    //       address:res.address,
-    //       email:res.email,
-    //       IsActive: res.IsActive,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  };
-
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const handleCheck = (e) => {
-    setValues({ ...values, IsActive: e.target.checked });
-  };
-
-  const handleClick = async (e) => {
-    e.preventDefault();
-    setFormErrors({});
-    console.log("country", values);
-    let errors = validate(values);
-    setFormErrors(errors);
-    setIsSubmit(true);
-
-    if (Object.keys(errors).length === 0) {
-      await axios
-        .post(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/areatype`,
-          values
-        )
-        .then((response) => {
-          fetchCategories();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      tog_list();
-    }
-  };
-
-  const handleDelete = async (e) => {
-    e.preventDefault();
-
-    await axios
-      .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/areatype/${_id}`
-      )
-      .then((response) => {
-        fetchCategories();
-      });
-
-    setmodal_delete(!modal_delete);
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    setFormErrors({});
-    console.log("country", values);
-    let errors = validate(values);
-    setFormErrors(errors);
-    setIsSubmit(true);
-
-    if (Object.keys(errors).length === 0) {
-      await axios
-        .put(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/areatype/${_id}`,
-          values
-        )
-        .then((response) => {
-          fetchCategories();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    const handleTog_edit = (_id) => {
       setmodal_edit(!modal_edit);
+      setIsSubmit(false);
+      set_Id(_id);
+      console.log(_id);
+      getSpecificSubscriber(_id)
+        .then((res) => {
+          console.log(res);
+          setValues({
+            ...values,
+            QuoteEmail: res.QuoteEmail,
+            InquiryEmail: res.InquiryEmail,
+            IsActive: res.IsActive,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    const handleChange = (e) => {
+      setValues({ ...values, [e.target.name]: e.target.value });
+    };
+
+    const handleCheck = (e) => {
+      setValues({ ...values, IsActive: e.target.checked });
+    };
+
+    const handleClick = (e) => {
+      e.preventDefault();
+      setFormErrors({});
+      console.log("country", values);
+      let erros = validate(values);
+      setFormErrors(erros);
+      setIsSubmit(true);
+
+      
+    };
+
+    const handleDelete = (e) => {
+      e.preventDefault();
+      removeSubscribers(remove_id)
+        .then((res) => {
+          setmodal_delete(!modal_delete);
+          fetchCategories();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    const handleUpdate = (e) => {
+      e.preventDefault();
+      let erros = validate(values);
+      setFormErrors(erros);
+      setIsSubmit(true);
+
+      if (Object.keys(erros).length === 0) {
+        updateSubscriber(_id, values)
+          .then((res) => {
+            setmodal_edit(!modal_edit);
+            fetchCategories();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
+
+    const validate = (values) => {
+      const errors = {};
+
+      if (!/\S+@\S+\.\S+/.test(values.QuoteEmail)) {
+        errors.QuoteEmail = "Email address is invalid";
+        // Assuming you have a setter function for the error state of Email field
+        setErrCN(true);
+      }
+      else{
+        setErrCN(false);
     }
-  };
-
-  const validate = (values) => {
-    const errors = {};
-
-    if (values.ProductGroup === "") {
-      errors.ProductGroup = "Product Group is  required!";
-      setErrCN(true);
-    }
-    if (values.ServiceName !== "") {
-      setErrCN(false);
+  if(!/\S+@\S+\.\S+/.test(values.InquiryEmail)) {
+        errors.InquiryEmail = "Email address is invalid";
+        // Assuming you have a setter function for the error state of Email field
+        setErrDN(true);
+      }
+      else{
+        setErrDN(false);
     }
 
-    return errors;
-  };
+      return errors;
+    };
 
-  const validClassCategoryName =
+  const validClassQuoteEmail =
     errCN && isSubmit ? "form-control is-invalid" : "form-control";
+    const validClassInquiryEmail =
+    errDN && isSubmit ? "form-control is-invalid" : "form-control";
 
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
@@ -206,14 +195,19 @@ const ProductGroup = () => {
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listarea`, {
-        skip: skip,
-        per_page: perPage,
-        sorton: column,
-        sortdir: sortDirection,
-        match: query,
-        IsActive: filter,
-      })
+      .post(
+
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/preferences`,
+
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          IsActive: filter,
+        }
+      )
       .then((response) => {
         if (response.length > 0) {
           let res = response[0];
@@ -225,6 +219,7 @@ const ProductGroup = () => {
         }
         // console.log(res);
       });
+
     setLoading(false);
   };
 
@@ -240,20 +235,24 @@ const ProductGroup = () => {
     setFilter(e.target.checked);
   };
   const col = [
+    
     {
-      name: "Sr No",
-      selector: (row, index) => index + 1,
+      name: "Quote Email",
+      selector: (row) => row.QuoteEmail,
       sortable: true,
-      sortField: "srno",
-      minWidth: "150px",
+      sortField: "address",
+     
+      
     },
     {
-      name: "Product Group",
-      selector: (row) => row.ProductGroup,
+      name: "Inquiry Email",
+      selector: (row) => row.InquiryEmail,
       sortable: true,
-      sortField: "servicename",
-      minWidth: "150px",
+      sortField: "address",
+   
+      
     },
+    
     {
       name: "Status",
       selector: (row) => {
@@ -264,7 +263,7 @@ const ProductGroup = () => {
     },
     {
       name: "Action",
-      selector: (row, index) => {
+      selector: (row) => {
         return (
           <React.Fragment>
             <div className="d-flex gap-2">
@@ -273,22 +272,22 @@ const ProductGroup = () => {
                   className="btn btn-sm btn-success edit-item-btn "
                   data-bs-toggle="modal"
                   data-bs-target="#showModal"
-                  onClick={() => handleTog_edit(row, index)}
+                  onClick={() => handleTog_edit(row._id)}
                 >
                   Edit
                 </button>
               </div>
 
-              <div className="remove">
+              {/* <div className="remove">
                 <button
                   className="btn btn-sm btn-danger remove-item-btn"
                   data-bs-toggle="modal"
                   data-bs-target="#deleteRecordModal"
-                  onClick={() => tog_delete(row)}
+                  onClick={() => tog_delete(row._id)}
                 >
                   Remove
                 </button>
-              </div>
+              </div> */}
             </div>
           </React.Fragment>
         );
@@ -298,65 +297,103 @@ const ProductGroup = () => {
     },
   ];
 
-  document.title = "Product Group|Shreeji Pharma";
+
+  document.title = "Preferences | Shreeji Pharma";
+
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb
-        
-            title="Product Group"
-          
-          />
+
+          <BreadCrumb title="Subscribe NewsPaper"/>
+
           <Row>
             <Col lg={12}>
               <Card>
-                <CardHeader>
+              <CardHeader>
                   <Row className="g-4 mb-1">
-                    <Col className="col-sm" sm={6} lg={4} md={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Product Group</h2>
+                    <Col className="col-sm" lg={4} md={6} sm={6}>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Preference</h2>
                     </Col>
-
-                    <Col sm={6} lg={4} md={6}>
-                      <div className="text-end mt-2">
-                        <Input
-                          type="checkbox"
+                    <Col lg={4} md={6} sm={6}>
+                      <div
+                        style={{
+                          display: showForm || updateForm ? "none" : "",
+                        }}
+                      >
+                        <div className="text-end mt-1">
+                          <Input
+                            type="checkbox"
                           className="form-check-input"
                           name="filter"
                           value={filter}
                           defaultChecked={true}
                           onChange={handleFilter}
-                        />
-                        <Label className="form-check-label ms-2">Active</Label>
+
+                          />
+                          <Label className="form-check-label ms-2">
+                            Active
+                          </Label>
+                        </div>
                       </div>
                     </Col>
-                    <Col className="col-sm-auto" sm={12} lg={4} md={12}>
+                    <Col className="col-sm-auto mr-10" lg={4}>
                       <div className="d-flex justify-content-sm-end">
-                        <div className="ms-2">
-                          <Button
-                            color="success"
-                            className="add-btn me-1"
-                            onClick={() => tog_list()}
-                            id="create-btn"
-                          >
-                            <i className="ri-add-line align-bottom me-1"></i>
-                            Add
-                          </Button>
+                        {/* add btn */}
+                        <div
+                          style={{
+                            display: showForm || updateForm ? "none" : "",
+                          }}
+                        >
                         </div>
-                        <div className="search-box ms-2">
+
+                        {/* update list btn */}
+
+                        <div
+                          style={{
+                            display: showForm || updateForm ? "" : "none",
+                          }}
+                        >
+                          <Row>
+                            <Col lg={12}>
+                              <div className="text-end">
+                                <button
+                                  className="btn bg-success text-light mb-3 "
+                                  onClick={() => {
+                                    // setValues(initialState);
+                                   
+                                    // setFileId(Math.random() * 100000);
+                                  }}
+                                >
+                                  <i class="ri-list-check align-bottom me-1"></i>{" "}
+                                  List
+                                </button>
+                              </div>
+                            </Col>
+                          </Row>
+                          {/* </div> */}
+                        </div>
+
+                        {/* search */}
+                        <div
+                          className="search-box ms-2"
+                          style={{
+                            display: showForm || updateForm ? "none" : "",
+                          }}
+                        >
                           <input
-                            type="text"
                             className="form-control search"
                             placeholder="Search..."
                             onChange={(e) => setQuery(e.target.value)}
                           />
-                          <i className="ri-search-line search-icon"></i>
+                          <i className="ri-search-line search-icon "></i>
                         </div>
                       </div>
                     </Col>
                   </Row>
                 </CardHeader>
+                
 
                 <CardBody>
                   <div id="customerList">
@@ -386,7 +423,7 @@ const ProductGroup = () => {
       </div>
 
       {/* Add Modal */}
-      <Modal
+      {/* <Modal
         isOpen={modal_list}
         toggle={() => {
           tog_list();
@@ -400,25 +437,26 @@ const ProductGroup = () => {
             setIsSubmit(false);
           }}
         >
-          Add Product Group
+          Add Category
         </ModalHeader>
         <form>
           <ModalBody>
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassCategoryName}
-                placeholder="Enter ProductGroup"
+                className={validClassQuoteEmail}
+                placeholder="Enter Category Name"
                 required
-                name="ProductGroup"
-                value={values.ProductGroup}
+                name="categoryName"
+                value={categoryName}
                 onChange={handleChange}
               />
-              <Label>
-                Product Group <span className="text-danger">*</span>
-              </Label>
-              {isSubmit && <p className="text-danger">{formErrors.ProductGroup}</p>}
+              <Label>Category Name <span className="text-danger">*</span></Label>
+              {isSubmit && (
+                <p className="text-danger">{formErrors.categoryName}</p>
+              )}
             </div>
+
             <div className="form-check mb-2">
               <Input
                 type="checkbox"
@@ -454,7 +492,7 @@ const ProductGroup = () => {
             </div>
           </ModalFooter>
         </form>
-      </Modal>
+      </Modal> */}
 
       {/* Edit Modal */}
       <Modal
@@ -471,33 +509,48 @@ const ProductGroup = () => {
             setIsSubmit(false);
           }}
         >
-      Edit Product Group
+          Edit Subscribe Newspaper
         </ModalHeader>
         <form>
           <ModalBody>
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassCategoryName}
-                placeholder="Enter ProductGroup"
+                className={validClassQuoteEmail}
+                placeholder="Enter Category Name"
                 required
-                name="ProductGroup"
-                value={values.ProductGroup}
+                name="QuoteEmail"
+                value={QuoteEmail}
                 onChange={handleChange}
               />
-              <Label>
-              Product Group <span className="text-danger">*</span>
-              </Label>
-              {isSubmit && <p className="text-danger">{formErrors.ProductGroup}</p>}
+              <Label>Quote Email <span className="text-danger">*</span></Label>
+              {isSubmit && (
+                <p className="text-danger">{formErrors.QuoteEmail}</p>
+              )}
+            </div><div className="form-floating mb-3">
+              <Input
+                type="text"
+                className={validClassInquiryEmail}
+                placeholder="Enter Category Name"
+                required
+                name="InquiryEmail"
+                value={values.InquiryEmail}
+                onChange={handleChange}
+              />
+              <Label>Inquiry Email <span className="text-danger">*</span></Label>
+              {isSubmit && (
+                <p className="text-danger">{formErrors.InquiryEmail}</p>
+              )}
             </div>
+
             <div className="form-check mb-2">
               <Input
                 type="checkbox"
                 className="form-check-input"
                 name="IsActive"
-                value={values.IsActive}
+                value={IsActive}
+                checked={IsActive}
                 onChange={handleCheck}
-                checked={values.IsActive}
               />
               <Label className="form-check-label">Is Active</Label>
             </div>
@@ -544,7 +597,7 @@ const ProductGroup = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Product Group
+          Remove Subscribe Newspaper
         </ModalHeader>
         <form>
           <ModalBody>
@@ -589,4 +642,4 @@ const ProductGroup = () => {
   );
 };
 
-export default ProductGroup;
+export default Preferences;
