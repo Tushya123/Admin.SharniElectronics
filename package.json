@@ -2,9 +2,7 @@
   "name": "velzon-react",
   "version": "0.1.0",
   "private": true,
-
   "dependencies": {
-    
     "@ckeditor/ckeditor5-build-classic": "^32.0.0",
     "@ckeditor/ckeditor5-react": "^4.0.0",
     "@fullcalendar/bootstrap": "^5.11.0",
@@ -31,6 +29,7 @@
     "eslint": "^8.9.0",
     "face-api.js": "^0.22.2",
     "feather-icons-react": "^0.5.0",
+    "file-saver": "^2.0.5",
     "filepond": "^4.30.3",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.10",

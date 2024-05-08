@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { Link } from "react-router-dom";
+import { saveAs } from "file-saver";
 import {
   Button,
   Card,
@@ -321,27 +322,26 @@ document.title = "Report |  Shreeji Pharma";
     </Col>
     <Col lg={4} md={6} sm={6}></Col>
     <Col className="text-end">
-      <Button
-      
-        color="primary"
-        className="btn-rounded waves-effect waves-light"
-        onClick={() => {
-          // Assuming _id is available in your component state
-          const endpoint = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/generateSupplierWiseProductReportExcel/${changedid}`;
-          // Call the endpoint when the button is clicked
-          axios.get(endpoint)
-            .then((response) => {
-              // Handle success
-              console.log("Excel sheet generated successfully", response);
-            })
-            .catch((error) => {
-              // Handle error
-              console.error("Error generating Excel sheet", error);
-            });
-        }}
-      >
-        Generate Excel Sheet
-      </Button>
+    <Button
+  color="primary"
+  className="btn-rounded waves-effect waves-light"
+  onClick={() => {
+    const endpoint = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/generateSupplierWiseProductReportExcel/${changedid}`;
+    axios
+      .get(endpoint, { responseType: "blob" })
+      .then((response) => {
+        const blob = new Blob([response]);
+        saveAs(blob, "SupplierWiseProductReport.xlsx");
+        console.log("Excel sheet generated successfully");
+      })
+      .catch((error) => {
+        console.error("Error generating Excel sheet", error);
+      });
+  }}
+>
+  Generate Excel Sheet
+</Button>
+
     </Col>
   </Row>
 </CardHeader>
