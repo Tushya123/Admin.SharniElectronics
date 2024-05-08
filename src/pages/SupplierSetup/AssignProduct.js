@@ -549,6 +549,7 @@ console.log("Idsss",_id)
 
   const handleCheckboxChange = (rowId) => {
     console.log(rowId)
+    console.log("THis is:",ProductDetail)
     // Check if the checkbox is already checked
     if (ProductDetail.includes(rowId)) {
       // If checked, remove it from the array
@@ -561,6 +562,7 @@ console.log("Idsss",_id)
   const handleCheckboxChange1 = (rowId) => {
     console.log("THis is it",rowId)
     // Check if the checkbox is already checked
+    
     if (ProductDetail.includes(rowId)) {
       // If checked, remove it from the array
       setProductDetail(ProductDetail.filter((id) => id !== rowId));

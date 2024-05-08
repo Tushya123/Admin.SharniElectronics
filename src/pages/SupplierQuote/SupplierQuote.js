@@ -40,6 +40,9 @@ const SupplierQuote = () => {
   const [selectsupplier,setsupplierdetail] = useState([]);
   const [loadingOption, setLoadingOption] = useState(false);
   const [selectnewdetail,setselectnewdetail]=useState([]);
+  const [supplierdetailsforemail,setsupplierdetailsforemail]=useState([]);
+
+  const [EmailID_Office,setem]=useState([]);
 
 
   const [formErrors, setFormErrors] = useState({});
@@ -56,7 +59,21 @@ const SupplierQuote = () => {
 
   const [blogs, setBlogs] = useState([]);
 
-
+const getallsupplierdetails=()=>{
+  axios.get(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`)
+  .then((response)=>{
+    if(response.length>0){
+      console.log("rrr",response);
+      const names =response.map((item)=>({
+        label:item.EmailID_Office,value:item._id
+      }))
+      setsupplierdetailsforemail(names)
+    }
+    else if(response.length===0){
+      setsupplierdetailsforemail([]);
+    }
+  })
+}
   const getallProductDetail=()=>{
     axios
       .get(
@@ -80,6 +97,7 @@ console.log(response)
   useEffect(()=>{
 getallAssignProduct()
 getallProductDetail()
+getallsupplierdetails()
 },[])
 console.log(selectsupplier.length);
   const getallAssignProduct=()=>{
@@ -178,6 +196,7 @@ console.log(data)
     // }
    
     getallProductDetail();
+    getallProductDetail();
     setIsSubmit(false);
     setUpdateForm(true);
     set_Id(_id);
@@ -201,7 +220,7 @@ console.log(data)
     setIsSubmit(false);
   };
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
     setFormErrors({});
     let errors = validate(values);
@@ -218,6 +237,14 @@ console.log(data)
     //   // formdata.append("Detail", blogDesc);
     //   formdata.append("IsActive", IsActive);
       // formdata.append("subtitle", blogThumnailDesc);
+      const response1 = await fetch(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/forget-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ EmailID_Office }),
+      });
 
 
       axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/supplierquote`,values)
@@ -225,10 +252,17 @@ console.log(data)
           console.log(res);
           setValues(initialState);
           setTempArray([])
+          // setem("");
           values.SupplierName=[]
           // setmodal_list(!modal_list);
           setShowForm(false);
           setSupplierNamePlaceholder("")
+          setprod("");
+          setsupplierdetailsforemail([]);
+          setselectnewdetail([]);
+          setsupplierdetail([]);
+          setproductdetail([]);
+          
           Setdata([])
           setLoadingOption(false);
          
@@ -421,8 +455,17 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
     setShowForm(false);
     setUpdateForm(false);
     
-    setproductdetail("");
+    
     setValues(initialState)
+          setTempArray([])
+          // setem("");
+          // setmodal_list(!modal_list);
+          setShowForm(false);
+          setSupplierNamePlaceholder("")
+          setprod("");
+         
+          
+          Setdata([])
   };
 
   const handleUpdateCancel = (e) => {
@@ -432,6 +475,20 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
     setPhotoAdd("");
     setUpdateForm(false);
     setShowForm(false);
+    setValues(initialState);
+          setTempArray([])
+          // setem("");
+          values.SupplierName=[]
+          // setmodal_list(!modal_list);
+          setShowForm(false);
+          setSupplierNamePlaceholder("")
+          setprod("");
+          setsupplierdetailsforemail([]);
+          setselectnewdetail([]);
+          setsupplierdetail([]);
+          setproductdetail([]);
+          
+          Setdata([])
   
     
     setproductdetail("");
@@ -509,23 +566,41 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
     },
   ];
 const[tempArray, setTempArray] = useState([])
-const handleCheckboxChange=(itemKey, default_id)=>{
+const [emailArray, setEmailArray]= useState([])
+ 
+const handleCheckboxChange = (itemKey, default_id) => {
   console.log(default_id)
-  console.log(tempArray.length)
- 
-    if(tempArray.includes(default_id))
-    {
-      setTempArray(tempArray.filter((id)=>id !== default_id))
-      console.log(tempArray)
+  for (let i = 0; i < supplierdetailsforemail.length; i++) {
+    if (default_id === supplierdetailsforemail[i].value) {
+      console.log(supplierdetailsforemail[i].label)
+      console.log(EmailID_Office)
+      if (EmailID_Office.includes(supplierdetailsforemail[i].label)) {
+        console.log(EmailID_Office)
+        setem(EmailID_Office.filter((id) => id !== supplierdetailsforemail[i].label))
+        console.log(tempArray)
+      } else {
+        console.log("new", supplierdetailsforemail[i].label)
+        setem([...EmailID_Office, supplierdetailsforemail[i].label]);
+
+      }
     }
-    else{
-      setTempArray([...tempArray,default_id])
-    }
- 
-  
+  }
+
+  console.log(tempArray)
+
+  if (tempArray.includes(default_id)) {
+    setTempArray(tempArray.filter((id) => id !== default_id))
+    setem([]);
+    console.log(tempArray)
+  } else {
+    setTempArray([...tempArray, default_id])
+  }
 }
+
+console.log(EmailID_Office)
+console.log("THis is the email", EmailID_Office)
 console.log(tempArray)
-values.SupplierName=tempArray
+values.SupplierName = tempArray
 console.log(values)
 
 
@@ -582,6 +657,7 @@ console.log(values)
                                     color="success"
                                     className="add-btn me-1"
                                     onClick={() => {
+                                      getallProductDetail();
                                       getallProductDetail();
                                       setShowForm(!showForm);
                                       // setValues(initialState);

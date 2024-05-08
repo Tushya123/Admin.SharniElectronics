@@ -56,9 +56,210 @@ const initialState2={
    RFQ_Date:""
 }
 
-const Inquiry = () => {
+const ProductInquiry = () => {
 
-
+  const countriesArray = [
+    { label: "AX", value : "ALAND ISLANDS" },
+    { label: "AL", value : "ALBANIA" },
+    { label: "DZ", value : "ALGERIA" },
+    { label: "AS", value : "AMERICAN SAMOA" },
+    { label: "AD", value : "ANDORRA" },
+    { label: "AI", value : "ANGUILLA" },
+    { label: "AQ", value : "ANTARCTICA" },
+    { label: "AG", value : "ANTIGUA AND BARBUDA" },
+    { label: "AR", value : "ARGENTINA" },
+    { label: "AM", value : "ARMENIA" },
+    { label: "AW", value : "ARUBA" },
+    { label: "AU", value : "AUSTRALIA" },
+    { label: "AT", value : "AUSTRIA" },
+    { label: "AZ", value : "AZERBAIJAN" },
+    { label: "BS", value : "BAHAMAS" },
+    { label: "BH", value : "BAHRAIN" },
+    { label: "BD", value : "BANGLADESH" },
+    { label: "BB", value : "BARBADOS" },
+    { label: "BE", value : "BELGIUM" },
+    { label: "BZ", value : "BELIZE" },
+    { label: "BJ", value : "BENIN" },
+    { label: "BM", value : "BERMUDA" },
+    { label: "BT", value : "BHUTAN" },
+    { label: "BA", value : "BOSNIA-HERZEGOVINA" },
+    { label: "BW", value : "BOTSWANA" },
+    { label: "BV", value : "BOUVET ISLAND" },
+    { label: "BR", value : "BRAZIL" },
+    { label: "BN", value : "BRUNEI DARUSSALAM" },
+    { label: "BG", value : "BULGARIA" },
+    { label: "BF", value : "BURKINA FASO" },
+    { label: "CA", value : "CANADA" },
+    { label: "CV", value : "CAPE VERDE" },
+    { label: "KY", value : "CAYMAN ISLANDS" },
+    { label: "CF", value : "CENTRAL AFRICAN REPUBLIC" },
+    { label: "CL", value : "CHILE" },
+    { label: "CN", value : "CHINA" },
+    { label: "CX", value : "CHRISTMAS ISLAND" },
+    { label: "CC", value : "COCOS (KEELING) ISLANDS" },
+    { label: "CO", value : "COLOMBIA" },
+    { label: "CK", value : "COOK ISLANDS" },
+    { label: "CR", value : "COSTA RICA" },
+    { label: "CY", value : "CYPRUS" },
+    { label: "CZ", value : "CZECH REPUBLIC" },
+    { label: "DK", value : "DENMARK" },
+    { label: "DJ", value : "DJIBOUTI" },
+    { label: "DM", value : "DOMINICA" },
+    { label: "DO", value : "DOMINICAN REPUBLIC" },
+    { label: "EC", value : "ECUADOR" },
+    { label: "EG", value : "EGYPT" },
+    { label: "SV", value : "EL SALVADOR" },
+    { label: "EE", value : "ESTONIA" },
+    { label: "FK", value : "FALKLAND ISLANDS (MALVINAS)" },
+    { label: "FO", value : "FAROE ISLANDS" },
+    { label: "FJ", value : "FIJI" },
+    { label: "FI", value : "FINLAND" },
+    { label: "FR", value : "FRANCE" },
+    { label: "GF", value : "FRENCH GUIANA" },
+    { label: "PF", value : "FRENCH POLYNESIA" },
+    { label: "TF", value : "FRENCH SOUTHERN TERRITORIES" },
+    { label: "GA", value : "GABON" },
+    { label: "GM", value : "GAMBIA" },
+    { label: "GE", value : "GEORGIA" },
+    { label: "DE", value : "GERMANY" },
+    { label: "GH", value : "GHANA" },
+    { label: "GI", value : "GIBRALTAR" },
+    { label: "GR", value : "GREECE" },
+    { label: "GL", value : "GREENLAND" },
+    { label: "GD", value : "GRENADA" },
+    { label: "GP", value : "GUADELOUPE" },
+    { label: "GU", value : "GUAM" },
+    { label: "GG", value : "GUERNSEY" },
+    { label: "GY", value : "GUYANA" },
+    { label: "VA", value : "HOLY SEE (VATICAN CITY STATE)" },
+    { label: "HN", value : "HONDURAS" },
+    { label: "HK", value : "HONG KONG" },
+    { label: "HU", value : "HUNGARY" },
+    { label: "IS", value : "ICELAND" },
+    { label: "IN", value : "INDIA" },
+    { label: "ID", value : "INDONESIA" },
+    { label: "IE", value : "IRELAND" },
+    { label: "IM", value : "ISLE OF MAN" },
+    { label: "IL", value : "ISRAEL" },
+    { label: "IT", value : "ITALY" },
+    { label: "JM", value : "JAMAICA" },
+    { label: "JP", value : "JAPAN" },
+    { label: "JE", value : "JERSEY" },
+    { label: "JO", value : "JORDAN" },
+    { label: "KZ", value : "KAZAKHSTAN" },
+    { label: "KI", value : "KIRIBATI" },
+    { label: "KR", value : "KOREA, REPUBLIC OF" },
+    { label: "KW", value : "KUWAIT" },
+    { label: "KG", value : "KYRGYZSTAN" },
+    { label: "LV", value : "LATVIA" },
+    { label: "LS", value : "LESOTHO" },
+    { label: "LI", value : "LIECHTENSTEIN" },
+    { label: "LT", value : "LITHUANIA" },
+    { label: "LU", value : "LUXEMBOURG" },
+    { label: "MO", value : "MACAO" },
+    { label: "MK", value : "MACEDONIA" },
+    { label: "LI", value : "LIECHTENSTEIN" },
+    { label: "LT", value : "LITHUANIA" },
+    { label: "LU", value : "LUXEMBOURG" },
+    { label: "MO", value : "MACAO" },
+    { label: "MK", value : "MACEDONIA" },
+    { label: "MG", value : "MADAGASCAR" },
+    { label: "MW", value : "MALAWI" },
+    { label: "MY", value : "MALAYSIA" },
+    { label: "MT", value : "MALTA" },
+    { label: "MH", value : "MARSHALL ISLANDS" },
+    { label: "MQ", value : "MARTINIQUE" },
+    { label: "MR", value : "MAURITANIA" },
+    { label: "MU", value : "MAURITIUS" },
+    { label: "YT", value : "MAYOTTE" },
+    { label: "MX", value : "MEXICO" },
+    { label: "MD", value : "MOLDOVA, REPUBLIC OF" },
+    { label: "MC", value : "MONACO" },
+    { label: "MN", value : "MONGOLIA" },
+    { label: "ME", value : "MONTENEGRO" },
+    { label: "MS", value : "MONTSERRAT" },
+    { label: "MA", value : "MOROCCO" },
+    { label: "MZ", value : "MOZAMBIQUE" },
+    { label: "NA", value : "NAMIBIA" },
+    { label: "NR", value : "NAURU" },
+    { label: "NP", value : "NEPAL" },
+    { label: "NL", value : "NETHERLANDS" },
+    { label: "AN", value : "NETHERLANDS ANTILLES" },
+    { label: "NC", value : "NEW CALEDONIA" },
+    { label: "NZ", value : "NEW ZEALAND" },
+    { label: "NI", value : "NICARAGUA" },
+    { label: "NE", value : "NIGER" },
+    { label: "NU", value : "NIUE" },
+    { label: "NF", value : "NORFOLK ISLAND" },
+    { label: "MP", value : "NORTHERN MARIANA ISLANDS" },
+    { label: "NO", value : "NORWAY" },
+    { label: "OM", value : "OMAN" },
+    { label: "PW", value : "PALAU" },
+    { label: "PS", value : "PALESTINE" },
+    { label: "PA", value : "PANAMA" },
+    { label: "PY", value : "PARAGUAY" },
+    { label: "PE", value : "PERU" },
+    { label: "PH", value : "PHILIPPINES" },
+    { label: "PN", value : "PITCAIRN" },
+    { label: "PL", value : "POLAND" },
+    { label: "PT", value : "PORTUGAL" },
+    { label: "PR", value : "PUERTO RICO" },
+    { label: "QA", value : "QATAR" },
+    { label: "RE", value : "REUNION" },
+    { label: "RO", value : "ROMANIA" },
+    { label: "RU", value : "RUSSIAN FEDERATION" },
+    { label: "RW", value : "RWANDA" },
+    { label: "SH", value : "SAINT HELENA" },
+    { label: "KN", value : "SAINT KITTS AND NEVIS" },
+    { label: "LC", value : "SAINT LUCIA" },
+    { label: "PM", value : "SAINT PIERRE AND MIQUELON" },
+    { label: "WS", value : "SAMOA" },
+    { label: "SM", value : "SAN MARINO" },
+    { label: "ST", value : "SAO TOME AND PRINCIPE" },
+    { label: "SA", value : "SAUDI ARABIA" },
+    { label: "SN", value : "SENEGAL" },
+    { label: "RS", value : "SERBIA" },
+    { label: "SC", value : "SEYCHELLES" },
+    { label: "SG", value : "SINGAPORE" },
+    { label: "SK", value : "SLOVAKIA" },
+    { label: "SI", value : "SLOVENIA" },
+    { label: "SB", value : "SOLOMON ISLANDS" },
+    { label: "ZA", value : "SOUTH AFRICA" },
+    { label: "ES", value : "SPAIN" },
+    { label: "SR", value : "SURINAME" },
+    { label: "SJ", value : "SVALBARD AND JAN MAYEN" },
+    { label: "SZ", value : "SWAZILAND" },
+    { label: "SE", value : "SWEDEN" },
+    { label: "CH", value : "SWITZERLAND" },
+    { label: "TW", value : "TAIWAN, PROVINCE OF CHINA" },
+    { label: "TZ", value : "TANZANIA, UNITED REPUBLIC OF" },
+    { label: "TH", value : "THAILAND" },
+    { label: "TL", value : "TIMOR-LESTE" },
+    { label: "TG", value : "TOGO" },
+    { label: "TK", value : "TOKELAU" },
+    { label: "TO", value : "TONGA" },
+    { label: "TT", value : "TRINIDAD AND TOBAGO" },
+    { label: "TN", value : "TUNISIA" },
+    { label: "TR", value : "TURKEY" },
+    { label: "TM", value : "TURKMENISTAN" },
+    { label: "TC", value : "TURKS AND CAICOS ISLANDS" },
+    { label: "TV", value : "TUVALU" },
+    { label: "UG", value : "UGANDA" },
+    { label: "UA", value : "UKRAINE" },
+    { label: "AE", value : "UNITED ARAB EMIRATES" },
+    { label: "GB", value : "UNITED KINGDOM" },
+    { label: "US", value : "UNITED STATES" },
+    { label: "UM", value : "URUGUAY" },
+    { label: "UZ", value : "UZBEKISTAN" },
+    { label: "VU", value : "VANUATU" },
+    { label: "VE", value : "VENEZUELA" },
+    { label: "VN", value : "VIET NAM" },
+    { label: "VG", value : "VIRGIN ISLANDS, BRITISH" },
+    { label: "VI", value : "VIRGIN ISLANDS, U.S." },
+    { label: "WF", value : "WALLIS AND FUTUNA" },
+    { label: "EH", value : "WESTERN SAHARA" },
+    { label: "ZM", value : "ZAMBIA" }
+  ];
   
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -76,22 +277,17 @@ const Inquiry = () => {
   const [loading, setLoading] = useState(false);
   const [loadingOption, setLoadingOption] = useState(false);
   //validation
-  const [errSN, setErrSN] = useState(false);
+  const [errSP, setErrSP] = useState(false);
+  const [errQU, setErrQU] = useState(false);
+  const [errCPN, setErrCPN] = useState(false);
+  const [errCN,setErrCN]=useState(false);
+  const [errMN,setErrMN]=useState(false);
+  const [errEM,setErrEM]=useState(false);
+  const [errCOM,setErrCOM]=useState(false);
   // const [errCPN, setErrCPN] = useState(false);
   const [errCountry, setErrCountry] = useState(false);
-  const [errState, setErrState] = useState(false);
-  const [errCity, setErrCity] = useState(false);
-  const [errPincode, setErrPincode] = useState(false);
-  const [errAddress1, setErrAddress1] = useState(false);
-  const [errAddress2, setErrAddress2] = useState(false);
-  const [errCNOffice, setErrCNOffice] = useState(false);
-  const [errCNSupport, setErrCNSupport] = useState(false);
-  const [errCNSales, setErrCNSales] = useState(false);
-  const [errEmailOffice, setErrEmailOffice] = useState(false);
-  const [errEmailSales, setErrEmailSales] = useState(false);
-  const [errEmailSupport, setErrEmailSupport] = useState(false);
-  const [errGST, setErrGST] = useState(false);
-  const [errWeb1, setErrWeb1] = useState(false);
+
+  
 
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
@@ -438,6 +634,7 @@ if(Object.keys(errors).length===0){
       updateinquiry(_id, values)
         .then((res) => {
           setUpdateForm(false);
+          setAllProductDetail([]);
           setShowForm(false);
           setValues(initialState);
           fetchCategories();
@@ -454,6 +651,7 @@ if(Object.keys(errors).length===0){
     setSupplierNamePlaceholder("");
     setAllProductDetail([]);
     setAllProductId([])
+
     setRfqForm(false)
     setShowForm(false);
     setUpdateForm(false)
@@ -467,42 +665,98 @@ if(Object.keys(errors).length===0){
 
   const validate = (values) => {
     const errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    //const phone = /^\d{10}$/;
+    const phone =
+/^(?!.*(\d)(-?\1){4})(?!0123456789|1234567890|2345678901|3456789012|4567890123|5678901234|6789012345|7890123456|8901234567|9012345678)\d{10}$/;
+    if (!values.ContactPerson) {
+      errors.ContactPerson = "ContactPerson Name is required!";
+      setErrCPN(true);
+    } else {
+      setErrCPN(false);
+    }
+   if (!values.Comments) {
+      errors.Comments = "Remark is required!";
+      setErrCOM(true);
+    } else {
+      setErrCOM(false);
+    }
+   
+    if (!values.Country) {
+      errors.Country = "Country Name is required!";
+      setErrCountry(true);
+    } else {
+      setErrCountry(false);
+    }
     
+    if (!values.CompanyName) {
+      errors.CompanyName = "Company Name is required!";
+      setErrCN(true);
+    } else {
+      setErrCN(false);
+    } 
+    if (!values.Email) {
+      errors.Email = "Email is required!";
+      setErrEM(true);
+    } else if (!regex.test(values.Email)) {
+      errors.Email = "This is not a valid email format!";
+      setErrEM(true);
+    } else {
+      setErrEM(false);
+    }
+    if (!values.Mobile) {
+      errors.Mobile = "Contact No. is required";
+      setErrMN(true);
+    } else if (!phone.test(values.Mobile)) {
+      errors.Mobile = "This is not a valid Contact Number";
+      setErrMN(true);
+    } else {
+      setErrMN(false);
+    }
+    
+
+    return errors;
+  };  
+  const validateinquiry = (values2) => {
+    const errors = {};
+    if(!values2.ProductDetail2){
+      errors.ProductDetail2="Please Select a Product"
+      setErrSP(true)
+    }
+    else{
+      setErrSP(false)
+    }if(values2.Quantity===""){
+      errors.Quantity="Please Select a Product"
+      setErrQU(true)
+    }
+    else{
+      setErrQU(false)
+    }
 
     return errors;
   };
 
-  const validClassSN =
-    errSN && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassMobileNumber =
+    errMN && isSubmit ? "form-control is-invalid" : "form-control";
   
   const validClassCountry =
     errCountry && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassState =
-    errState && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassCity =
-    errCity && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassAddress1 =
-    errAddress1 && isSubmit ? "form-control is-invalid" : "form-control";
-    const validClassAddress2 =
-    errAddress2 && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassPincode =
-    errPincode && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassCNOffice =
-    errCNOffice && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassCNSales =
-    errCNSales && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassCNSupport =
-    errCNSupport && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassEmailOffice =
-    errEmailOffice && isSubmit ? "form-control is-invalid" : "form-control";
-  // const validClassEmailSales =
-  //   errEmailSales && isSubmit ? "form-control is-invalid" : "form-control";
-  // const validClassEmailSupport =
-  //   errEmailSupport && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassWeb1 =
-    errWeb1 && isSubmit ? "form-control is-invalid" : "form-control";
-  // const validClassGST =
-  //   errGST && isSubmit ? "form-control is-invalid" : "form-control";
+    
+  const validClassEmail =
+    errEM && isSubmit ? "form-control is-invalid" : "form-control";
+  
+  const validClassCompanyName =
+    errCN && isSubmit ? "form-control is-invalid" : "form-control";
+  
+ 
+  const validClassContactPerson =
+    errCPN && isSubmit ? "form-control is-invalid" : "form-control";
+ const validClassComments=
+ errCOM && isSubmit?"form-control is-invalid":"form-control"
+ const validClassProduct=
+ errSP && isSubmit?"p-0 form-control is-invalid":"p-0 form-control"
+ const validClassQuantity=
+ errQU && isSubmit?"form-control is-invalid":"form-control"
 
   const columns = [
     {
@@ -553,7 +807,7 @@ if(Object.keys(errors).length===0){
                   data-bs-target="#showModal"
                   onClick={() => handleTog_edit(row._id)}
                 >
-                  List
+                  Edit
                 </button>
               </div>
 
@@ -649,8 +903,13 @@ values2.RFQ_Status2=true
   }
 const handleAddInquiry = (e) => {
   e.preventDefault();
-  setFormErrors({});
- 
+  setFormErrors(validateinquiry(values2));
+  let errors = validateinquiry(values2);
+  setFormErrors(errors);
+  console.log("The errors are:",errors)
+  setIsSubmit(true);
+
+  if(Object.keys(errors).length===0){
 
 
     axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/InquiryProduct`, values2)
@@ -668,7 +927,7 @@ const handleAddInquiry = (e) => {
   .catch((err) => {
     console.log(err);
   });
-
+  }
       
   }
   console.log("This is it",allProductDetail,allProductId)
@@ -867,37 +1126,44 @@ console.log(values)
                                         <span className="text-danger">*</span>
                                       </Label>
                                        <Select
+className={validClassProduct}
                                        placeholder={SupplierNamePlaceholder}
                                                             value={prod}
                                                             onChange={handleSelectSingle}
                                                             options={selectProductDetail}
                                                         />
+                                                         {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.ProductDetail2}
+                                        </p>
+                                      )}
                                                     </div>
                                     </Col>
                                  
                                 <Col lg={3}>
-                                <Label>
+                                <Label style={{marginBottom:"6px"}}>
                                         Quantity{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
-                                    <div className="form-floating  ">
+                                    <div className="form-control-sm mb-4 ">
                                       
                                       <Input
+                                      className={validClassQuantity}
                                         key={"blogTitle_" + _id}
                                         type="text"
                                       
-                                        placeholder="Enter blog title"
-                                        required
+                                        placeholder="Enter Quantity"
                                         name="Quantity"
                                         value={Quantity}
                                         onChange={handleChange2}
+
                                       />
                                       
-                                      {/* {isSubmit && (
+                                      {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.email}
+                                          {formErrors.Quantity}
                                         </p>
-                                      )} */}
+                                      )}
                                     </div>
                                   </Col>
                                   <Col lg={2}>
@@ -914,7 +1180,7 @@ console.log(values)
                                       
                                     </div>
                                   </Col>
-                                  {console.log("Product is",allProductDetail)}
+                                  {/* {console.log("Product is",allProductDetail)}
                                   {allProductDetail ? (
                                         <div>
                                             <Row>
@@ -934,22 +1200,28 @@ console.log(values)
                                               ))}
                                             </Row>
                                         </div>
-                                    ) : null}
+                                    ) : null} */}
                                  <Row>
                                  <Col lg={3}>
     <Label>
-        Contact Person <span className="text-danger">*</span>
+        Contact Person <span className="text-danger ">*</span>
     </Label>
-    <div className="form-floating">
+    <div className="form-control-sm mb-3">
         <Input
             key={"contactPerson"}
             type="text"
+            className={validClassContactPerson}
             placeholder="Enter contact person"
             required
             name="ContactPerson"
             value={ContactPerson}
             onChange={handleChange}
         />
+         {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.ContactPerson}
+                                        </p>
+                                      )}
     </div>
 </Col>
 
@@ -957,38 +1229,64 @@ console.log(values)
     <Label>
         Company Name <span className="text-danger">*</span>
     </Label>
-    <div className="form-floating">
+    <div className="form-control-sm mb-3">
         <Input
             key={"companyName"}
             type="text"
+            className={validClassCompanyName}
             placeholder="Enter company name"
             required
             name="CompanyName"
             value={CompanyName}
             onChange={handleChange}
         />
+         {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.CompanyName}
+                                        </p>
+                                      )}
     </div>
 </Col>
 
 
 
 
-<Col lg={3}>
-    <Label>
-        Country <span className="text-danger">*</span>
-    </Label>
-    <div className="form-floating">
-        <Input
-            key={"country"}
-            type="text"
-            placeholder="Enter country"
-            required
-            name="Country"
-            value={Country}
-            onChange={handleChange}
-        />
-    </div>
-</Col>
+<Col md={3}>
+<Label>
+                                      Country
+                                      <span className="text-danger">*</span>
+                                    </Label>
+                                  <div className="form-control-sm mb-3">
+                                    <select
+                                      className={validClassCountry}
+                                      name="Country"
+                                      value={Country}
+                                      data-choices
+                                      data-choices-sorting="true"
+                                      onChange={handleChange}
+                                    >
+                                      <option>Select Country</option>
+
+                                      {countriesArray.map((c,index) => {
+                                        return (
+                                          <React.Fragment key={index}>
+                                            
+                                              <option value={c.value}>
+                                                {c.value}
+                                              </option>
+                                            
+                                          </React.Fragment>
+                                        );
+                                      })}
+                                    </select>
+                                    
+                                    {isSubmit && (
+                                      <p className="text-danger">
+                                        {formErrors.Country}
+                                      </p>
+                                    )}
+                                  </div>
+                                </Col>
 
 
 
@@ -997,9 +1295,10 @@ console.log(values)
     <Label>
         Mobile <span className="text-danger">*</span>
     </Label>
-    <div className="form-floating">
+    <div className="form-control-sm mb-3">
         <Input
             key={"mobile"}
+            className={validClassMobileNumber}
             type="tel"
             placeholder="Enter mobile number"
             required
@@ -1007,6 +1306,11 @@ console.log(values)
             value={Mobile}
             onChange={handleChange}
         />
+         {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.Mobile}
+                                        </p>
+                                      )}
     </div>
 </Col>
 
@@ -1014,41 +1318,87 @@ console.log(values)
     <Label>
         Email <span className="text-danger">*</span>
     </Label>
-    <div className="form-floating">
+    <div className="form-control-sm mb-3">
         <Input
             key={"email"}
             type="email"
+            className={validClassEmail}
             placeholder="Enter email"
             required
             name="Email"
             value={Email}
             onChange={handleChange}
         />
+         {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.Email}
+                                        </p>
+                                      )}
     </div>
 </Col>
 
 <Col lg={3}>
     <Label>
-        Comments
+        Remarks
     </Label>
-    <div className="form-floating">
+    <div className="form-control-sm mb-3">
         <Input
             key={"comments"}
-            type="textarea"
-            placeholder="Enter comments"
+            type="text"
+            placeholder="Enter Remark"
+            className={validClassComments}
             name="Comments"
             value={Comments}
             onChange={handleChange}
         />
+         {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.Comments}
+                                        </p>
+                                      )}
     </div>
 </Col>
 
 
                                  </Row>
-                                  <CardBody>
-                                    
-                    
-                  </CardBody>
+                                 <Row className="mt-4">
+{console.log("lol2",allProductDetail)}
+  {allProductDetail ? (
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Group</th>
+          <th scope="col">ProductName</th>
+      
+          <th scope="col">Quantity</th>
+          
+          {/* <th scope="col">Generate RFQ</th> */}
+        </tr>
+      </thead>
+      <tbody>
+        {allProductDetail.map((items, index) => (
+          <tr key={index}>
+            
+            <td>{items.Group}</td>
+            <td>{items.ProductDetailLabel}</td>
+          
+            <td>{items.Quantity}</td>
+           
+          
+          <React.Fragment>
+              <div className="edit">
+        
+      
+      </div>
+            </React.Fragment>
+        
+            
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : null}
+</Row>
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -1108,7 +1458,7 @@ console.log(values)
                               <Form>
                                 <Row>
                                
-                                  {allProductDetail ? (
+                                  {/* {allProductDetail ? (
                                         <div>
                                             <Row>
                                               {allProductDetail.map((item,index)=>(
@@ -1127,13 +1477,13 @@ console.log(values)
                                               ))}
                                             </Row>
                                         </div>
-                                    ) : null}
+                                    ) : null} */}
                                  <Row>
                                  <Col lg={3}>
         <Label>
            Inquiry Number: <span className="text-danger">*</span>
         </Label>
-        <div className="form-floating">
+        <div className="form-control-sm mb-3">
             <Input
                 key={"contactPerson"}
                 type="text"
@@ -1150,7 +1500,7 @@ console.log(values)
         <Label>
             Contact Person <span className="text-danger">*</span>
         </Label>
-        <div className="form-floating">
+        <div className="form-control-sm mb-3">
             <Input
                 key={"contactPerson"}
                 type="text"
@@ -1159,8 +1509,14 @@ console.log(values)
                 name="ContactPerson"
                 value={ContactPerson}
                 onChange={handleChange}
-                disabled // Added disabled attribute
+                className={validClassContactPerson}
+                 // Added disabled attribute
             />
+             {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.ContactPerson}
+                                        </p>
+                                      )}
         </div>
     </Col>
 
@@ -1168,7 +1524,7 @@ console.log(values)
         <Label>
             Company Name <span className="text-danger">*</span>
         </Label>
-        <div className="form-floating">
+        <div className="form-control-sm mb-3">
             <Input
                 key={"companyName"}
                 type="text"
@@ -1177,30 +1533,55 @@ console.log(values)
                 name="CompanyName"
                 value={CompanyName}
                 onChange={handleChange}
-                disabled // Added disabled attribute
+                className={validClassCompanyName}
+                 // Added disabled attribute
             />
+             {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.CompanyName}
+                                        </p>
+                                      )}
         </div>
     </Col>
 
     
 
-    <Col lg={3}>
-        <Label>
-            Country <span className="text-danger">*</span>
-        </Label>
-        <div className="form-floating">
-            <Input
-                key={"country"}
-                type="text"
-                placeholder="Enter country"
-                required
-                name="Country"
-                value={Country}
-                onChange={handleChange}
-                disabled // Added disabled attribute
-            />
-        </div>
-    </Col>
+    <Col md={3}>
+<Label>
+                                      Country
+                                      <span className="text-danger">*</span>
+                                    </Label>
+                                  <div className="form-control-sm mb-3">
+                                    <select
+                                      className={validClassCountry}
+                                      name="Country"
+                                      value={Country}
+                                      data-choices
+                                      data-choices-sorting="true"
+                                      onChange={handleChange}
+                                    >
+                                      <option>Select Country</option>
+
+                                      {countriesArray.map((c,index) => {
+                                        return (
+                                          <React.Fragment key={index}>
+                                            
+                                              <option value={c.value}>
+                                                {c.value}
+                                              </option>
+                                            
+                                          </React.Fragment>
+                                        );
+                                      })}
+                                    </select>
+                                    
+                                    {isSubmit && (
+                                      <p className="text-danger">
+                                        {formErrors.Country}
+                                      </p>
+                                    )}
+                                  </div>
+                                </Col>
 
     
 
@@ -1208,7 +1589,7 @@ console.log(values)
         <Label>
             Mobile <span className="text-danger">*</span>
         </Label>
-        <div className="form-floating">
+        <div className="form-control-sm mb-3">
             <Input
                 key={"mobile"}
                 type="tel"
@@ -1217,8 +1598,14 @@ console.log(values)
                 name="Mobile"
                 value={Mobile}
                 onChange={handleChange}
-                disabled // Added disabled attribute
+                className={validClassMobileNumber}
+                // Added disabled attribute
             />
+             {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.Mobile}
+                                        </p>
+                                      )}
         </div>
     </Col>
 
@@ -1226,7 +1613,7 @@ console.log(values)
         <Label>
             Email <span className="text-danger">*</span>
         </Label>
-        <div className="form-floating">
+        <div className="form-control-sm mb-3">
             <Input
                 key={"email"}
                 type="email"
@@ -1235,25 +1622,37 @@ console.log(values)
                 name="Email"
                 value={Email}
                 onChange={handleChange}
-                disabled // Added disabled attribute
+                className={validClassEmail}
+                 // Added disabled attribute
             />
+             {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.Email}
+                                        </p>
+                                      )}
         </div>
     </Col>
 
     <Col lg={3}>
         <Label>
-            Comments
+            Remarks
         </Label>
-        <div className="form-floating">
+        <div className="form-control-sm mb-3">
             <Input
                 key={"comments"}
-                type="textarea"
-                placeholder="Enter comments"
+                type="text"
+                placeholder="Enter Remarks"
                 name="Comments"
                 value={Comments}
                 onChange={handleChange}
-                disabled // Added disabled attribute
+                className={validClassComments}
+                // Added disabled attribute
             />
+             {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.Comments}
+                                        </p>
+                                      )}
         </div>
     </Col>
 </Row>
@@ -1318,14 +1717,14 @@ console.log(values)
 
                                   <Col lg={12}>
                                     <div className="hstack gap-2 justify-content-end">
-                                      {/* <button
+                                      <button
                                         type="submit"
                                         className="btn btn-success  m-1"
                                         id="add-btn"
-                                        onClick={handleSubmit}
+                                        onClick={handleUpdate}
                                       >
-                                        Submit
-                                      </button> */}
+                                        Update
+                                      </button>
                                       <button
                                         type="button"
                                         className="btn btn-outline-danger m-1"
@@ -1364,7 +1763,7 @@ console.log(values)
                 name="ProductDetailLabel"
                 value={values2.ProductDetailLabel}
                 onChange={handleChange2}
-                disabled // Added disabled attribute
+                 // Added disabled attribute
             />
         </div>
     </Col>
@@ -1437,6 +1836,7 @@ console.log(values)
                     <div>
                       <div className="table-responsive table-card mt-1 mb-1 text-right">
                         {/* <Table columns={col} dataSource={details}></Table> */}
+                        {console.log("Col:",columns)}
                         <DataTable
                           columns={columns}
                           data={blogs}
@@ -1525,4 +1925,4 @@ console.log(values)
   );
 };
 
-export default Inquiry;
+export default ProductInquiry;

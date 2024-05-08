@@ -20,7 +20,7 @@ import NewProject from "../pages/CMS/NewProject";
 import GetInTouch from "../pages/GetInTouch/GetInTouch";
 import UserSignIn from "../pages/UserSignIn/usersignin";
 import Roles from "../pages/Roles/Roles";
-import Inquiry from "../pages/Inquiry/Inquiry";
+import ProductInquiry from "../pages/Inquiry/ProductInquiry";
 import Preferences from "../pages/Preferences/Preferences";
 
 import ProductGroup from "../pages/ProductGroup/ProductGroup";
@@ -34,6 +34,8 @@ import Supplier from "../pages/SupplierSetup/SupplierSetup";
 import SupplierQuote from "../pages/SupplierQuote/SupplierQuote";
 import AssignProduct from "../pages/SupplierSetup/AssignProduct"; 
 import GalleryPhotos from "../pages/GalleryPhotos/GalleryPhotos";
+import ContactInquiry from "../pages/Inquiry/ContactInquiry";
+import SupplierWiseProductReport from "../pages/Report/SupplierWiseProduct";
 
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
@@ -54,7 +56,7 @@ const authProtectedRoutes = [
   { path: "/product-details", component: <ProductDetails /> },
   {path:"/getintouch",component:<GetInTouch/>},
   {path:"/roles",component:<Roles/>},
-  {path:"/inquiry",component:<Inquiry/>},
+  {path:"/product-inquiry",component:<ProductInquiry/>},
   {path:"/gallery-photos",component:<GalleryPhotos/>},
 
   {path:"/product-group",component:<ProductGroup/>},
@@ -65,6 +67,8 @@ const authProtectedRoutes = [
   {path:"/assign-product", component:<AssignProduct />},
   {path:"/supplier-quote",component:<SupplierQuote/>},
   {path:"/preferences",component:<Preferences/>},
+  {path:"/contact-inquiry",component:<ContactInquiry/>},
+  {path:"/supplier-wise-product",component:<SupplierWiseProductReport/>},
 
 
 
