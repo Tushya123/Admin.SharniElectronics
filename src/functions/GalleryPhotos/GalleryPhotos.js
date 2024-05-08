@@ -19,7 +19,7 @@ export const listGalleryPhotos  = async () => {
   );
 };
 
-export const updateGalleryPhotos  = async (_id, values) => {
+export const updateGalleryPhotos = async (_id, values) => {
   return await axios.put(
     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/GalleryPhoto/${_id}`,
     values

@@ -102,7 +102,7 @@ const GalleryPhotos = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      formdata.append("newImage", blogImage);
+      formdata.append("imageURL", blogImage);
       formdata.append("Category",types);
       formdata.append("IsActive", IsActive);
   
@@ -152,12 +152,12 @@ const GalleryPhotos = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      formdata.append("newImage", blogImage);
+      formdata.append("imageURL", blogImage);
       formdata.append("Category",types);
      
       formdata.append("IsActive", IsActive);
 
-      updateGalleryPhotos(formdata)
+      updateGalleryPhotos(_id,formdata)
         .then((res) => {
           // setmodal_edit(!modal_edit);
           setPhotoAdd("");

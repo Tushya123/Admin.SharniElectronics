@@ -44,7 +44,8 @@ const ProductDetail = () => {
   const [EP, setEP] = useState(false);
   const [USP, setUSP] = useState(false);
   const [BP, setBP] = useState(false);
- 
+  
+
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -153,7 +154,7 @@ const ProductDetail = () => {
     setblogTitle(row.Description);
     setblogThumnailDesc(row.Detail);
     setblogDesc(row.Detail);
-    setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
+    setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.ImageUrl}`);
     setIsActive(row.IsActive);
     // setBP(row.BP);
     // setEP(row.EP);
@@ -174,7 +175,7 @@ const ProductDetail = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      // formdata.append("newImage", blogImage);
+      formdata.append("ImageUrl", blogImage);
       formdata.append("ProductDetail",types);
       formdata.append("Description", blogTitle);
       formdata.append("Detail", blogThumnailDesc);
@@ -248,7 +249,7 @@ const ProductDetail = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      // formdata.append("newImage", blogImage);
+      formdata.append("ImageUrl", blogImage);
       formdata.append("ProductDetail",types);
       formdata.append("Description", blogTitle);
       // formdata.append("Detail", blogDesc);
@@ -813,6 +814,33 @@ const ProductDetail = () => {
                                       </CardBody>
                                     </Card>
                                   </Col>
+                                  <Col lg={6}>
+              <label>
+                Product Image <span className="text-danger">*</span>
+              </label>
+
+              <input
+                type="file"
+                name="ImageUrl"
+                className={validClassBI}
+                // accept="images/*"
+                accept=".jpg, .jpeg, .png"
+                onChange={PhotoUpload}
+              />
+              {isSubmit && (
+                <p className="text-danger">{formErrors.blogImage}</p>
+              )}
+              {checkImagePhoto ? (
+                <img
+                  //   src={image ?? myImage}
+                  className="m-2"
+                  src={photoAdd}
+                  alt="Profile"
+                  width="300"
+                  height="200"
+                />
+              ) : null}
+            </Col>
 
                                     <div className="mt-5">
                                     <Col lg={2}>
@@ -976,6 +1004,37 @@ const ProductDetail = () => {
                                       </CardBody>
                                     </Card>
                                   </Col>
+                                  <Col lg={6}>
+              <label>
+                Product Image <span className="text-danger">*</span>
+              </label>
+              <input
+                key={"bannerImage" + _id}
+                type="file"
+                name="ImageUrl"
+                className={validClassBI}
+                // accept="images/*"
+                accept=".jpg, .jpeg, .png"
+                onChange={PhotoUpload}
+              />
+              {isSubmit && (
+                <p className="text-danger">{formErrors.ImageUrl}</p>
+              )}
+
+              {checkImagePhoto || photoAdd ? (
+                <img
+                  // key={photoAdd}
+                  className="m-2"
+                  src={
+                    checkImagePhoto
+                      ? photoAdd
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${blogImage}`
+                  }
+                  width="300"
+                  height="200"
+                />
+              ) : null}
+            </Col>
                                   <div className="mt-5">
                                     <Col lg={2}>
                                       <div className="form-check mb-2">

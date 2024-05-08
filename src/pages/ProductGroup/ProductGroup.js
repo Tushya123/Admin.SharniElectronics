@@ -20,34 +20,36 @@ import BreadCrumb from "../../Components/Common/BreadCrumb";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 
-// import {
-//   createContact,
-//   removeContact,
-//   updateContact,
-//   getContact,
-// } from '../../functions/Conatct1/Contacct'
+import {
+  createProductGroup,
+  listProductGroup,
+  removeProductGroup,
+  updateProductGroup,
+  getProductGroupbyParams,getProductGroup
+} from "../../functions/ProductGroup/ProductGroup";
 
 const initialState = {
   ProductGroup: "",
+  ImageUrl: "",
   IsActive: false,
 };
 
 const ProductGroup = () => {
   const [values, setValues] = useState(initialState);
-  const { ProductGroup, IsActive } = values;
+  const { IsActive,ImageUrl,ProductGroups } =
+    values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
-
-  const [errCN, setErrCN] = useState(false);
 
   const [query, setQuery] = useState("");
 
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
 
-  const [categories, setCategories] = useState([]);
-
+  const [Adminuser, setAdminuser] = useState([]);
+  const [photoAdd, setPhotoAdd] = useState();
+  const [checkImagePhoto, setCheckImagePhoto] = useState(false);
   useEffect(() => {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -63,32 +65,29 @@ const ProductGroup = () => {
   };
 
   const [modal_delete, setmodal_delete] = useState(false);
-  const tog_delete = (row) => {
+  const tog_delete = (_id) => {
     setmodal_delete(!modal_delete);
-    set_Id(row._id);
+    setRemove_id(_id);
   };
 
   const [modal_edit, setmodal_edit] = useState(false);
-  const handleTog_edit = (row, _id) => {
-    console.log("ididiidididididididi", row);
+  const handleTog_edit = (_id) => {
     setmodal_edit(!modal_edit);
     setIsSubmit(false);
-    set_Id(row._id);
-    setValues(row);
-    // getContact(_id)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setValues({
-    //       ...values,
-    //       contactno: res.contactno,
-    //       address:res.address,
-    //       email:res.email,
-    //       IsActive: res.IsActive,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    set_Id(_id);
+    getProductGroup(_id)
+      .then((res) => {
+        setValues({
+          ...values,
+          ImageUrl: res.ImageUrl,
+          ProductGroup: res.ProductGroup,
+          IsActive: res.IsActive,
+        
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleChange = (e) => {
@@ -99,85 +98,130 @@ const ProductGroup = () => {
     setValues({ ...values, IsActive: e.target.checked });
   };
 
-  const handleClick = async (e) => {
+  const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    console.log("country", values);
-    let errors = validate(values);
-    setFormErrors(errors);
+    let erros = validate(values);
+    setFormErrors(erros);
     setIsSubmit(true);
 
-    if (Object.keys(errors).length === 0) {
-      await axios
-        .post(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/areatype`,
-          values
-        )
-        .then((response) => {
-          fetchCategories();
+    if (Object.keys(erros).length === 0) {
+      const formdata = new FormData();
+
+      formdata.append("ImageUrl", values.ImageUrl);
+      formdata.append("ProductGroup", values.ProductGroup);
+      formdata.append("IsActive", values.IsActive);
+      
+      createProductGroup(formdata)
+        .then((res) => {
+          setmodal_list(!modal_list);
+          setValues(initialState);
+          setCheckImagePhoto(false);
+          setIsSubmit(false);
+          setFormErrors({});
+          setPhotoAdd("");
+
+          fetchUsers();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
-      tog_list();
     }
   };
 
-  const handleDelete = async (e) => {
+  const handleDelete = (e) => {
     e.preventDefault();
-
-    await axios
-      .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/areatype/${_id}`
-      )
-      .then((response) => {
-        fetchCategories();
+    removeProductGroup(remove_id)
+      .then((res) => {
+        setmodal_delete(!modal_delete);
+        fetchUsers();
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-    setmodal_delete(!modal_delete);
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
-    setFormErrors({});
-    console.log("country", values);
-    let errors = validate(values);
-    setFormErrors(errors);
+    let erros = validate(values);
+    setFormErrors(erros);
     setIsSubmit(true);
 
-    if (Object.keys(errors).length === 0) {
-      await axios
-        .put(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/areatype/${_id}`,
-          values
-        )
-        .then((response) => {
-          fetchCategories();
+    if (Object.keys(erros).length === 0) {
+      const formdata = new FormData();
+
+      formdata.append("ImageUrl", values.ImageUrl);
+      formdata.append("ProductGroup", values.ProductGroup);
+
+      formdata.append("IsActive", values.IsActive);
+
+      updateProductGroup(_id, formdata)
+        .then((res) => {
+          setmodal_edit(!modal_edit);
+          fetchUsers();
+          setPhotoAdd("");
+
+          setCheckImagePhoto(false);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
-      setmodal_edit(!modal_edit);
     }
   };
+  const PhotoUpload = (e) => {
+    if (e.target.files.length > 0) {
+      const image = new Image();
 
+      let imageurl = URL.createObjectURL(e.target.files[0]);
+      console.log("img", e.target.files[0]);
+
+      setPhotoAdd(imageurl);
+      setValues({ ...values, ImageUrl: e.target.files[0] });
+      setCheckImagePhoto(true);
+    }
+  };
+  const [errFN, setErrFN] = useState(false);
+  const [errLN, setErrLN] = useState(false);
+  const [errEM, setErrEM] = useState(false);
+  const [errPA, setErrPA] = useState(false);
+  const [errBI, setErrBI] = useState(false);
   const validate = (values) => {
     const errors = {};
 
     if (values.ProductGroup === "") {
-      errors.ProductGroup = "Product Group is  required!";
-      setErrCN(true);
+      errors.ProductGroup = "First Name is required!";
+      setErrFN(true);
     }
-    if (values.ServiceName !== "") {
-      setErrCN(false);
+    if (values.ProductGroup !== "") {
+      setErrFN(false);
     }
+
+    //  if (values.ImageUrl ==="") {
+    //   errors.ImageUrl = " Image is required!";
+    //   setErrBI(true);
+    // }
+    // if (values.ImageUrl !== "") {
+    //   setErrBI(false);
+    // }
+
+    
 
     return errors;
   };
 
-  const validClassCategoryName =
-    errCN && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassFN =
+    errFN && isSubmit ? "form-control is-invalid" : "form-control";
 
+  const validClassLN =
+    errLN && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const validClassEM =
+    errEM && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const validClassPA =
+    errPA && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassBI =
+    errBI && isSubmit ? "form-control is-invalid" : "form-control";
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -189,16 +233,27 @@ const ProductGroup = () => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
   };
+  const renderImage = (uploadimage) => {
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+
+    return (
+      <img
+        src={imageUrl}
+        alt="Image"
+        style={{ width: "75px", height: "75px", padding: "5px" }}
+      />
+    );
+  };
 
   useEffect(() => {
     // fetchUsers(1); // fetch page 1 of users
   }, []);
 
   useEffect(() => {
-    fetchCategories();
+    fetchUsers();
   }, [pageNo, perPage, column, sortDirection, query, filter]);
 
-  const fetchCategories = async () => {
+  const fetchUsers = async () => {
     setLoading(true);
     let skip = (pageNo - 1) * perPage;
     if (skip < 0) {
@@ -206,25 +261,30 @@ const ProductGroup = () => {
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listarea`, {
-        skip: skip,
-        per_page: perPage,
-        sorton: column,
-        sortdir: sortDirection,
-        match: query,
-        IsActive: filter,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listarea`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          IsActive: filter,
+        }
+      )
       .then((response) => {
         if (response.length > 0) {
           let res = response[0];
+          console.log(">>>", res);
           setLoading(false);
-          setCategories(res.data);
+          setAdminuser(res.data);
           setTotalRows(res.count);
         } else if (response.length === 0) {
-          setCategories([]);
+          setAdminuser([]);
         }
         // console.log(res);
       });
+
     setLoading(false);
   };
 
@@ -241,30 +301,24 @@ const ProductGroup = () => {
   };
   const col = [
     {
-      name: "Sr No",
-      selector: (row, index) => index + 1,
-      sortable: true,
-      sortField: "srno",
-      minWidth: "150px",
-    },
-    {
       name: "Product Group",
       selector: (row) => row.ProductGroup,
       sortable: true,
-      sortField: "servicename",
+      sortField: "firstName",
       minWidth: "150px",
     },
+    
     {
-      name: "Status",
-      selector: (row) => {
-        return <p>{row.IsActive ? "Active" : "InActive"}</p>;
-      },
-      sortable: false,
-      sortField: "Status",
+      name: "Image",
+      selector: (row) => renderImage(row.ImageUrl),
+      sortable: true,
+      sortField: "password",
+      minWidth: "150px",
     },
+
     {
       name: "Action",
-      selector: (row, index) => {
+      selector: (row) => {
         return (
           <React.Fragment>
             <div className="d-flex gap-2">
@@ -273,7 +327,7 @@ const ProductGroup = () => {
                   className="btn btn-sm btn-success edit-item-btn "
                   data-bs-toggle="modal"
                   data-bs-target="#showModal"
-                  onClick={() => handleTog_edit(row, index)}
+                  onClick={() => handleTog_edit(row._id)}
                 >
                   Edit
                 </button>
@@ -284,7 +338,7 @@ const ProductGroup = () => {
                   className="btn btn-sm btn-danger remove-item-btn"
                   data-bs-toggle="modal"
                   data-bs-target="#deleteRecordModal"
-                  onClick={() => tog_delete(row)}
+                  onClick={() => tog_delete(row._id)}
                 >
                   Remove
                 </button>
@@ -298,17 +352,13 @@ const ProductGroup = () => {
     },
   ];
 
-  document.title = "Product Group|Shreeji Pharma";
+  document.title = "Product Group |Shreeji Pharma" ;
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb
-        
-            title="Product Group"
-          
-          />
+          <BreadCrumb  title="Admin Users"  />
           <Row>
             <Col lg={12}>
               <Card>
@@ -363,7 +413,7 @@ const ProductGroup = () => {
                     <div className="table-responsive table-card mt-1 mb-1 text-right">
                       <DataTable
                         columns={col}
-                        data={categories}
+                        data={Adminuser}
                         progressPending={loading}
                         sortServer
                         onSort={(column, sortDirection, sortedRows) => {
@@ -407,8 +457,8 @@ const ProductGroup = () => {
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassCategoryName}
-                placeholder="Enter ProductGroup"
+                className={validClassFN}
+                placeholder="Enter Product Group"
                 required
                 name="ProductGroup"
                 value={values.ProductGroup}
@@ -417,8 +467,84 @@ const ProductGroup = () => {
               <Label>
                 Product Group <span className="text-danger">*</span>
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.ProductGroup}</p>}
+              {isSubmit && (
+                <p className="text-danger">{formErrors.ProductGroup}</p>
+              )}
             </div>
+            {/* <div className="form-floating mb-3">
+              <Input
+                type="text"
+                className={validClassLN}
+                placeholder="Enter last Name"
+                required
+                name="lastName"
+                value={lastName}
+                onChange={handleChange}
+              />
+              <Label>
+                Last Name <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.lastName}</p>}
+            </div>
+            <div className="form-floating mb-3">
+              <Input
+                type="text"
+                className={validClassEM}
+                placeholder="Enter email "
+                required
+                name="email"
+                value={email}
+                onChange={handleChange}
+              />
+              <Label>
+                Email <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.email}</p>}
+            </div>
+            <div className="form-floating mb-3">
+              <Input
+                type="text"
+                className={validClassPA}
+                placeholder="Enter password"
+                required
+                name="password"
+                value={password}
+                onChange={handleChange}
+              />
+              <Label>
+                Password <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.password}</p>}
+            </div> */}
+
+            <Col lg={6}>
+              <label>
+                Product Image <span className="text-danger">*</span>
+              </label>
+
+              <input
+                type="file"
+                name="ImageUrl"
+                className={validClassBI}
+                // accept="images/*"
+                accept=".jpg, .jpeg, .png"
+                onChange={PhotoUpload}
+              />
+              {isSubmit && (
+                <p className="text-danger">{formErrors.ImageUrl}</p>
+              )}
+              {checkImagePhoto ? (
+                <img
+                  //   src={image ?? myImage}
+                  className="m-2"
+                  src={photoAdd}
+                  alt="Profile"
+                  width="300"
+                  height="200"
+                />
+              ) : null}
+            </Col>
+
             <div className="form-check mb-2">
               <Input
                 type="checkbox"
@@ -447,6 +573,8 @@ const ProductGroup = () => {
                   setmodal_list(false);
                   setValues(initialState);
                   setIsSubmit(false);
+                  setCheckImagePhoto(false);
+                  setPhotoAdd("");
                 }}
               >
                 Cancel
@@ -471,33 +599,111 @@ const ProductGroup = () => {
             setIsSubmit(false);
           }}
         >
-      Edit Product Group
+          Edit Admin Users
         </ModalHeader>
         <form>
           <ModalBody>
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassCategoryName}
-                placeholder="Enter ProductGroup"
+                className={validClassFN}
+                placeholder="Enter first Name"
                 required
                 name="ProductGroup"
                 value={values.ProductGroup}
                 onChange={handleChange}
               />
               <Label>
-              Product Group <span className="text-danger">*</span>
+                Product Group<span className="text-danger">*</span>{" "}
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.ProductGroup}</p>}
+              {isSubmit && (
+                <p className="text-danger">{formErrors.ProductGroup}</p>
+              )}
             </div>
+            {/* <div className="form-floating mb-3">
+              <Input
+                type="text"
+                className={validClassLN}
+                placeholder="Enter last Name"
+                required
+                name="lastName"
+                value={lastName}
+                onChange={handleChange}
+              />
+              <Label>
+                Last Name<span className="text-danger">*</span>{" "}
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.lastName}</p>}
+            </div>
+            <div className="form-floating mb-3">
+              <Input
+                type="text"
+                className={validClassEM}
+                placeholder="Enter email "
+                required
+                name="email"
+                value={email}
+                onChange={handleChange}
+              />
+              <Label>
+                Email <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.email}</p>}
+            </div>
+            <div className="form-floating mb-3">
+              <Input
+                type="text"
+                className={validClassPA}
+                placeholder="Enter password"
+                required
+                name="password"
+                value={password}
+                onChange={handleChange}
+              />
+              <Label>
+                Password <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.password}</p>}
+            </div> */}
+            <Col lg={6}>
+              <label>
+                Product Image <span className="text-danger">*</span>
+              </label>
+              <input
+                key={"bannerImage" + _id}
+                type="file"
+                name="ImageUrl"
+                className={validClassBI}
+                // accept="images/*"
+                accept=".jpg, .jpeg, .png"
+                onChange={PhotoUpload}
+              />
+              {isSubmit && (
+                <p className="text-danger">{formErrors.ImageUrl}</p>
+              )}
+
+              {values.ImageUrl || photoAdd ? (
+                <img
+                  // key={photoAdd}
+                  className="m-2"
+                  src={
+                    checkImagePhoto
+                      ? photoAdd
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.ImageUrl}`
+                  }
+                  width="300"
+                  height="200"
+                />
+              ) : null}
+            </Col>
             <div className="form-check mb-2">
               <Input
                 type="checkbox"
                 className="form-check-input"
                 name="IsActive"
-                value={values.IsActive}
+                value={IsActive}
+                checked={IsActive}
                 onChange={handleCheck}
-                checked={values.IsActive}
               />
               <Label className="form-check-label">Is Active</Label>
             </div>
@@ -544,7 +750,7 @@ const ProductGroup = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Product Group
+          Remove Admin
         </ModalHeader>
         <form>
           <ModalBody>
