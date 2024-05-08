@@ -298,7 +298,7 @@ const ProductGroup = () => {
     },
   ];
 
-  document.title = "Service Type|Shreeji Pharma";
+  document.title = "Product Group|Shreeji Pharma";
 
   return (
     <React.Fragment>
@@ -306,7 +306,7 @@ const ProductGroup = () => {
         <Container fluid>
           <BreadCrumb
         
-            title="Service Type"
+            title="Product Group"
           
           />
           <Row>

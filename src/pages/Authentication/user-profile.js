@@ -23,7 +23,7 @@ import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 
 import avatar from "../../assets/images/users/avatar-1.jpg";
-import logo from "../../assets/images/logo/contact to owner.png";
+import logo from "../../assets/images/logo/logo-Shreeji-Pharma.png";
 
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
