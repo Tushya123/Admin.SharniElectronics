@@ -40,6 +40,14 @@ import {
 } from "../../functions/CMS/Cmsmasterfunc";
 
 const CmsMaster = () => {
+  const countriesArray = [
+    { label: "About Us", value : "About Us" },
+    { label: "Contact", value : "Contact" },
+    { label: "Our Industries", value : "Our Industries" },
+    { label: "WHY CHOOSE US", value : "AMERICAN SAMOA" }
+
+  ];
+
   const [cmsname, setcmsname] = useState("");
   const [cmsDesc, setcmsDesc] = useState("");
   const [cmsImage, setcmsImage] = useState("");

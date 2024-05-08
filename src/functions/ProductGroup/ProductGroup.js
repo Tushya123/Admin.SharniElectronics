@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const createServiceType = async (values) => {
+export const createProductGroup = async (values) => {
   try{
     console.log(values)
     const response =await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/ServiceType`,
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/areatype`,
       values
     )
 
@@ -16,15 +16,15 @@ export const createServiceType = async (values) => {
   }
 };
 
-export const removeServiceType = async (_id) => {
+export const removeProductGroup = async (_id) => {
   return await axios.delete(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/ServiceType/${_id}`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/areatype/${_id}`
   );
 };
 
-export const listServiceType = async () => {
+export const listProductGroup = async () => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/ServiceType`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`
   );
 };
 
@@ -34,16 +34,16 @@ export const listServiceType = async () => {
 //   );
 // };
 
-export const updateServiceType = async (_id, values) => {
+export const updateProductGroup = async (_id, values) => {
   return await axios.put(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/ServiceType/${_id}`,
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/areatype/${_id}`,
     values
   );
 };
 
-export const getServiceType = async (_id) => {
+export const getProductGroup = async (_id) => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/ServiceType/${_id}`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/areatype/${_id}`
   );
 };
 // export const getBookingReport = async (id) => {
@@ -58,9 +58,9 @@ export const getServiceType = async (_id) => {
 //     body
 //   );
 // };
-  export const getServiceTypebyParams = async (body) => {
+  export const getProductGroupbyParams = async (body) => {
     return await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/auth/list-by-params/ServiceType`,
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listarea`,
       body
     );
   };  
