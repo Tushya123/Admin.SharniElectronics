@@ -352,13 +352,13 @@ const ProductGroup = () => {
     },
   ];
 
-  document.title = "Product Group |Shreeji Pharma" ;
+  document.title = "Product Group | Shreeji Pharma" ;
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Admin Users"  />
+          <BreadCrumb  title="Product Group"  />
           <Row>
             <Col lg={12}>
               <Card>
@@ -519,7 +519,7 @@ const ProductGroup = () => {
 
             <Col lg={6}>
               <label>
-                Product Image <span className="text-danger">*</span>
+                Product Group Image <span className="text-danger">*</span>
               </label>
 
               <input
@@ -545,7 +545,7 @@ const ProductGroup = () => {
               ) : null}
             </Col>
 
-            <div className="form-check mb-2">
+            <div className="form-check mt-3">
               <Input
                 type="checkbox"
                 className="form-check-input"
@@ -667,7 +667,7 @@ const ProductGroup = () => {
             </div> */}
             <Col lg={6}>
               <label>
-                Product Image <span className="text-danger">*</span>
+                Product Group Image <span className="text-danger">*</span>
               </label>
               <input
                 key={"bannerImage" + _id}

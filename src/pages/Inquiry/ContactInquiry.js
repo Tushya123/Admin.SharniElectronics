@@ -597,20 +597,20 @@ const ContactInquiry = () => {
     },
   ];
 
-  document.title = "Get In Touch | Shreeji Pharma";
+  document.title = "Contact Inquiry | Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Get In Touch" title="Get In Touch" />
+          <BreadCrumb maintitle="Contact Inquiry" title="Contact Inquiry" />
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" sm={6} lg={6} md={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Get In Touch</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Contact Inquiry</h2>
                     </Col>
 
                     <Col sm={6} lg={2} md={6} className="mt-20">
@@ -695,7 +695,7 @@ const ContactInquiry = () => {
             setIsSubmit(false);
           }}
         >
-          Add Category
+          Add Contact Inquiry
         </ModalHeader>
         <form>
         <ModalBody>
@@ -849,7 +849,7 @@ const ContactInquiry = () => {
             setIsSubmit(false);
           }}
         >
-          Edit Get in Touch
+          Edit Contact Inquiry
         </ModalHeader>
         <form>
           <ModalBody>

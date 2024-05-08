@@ -972,9 +972,6 @@ const VerticalLayout = (props) => {
           
 
              <li className="nav-item">
-            <Link to="/cmsmaster" className="nav-link">                Cms Master
-              </Link>
-            </li> <li className="nav-item">
             <Link to="/supplier-wise-product" className="nav-link">                Supplier Wise Product
               </Link>
             </li>

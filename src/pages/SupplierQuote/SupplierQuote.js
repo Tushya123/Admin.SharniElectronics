@@ -604,13 +604,13 @@ values.SupplierName = tempArray
 console.log(values)
 
 
-  document.title = "Service Detail|Shreeji Pharma";
+  document.title = "Supplier Quote|Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Service Detail"  />
+          <BreadCrumb  title="Supplier Quote"  />
 
           <Row>
             <Col lg={12}>
@@ -916,7 +916,7 @@ console.log(values)
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+          <span style={{ marginRight: "210px" }}>Remove Supplier Quote</span>
         </ModalHeader>
 
         <form>

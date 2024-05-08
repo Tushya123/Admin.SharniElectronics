@@ -951,7 +951,7 @@ console.log(tempArray)
 values2.SupplierName=tempArray
 console.log(values)
 
-  document.title = "Company Details | Shreeji Pharma";
+  document.title = "Product Inquiry | Shreeji Pharma";
 
   return (
     <>
@@ -960,7 +960,7 @@ console.log(values)
         <Container fluid>
           <BreadCrumb
             
-            title="Company Details"
+            title="Product Inquiry"
           
           />
 
@@ -971,7 +971,7 @@ console.log(values)
                   <Row className="g-4 mb-1">
                     <Col className="col-sm"  lg={4} md={6} sm={6}>
                       <h2 className="card-title mb-0 fs-4 mt-2">
-                        Company Details
+                        Product Inquiry
                       </h2>
                     </Col>
 

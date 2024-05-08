@@ -306,7 +306,7 @@ const Preferences = () => {
       <div className="page-content">
         <Container fluid>
 
-          <BreadCrumb title="Subscribe NewsPaper"/>
+          <BreadCrumb title="Preference NewsPaper"/>
 
           <Row>
             <Col lg={12}>
@@ -509,7 +509,7 @@ const Preferences = () => {
             setIsSubmit(false);
           }}
         >
-          Edit Subscribe Newspaper
+          Edit Preference Newspaper
         </ModalHeader>
         <form>
           <ModalBody>
@@ -597,7 +597,7 @@ const Preferences = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Subscribe Newspaper
+          Remove PreferenceNewspaper
         </ModalHeader>
         <form>
           <ModalBody>
