@@ -25,6 +25,7 @@ import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Select from "react-select";
+import { ToastContainer, toast } from 'react-toastify';
 // import {
 //   createNewProject, uploadproductImage,
 // } from "../../functions/NewProject/Projectfunc";
@@ -572,7 +573,7 @@ const handleSubmitCms = async () => {
   console.log(speciality.value)
   if (!Detail) {
     console.log("empty");
-    alert("Please Select The Cms to be changed ")
+    toast.error("Please Select CMS from dropdown!");
     // setErrSP(true); // Set to true when there is an error
     // errors.speciality = "Booking Date is required";
   } else {
@@ -590,8 +591,11 @@ const handleSubmitCms = async () => {
         cmsDesc: Detail // Assuming Detail contains the data from CKEditor
       });
       if (response) {
-        alert('Content content updated successfully!');
+        toast.success('Content content updated successfully!');
       }  
+      else{
+        toast.error("oops something went wrong");
+      }
       console.log('Response:', response);
    
     // else if (speciality.value === 'ContactUs') {
@@ -615,7 +619,7 @@ const handleSubmitCms = async () => {
   const [speciality,setSpeciality]=useState([]);
   const [values,setValues]=useState("")
   const options = [
-    { value: '', label: 'Select' },
+ 
     { value: '663c967330ee58405d1a37a5', label: 'About Us' },
     { value: '663ca6df30ee58405d1a37ab', label: 'Terms and condition' },
     { value: '663c960130ee58405d1a37a0', label: 'Home About Us' },
@@ -661,6 +665,7 @@ const handleSubmitCms = async () => {
 
   return (
     <React.Fragment>
+               <ToastContainer />
       <div className="page-content">
         <Container fluid>
           <BreadCrumb maintitle="CMS" title="CMS" pageTitle="CMS" />

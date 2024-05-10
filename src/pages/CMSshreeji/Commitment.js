@@ -190,7 +190,7 @@ const Commitment = () => {
     const errors = {};
 
     if (values.Title === "") {
-      errors.Title = "First Name is required!";
+      errors.Title = "Title is required!";
       setErrFN(true);
     }
     if (values.Title !== "") {
@@ -198,7 +198,7 @@ const Commitment = () => {
     }
 
     if (values.Description === "") {
-      errors.Description = "Last Name is required!";
+      errors.Description = "Description is required!";
       setErrLN(true);
     }
     if (values.Description !== "") {

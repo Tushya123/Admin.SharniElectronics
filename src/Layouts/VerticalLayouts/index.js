@@ -1017,7 +1017,11 @@ const VerticalLayout = (props) => {
               </Link>
             </li>
              
-           
+            <li className="nav-item">
+              <Link className="nav-link menu-link" to="/blogs">
+                 <span data-key="t-apps">Blogs </span>
+               </Link>
+             </li>
           </ul>
         </Collapse>
       </li>

@@ -188,7 +188,7 @@ const Certificate = () => {
     const errors = {};
 
     if (values.Title === "") {
-      errors.Title = "First Name is required!";
+      errors.Title = "Title is required!";
       setErrFN(true);
     }
     if (values.Title !== "") {
@@ -199,7 +199,7 @@ const Certificate = () => {
  
    
      if (values.CertificateImage ==="") {
-      errors.CertificateImage = " Image is required!";
+      errors.CertificateImage = " CertificateImage is required!";
       setErrBI(true);
     }
     if (values.CertificateImage !== "") {
