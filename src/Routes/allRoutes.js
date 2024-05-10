@@ -36,6 +36,9 @@ import AssignProduct from "../pages/SupplierSetup/AssignProduct";
 import GalleryPhotos from "../pages/GalleryPhotos/GalleryPhotos";
 import ContactInquiry from "../pages/Inquiry/ContactInquiry";
 import SupplierWiseProductReport from "../pages/Report/SupplierWiseProduct";
+import Cms from "../pages/CMSshreeji/cmsShreeji";
+import Commitment from "../pages/CMSshreeji/Commitment";
+import Certificate from "../pages/CMSshreeji/Certificate";
 
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
@@ -69,12 +72,16 @@ const authProtectedRoutes = [
   {path:"/preferences",component:<Preferences/>},
   {path:"/contact-inquiry",component:<ContactInquiry/>},
   {path:"/supplier-wise-product",component:<SupplierWiseProductReport/>},
-
+  {path:"/cms",component:<Cms/>},
+  
 
 
   {path:"/newspaper",component:<Newspaper/>},
   {path:"/feature",component:<Feature/>},
   {path:"/cmsmaster",component:<CmsMaster/>},
+  {path:"/commitment",component:<Commitment />},
+  {path:"/certificate",component:<Certificate />},
+
   {
     path: "/",
     exact: true,
