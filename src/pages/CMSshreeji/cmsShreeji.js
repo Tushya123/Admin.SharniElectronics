@@ -78,6 +78,10 @@ const Cms = () => {
   const [remove_id, setRemove_id] = useState("");
 
   const [blogs, setBlogs] = useState([]);
+
+  const [BlogImage, setBlogImage] = useState("");
+
+
   const handleChangeSpecilityName = (e) => {
     setSpecialityName(e.target.value);
   };
@@ -406,26 +410,14 @@ const Cms = () => {
 
       let imageurl = URL.createObjectURL(e.target.files[0]);
       console.log("img", e.target.files[0]);
-console.log(imageurl);
+      setBlogImage(e.target.files[0])
       setPhotoAdd(imageurl);
       // setValues({ ...values, blogImage: e.target.files[0] });
       setproductImage(e.target.files[0]);
       setCheckImagePhoto(true);
     }
   };
-  const PhotoUpload1 = (e) => {
-    if (e.target.files.length > 0) {
-      const image = new Image();
-
-      let imageurl = URL.createObjectURL(e.target.files[0]);
-      console.log("img", e.target.files[0]);
-
-      setPhotoAdd1(imageurl);
-      // setValues({ ...values, blogImage: e.target.files[0] });
-      setproductImage1(e.target.files[0]);
-      setCheckImagePhoto1(true);
-    }
-  };
+  console.log(photoAdd);
   const handlePerRowsChange = async (newPerPage, page) => {
     // setPageNo(page);
     setPerPage(newPerPage);
@@ -582,14 +574,17 @@ const handleSubmitCms = async () => {
   setFormErrors(errors);
 
   try {
-
+    console.log(BlogImage)
     console.log(speciality.value)
     
+    const formdata = new FormData();
+    // formdata.append("_id", BlogImage);
+    formdata.append("cmsImage", BlogImage);
+    formdata.append("cmsDesc", Detail);
       // Call editCmsAboutUsContent API
-      const response = await editCmsAboutUsContent({
-        _id: speciality.value, // Replace with the appropriate ID
-        cmsDesc: Detail // Assuming Detail contains the data from CKEditor
-      });
+      const _id = speciality.value
+      console.log(_id)
+      const response = await editCmsAboutUsContent(_id,formdata);
       if (response) {
         toast.success('Content content updated successfully!');
       }  
@@ -634,6 +629,7 @@ const handleSubmitCms = async () => {
         {
             setDetail("")
             SetButton(false)
+            setBlogImage("")
         }
    
       // Fetch About Us data
@@ -641,7 +637,10 @@ const handleSubmitCms = async () => {
         console.log("get", res);
         SetButton(true)
         setDetail(res.cmsDesc)
-         
+        setBlogImage(res.cmsImage) 
+        setCheckImagePhoto(true);
+        // let imageUrl2 = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${res.cmsImage}`;
+        setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${res.cmsImage}`);
         
       })
   
@@ -737,6 +736,37 @@ const handleSubmitCms = async () => {
                                             {formErrors.description}
                                           </p>
                                         )} */}
+                                         <Col lg={6}>
+                                    <label>
+                                      Blog Image{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+
+                                    <Input
+                                      key={"BlogImage_" + _id}
+                                      type="file"
+                                      name="BlogImage"
+                                      className={validClassBI}
+                                      // accept="images/*"
+                                      accept=".jpg, .jpeg, .png"
+                                      onChange={PhotoUpload}
+                                    />
+                                    {isSubmit && (
+                                      <p className="text-danger">
+                                        {formErrors.BlogImage}
+                                      </p>
+                                    )}
+                                    {checkImagePhoto ? (
+                                      <img
+                                        //   src={image ?? myImage}
+                                        className="m-2"
+                                        src={photoAdd}
+                                        alt="Profile"
+                                        width="180"
+                                        height="200"
+                                      />
+                                    ) : null}
+                                  </Col>
                                       </CardBody>
                                     
                                   </Col>
