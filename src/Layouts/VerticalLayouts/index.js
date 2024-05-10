@@ -472,12 +472,11 @@ const VerticalLayout = (props) => {
       {/* <li className="menu-title">
         <span data-key="t-menu">Menu</span>
       </li> */}
-
       <li className="nav-item">
         <Link
           // className="nav-link menu-link"
           // to="#"
-          
+
           data-bs-toggle="collapse"
           onClick={() => {
             setSetup(!setup);
@@ -498,15 +497,14 @@ const VerticalLayout = (props) => {
               <Link to="/admin-user" className="nav-link">
                 Admin Users
               </Link>
-            </li> 
-             
+            </li>
 
             <li className="nav-item">
               <Link to="/getintouch" className="nav-link">
                 GetInTouch
               </Link>
             </li>
-            
+
             <li className="nav-item">
               <Link to="/newspaper" className="nav-link">
                 Subscribe Newspaper
@@ -562,11 +560,9 @@ const VerticalLayout = (props) => {
                 </ul>
               </Collapse>
             </li> */}
-
           </ul>
         </Collapse>
       </li>
-
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -576,7 +572,7 @@ const VerticalLayout = (props) => {
             setCMS(!cms);
           }}
         >
-           <span data-key="t-apps"> Product Setup </span>
+          <span data-key="t-apps"> Product Setup </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -584,7 +580,7 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          {/* <li className="nav-item">
+            {/* <li className="nav-item">
               {" "}
               <Link to="/company-details" className="nav-link">
                 Company Details
@@ -615,20 +611,20 @@ const VerticalLayout = (props) => {
             </li> */}
             <li className="nav-item">
               <Link to="/product-group" className="nav-link">
-                ProductGroup 
+                ProductGroup
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/product-detail" className="nav-link">
-                 Products
-               </Link>
-             </li>
-             {/* <li className="nav-item">
+                Products
+              </Link>
+            </li>
+            {/* <li className="nav-item">
               <Link to="/other-products" className="nav-link">
                  Other Products
                </Link>
              </li> */}
-             {/* <li className="nav-item">
+            {/* <li className="nav-item">
           <Link to="/newspaper" className="nav-link">
                  Subscribe Newspaper
                </Link>
@@ -644,13 +640,9 @@ const VerticalLayout = (props) => {
             <Link to="/cmsmaster" className="nav-link">                Cms Master
               </Link>
             </li> */}
-            
-
-             
-           
           </ul>
         </Collapse>
-      </li> 
+      </li>
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -660,7 +652,7 @@ const VerticalLayout = (props) => {
             setsupplier(!supplier);
           }}
         >
-           <span data-key="t-apps"> Supplier Setup </span>
+          <span data-key="t-apps"> Supplier Setup </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -668,7 +660,7 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          {/* <li className="nav-item">
+            {/* <li className="nav-item">
               {" "}
               <Link to="/company-details" className="nav-link">
                 Company Details
@@ -711,32 +703,27 @@ const VerticalLayout = (props) => {
                  Inquiry
                </Link>
              </li> */}
-             <li className="nav-item">
-          <Link to="/supplier" className="nav-link">
-                 Supplier
-               </Link>
-             </li>
-           
-           
             <li className="nav-item">
-               <Link to="/supplier-quote" className="nav-link">
-                 Supplier Quote
-                 </Link>
-               <Link to="/assign-product" className="nav-link">
-                 Assign product
-               </Link>
-             </li>
-             {/* <li className="nav-item">
+              <Link to="/supplier" className="nav-link">
+                Supplier
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to="/supplier-quote" className="nav-link">
+                Supplier Quote
+              </Link>
+              <Link to="/assign-product" className="nav-link">
+                Assign product
+              </Link>
+            </li>
+            {/* <li className="nav-item">
             <Link to="/cmsmaster" className="nav-link">                Cms Master
               </Link>
             </li> */}
-            
-
-             
-           
           </ul>
         </Collapse>
-      </li> 
+      </li>
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -746,7 +733,7 @@ const VerticalLayout = (props) => {
             setinquiry1(!inquiry1);
           }}
         >
-           <span data-key="t-apps"> Inquiry Management </span>
+          <span data-key="t-apps"> Inquiry Management </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -754,7 +741,7 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          {/* <li className="nav-item">
+            {/* <li className="nav-item">
               {" "}
               <Link to="/company-details" className="nav-link">
                 Company Details
@@ -793,21 +780,19 @@ const VerticalLayout = (props) => {
                  Service Details
                </Link>
              </li> */}
-             <li className="nav-item">
+            <li className="nav-item">
               <Link to="/product-inquiry" className="nav-link">
-                Product Inquiry 
-               </Link>
-             </li><li className="nav-item">
+                Product Inquiry
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to="/contact-inquiry" className="nav-link">
-                Contact Inquiry 
-               </Link>
-             </li>
-            
-             
-           
+                Contact Inquiry
+              </Link>
+            </li>
           </ul>
         </Collapse>
-      </li> 
+      </li>
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -817,7 +802,7 @@ const VerticalLayout = (props) => {
             setpreferences(!preferences);
           }}
         >
-           <span data-key="t-apps"> Preferences</span>
+          <span data-key="t-apps"> Preferences</span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -825,21 +810,14 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-         
-             <li className="nav-item">
-          <Link to="/preferences" className="nav-link">
-                 Preferences
-               </Link>
-             </li>
-           
-           
-            
-
-             
-           
+            <li className="nav-item">
+              <Link to="/preferences" className="nav-link">
+                Preferences
+              </Link>
+            </li>
           </ul>
         </Collapse>
-      </li> 
+      </li>
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -849,7 +827,7 @@ const VerticalLayout = (props) => {
             setgallery(!gallery);
           }}
         >
-           <span data-key="t-apps"> Gallery Management </span>
+          <span data-key="t-apps"> Gallery Management </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -857,7 +835,7 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          {/* <li className="nav-item">
+            {/* <li className="nav-item">
               {" "}
               <Link to="/company-details" className="nav-link">
                 Company Details
@@ -905,8 +883,8 @@ const VerticalLayout = (props) => {
                  Subscribe Newspaper
                </Link>
              </li> */}
-           
-{/*            
+
+            {/*            
             <li className="nav-item">
                <Link to="/feature" className="nav-link">
                  Features
@@ -917,13 +895,9 @@ const VerticalLayout = (props) => {
               </Link>
             </li>
              */}
-
-             
-           
           </ul>
         </Collapse>
-      </li> 
-      {/* <li className="nav-item">
+
         <Link
           className="nav-link menu-link"
           to="#"
@@ -932,7 +906,7 @@ const VerticalLayout = (props) => {
             setreports(!reports);
           }}
         >
-           <span data-key="t-apps"> CMS </span>
+          <span data-key="t-apps"> CMS </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -940,19 +914,17 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          
-            
-             <li className="nav-item">
-            <Link to="/cmsmaster" className="nav-link">Cms Master
+            <li className="nav-item">
+              <Link to="/cmsmaster" className="nav-link">
+                Cms Master
               </Link>
             </li>
-            
-
-             
-           
           </ul>
         </Collapse>
-      </li>  */}
+
+
+      </li>{" "}
+
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -962,7 +934,7 @@ const VerticalLayout = (props) => {
             setcmsss(!cmsss);
           }}
         >
-           <span data-key="t-apps"> Reports </span>
+          <span data-key="t-apps"> Reports </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -970,16 +942,26 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-          
 
-             <li className="nav-item">
-            <Link to="/supplier-wise-product" className="nav-link">                Supplier Wise Product
+            <li className="nav-item">
+              <Link to="/cmsmaster" className="nav-link">
+                {" "}
+                Cms Master
+              </Link>
+            </li>{" "}
+            <li className="nav-item">
+              <Link to="/supplier-wise-product" className="nav-link">
+                {" "}
+                Supplier Wise Product
               </Link>
             </li>
-            
+            <li className="nav-item">
+              <Link to="/country-wise-report" className="nav-link">
+                {" "}
+                Customer List Country Wise
 
-             
-           
+              </Link>
+            </li>
           </ul>
         </Collapse>
       </li>
