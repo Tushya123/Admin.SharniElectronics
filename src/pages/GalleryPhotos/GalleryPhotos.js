@@ -410,13 +410,13 @@ const GalleryPhotos = () => {
     },
   ];
 
-  document.title = "Service Detail|Contact to Owner";
+  document.title = "Gallery Photos|Contact to Owner";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Service Detail"  />
+          <BreadCrumb  title="Gallery Photos"  />
 
           <Row>
             <Col lg={12}>
@@ -424,7 +424,7 @@ const GalleryPhotos = () => {
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Gallery Details</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Gallery Photos</h2>
                     </Col>
                     <Col lg={4} md={6} sm={6}>
                       <div
@@ -862,7 +862,7 @@ const GalleryPhotos = () => {
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+          <span style={{ marginRight: "210px" }}>Remove Gallery Photos</span>
         </ModalHeader>
 
         <form>

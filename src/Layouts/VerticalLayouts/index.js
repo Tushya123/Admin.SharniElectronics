@@ -940,6 +940,7 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
+
             <li className="nav-item">
               <Link to="/cmsmaster" className="nav-link">
                 {" "}
@@ -956,6 +957,7 @@ const VerticalLayout = (props) => {
               <Link to="/country-wise-report" className="nav-link">
                 {" "}
                 Customer List Country Wise
+
               </Link>
             </li>
           </ul>

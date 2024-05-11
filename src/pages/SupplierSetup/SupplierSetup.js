@@ -676,7 +676,7 @@ if(Object.keys(errors).length===0){
       minWidth: "180px",
     },
   ];
-  document.title = "Company Details | Shreeji Pharma";
+  document.title = "Supplier | Shreeji Pharma";
 
   return (
     <>
@@ -685,7 +685,7 @@ if(Object.keys(errors).length===0){
         <Container fluid>
           <BreadCrumb
             
-            title="Company Details"
+            title="Supplier"
           
           />
 
@@ -696,7 +696,7 @@ if(Object.keys(errors).length===0){
                   <Row className="g-4 mb-1">
                     <Col className="col-sm"  lg={4} md={6} sm={6}>
                       <h2 className="card-title mb-0 fs-4 mt-2">
-                        Company Details
+                        Supplier
                       </h2>
                     </Col>
 
@@ -958,7 +958,7 @@ if(Object.keys(errors).length===0){
                                       onChange={handleChange}
                                     />
                                     <Label>
-                                      Office ContactNo
+                                      ContactNo
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (
@@ -981,7 +981,7 @@ if(Object.keys(errors).length===0){
                                       onChange={handleChange}
                                     />
                                     <Label>
-                                      Office EmailID
+                                      EmailID
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (
@@ -1148,7 +1148,7 @@ if(Object.keys(errors).length===0){
                                       onChange={handleChange}
                                     />
                                     <Label>
-                                      Office ContactNo
+                                      ContactNo
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (
@@ -1171,7 +1171,7 @@ if(Object.keys(errors).length===0){
                                       onChange={handleChange}
                                     />
                                     <Label>
-                                      Office EmailID
+                                      EmailID
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (

@@ -579,13 +579,13 @@ const ProductDetail = () => {
     },
   ];
 
-  document.title = "Service Detail|Shreeji Pharma";
+  document.title = "Products|Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Service Detail"  />
+          <BreadCrumb  title="Products"  />
 
           <Row>
             <Col lg={12}>
@@ -593,7 +593,7 @@ const ProductDetail = () => {
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Product Detail</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Products</h2>
                     </Col>
                     <Col lg={4} md={6} sm={6}>
                       <div
@@ -1166,7 +1166,7 @@ const ProductDetail = () => {
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+          <span style={{ marginRight: "210px" }}>Remove Products</span>
         </ModalHeader>
 
         <form>

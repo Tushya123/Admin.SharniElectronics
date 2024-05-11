@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import { Link } from "react-router-dom";
+import { saveAs } from "file-saver";
 import {
   Button,
   Card,
@@ -303,28 +304,48 @@ useEffect(() => {
   const [speciality,setSpeciality]=useState([]);
   const [values,setValues]=useState("");
 
-document.title = "Sheldon Medical | Report";
+document.title = "Report |  Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Booking Report" title="Booking Report" pageTitle="Booking Report" />
+          <BreadCrumb maintitle="Supplier Wise Product " title="Supplier Wise Product " pageTitle="Supplier Wise Product " />
 
           <Row>
             <Col lg={12}>
               <Card>
-                <CardHeader>
-                  <Row className="g-4 mb-1">
-                    <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Booking Report</h2>
-                    </Col>
-                    <Col lg={4} md={6} sm={6}>
-                  
-                    </Col>
-                    
-                  </Row>
-                </CardHeader>
+              <CardHeader>
+  <Row className="g-4 mb-1">
+    <Col className="col-sm" lg={4} md={6} sm={6}>
+      <h2 className="card-title mb-0 fs-4 mt-2">Supplier Wise Product </h2>
+    </Col>
+    <Col lg={4} md={6} sm={6}></Col>
+    <Col className="text-end">
+    <Button
+  color="primary"
+  className="btn-rounded waves-effect waves-light"
+  onClick={() => {
+    const endpoint = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/generateSupplierWiseProductReportExcel/${changedid}`;
+    axios
+      .get(endpoint, { responseType: "blob" })
+      .then((response) => {
+        const blob = new Blob([response]);
+        saveAs(blob, "SupplierWiseProductReport.xlsx");
+        console.log("Excel sheet generated successfully");
+      })
+      .catch((error) => {
+        console.error("Error generating Excel sheet", error);
+      });
+  }}
+>
+  Generate Excel Sheet
+</Button>
+
+    </Col>
+  </Row>
+</CardHeader>
+                
 
                 {/* ADD FORM  */}
                 <div
@@ -525,7 +546,7 @@ document.title = "Sheldon Medical | Report";
                   <Row>
                               <Col lg={5}>
                                 <label>
-                                SpecialityName{" "}
+                                Select Supplier:{" "}
                                       <span class="text-danger">*</span>
                               
                                     </label>
