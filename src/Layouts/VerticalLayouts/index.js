@@ -377,7 +377,7 @@ const VerticalLayout = (props) => {
   const [gallery, setgallery] = useState(false);
   const [reports, setreports] = useState(false);
   const [cmsss, setcmsss] = useState(false);
-
+  const [cmsmaster,setCMSMaster]= useState(false);
   const navData = navdata().props.children;
   const path = props.router.location.pathname;
 
@@ -515,11 +515,11 @@ const VerticalLayout = (props) => {
                 Features
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/cmsmaster" className="nav-link">
                 Cms Master
               </Link>
-            </li>
+            </li> */}
             {/* <li className="nav-item">
               <Link
                 className="nav-link menu-link"
@@ -897,8 +897,7 @@ const VerticalLayout = (props) => {
              */}
           </ul>
         </Collapse>
-      </li>
-      <li className="nav-item">
+
         <Link
           className="nav-link menu-link"
           to="#"
@@ -922,7 +921,10 @@ const VerticalLayout = (props) => {
             </li>
           </ul>
         </Collapse>
+
+
       </li>{" "}
+
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -960,6 +962,48 @@ const VerticalLayout = (props) => {
 
               </Link>
             </li>
+          </ul>
+        </Collapse>
+      </li>
+      <li className="nav-item">
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setCMSMaster(!cmsmaster);
+          }}
+        >
+           <span data-key="t-apps">CMS  </span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={cmsmaster}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+           
+            <li className="nav-item">
+              <Link to="/cms" className="nav-link">
+                CMS Master 
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/commitment" className="nav-link">
+                Commitment Master
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/certificate" className="nav-link">
+                Certificate Master
+              </Link>
+            </li>
+             
+            <li className="nav-item">
+              <Link className="nav-link menu-link" to="/blogs">
+                 <span data-key="t-apps">Blogs </span>
+               </Link>
+             </li>
           </ul>
         </Collapse>
       </li>

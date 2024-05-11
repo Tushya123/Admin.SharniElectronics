@@ -36,7 +36,14 @@ import AssignProduct from "../pages/SupplierSetup/AssignProduct";
 import GalleryPhotos from "../pages/GalleryPhotos/GalleryPhotos";
 import ContactInquiry from "../pages/Inquiry/ContactInquiry";
 import SupplierWiseProductReport from "../pages/Report/SupplierWiseProduct";
+
+import Cms from "../pages/CMSshreeji/cmsShreeji";
+import Commitment from "../pages/CMSshreeji/Commitment";
+import Certificate from "../pages/CMSshreeji/Certificate";
+
+
 import CountryWiseReport from "../pages/Report/CountryWiseReports";
+
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
   { path: "/profile", component: <UserProfile /> },
@@ -54,10 +61,25 @@ const authProtectedRoutes = [
   { path: "/promocode-master", component: <PromocodeMaster /> },
   { path: "/newproject", component: <NewProject /> },
   { path: "/product-details", component: <ProductDetails /> },
-  { path: "/getintouch", component: <GetInTouch /> },
-  { path: "/roles", component: <Roles /> },
-  { path: "/product-inquiry", component: <ProductInquiry /> },
-  { path: "/gallery-photos", component: <GalleryPhotos /> },
+
+  {path:"/getintouch",component:<GetInTouch/>},
+  {path:"/roles",component:<Roles/>},
+  {path:"/product-inquiry",component:<ProductInquiry/>},
+  {path:"/gallery-photos",component:<GalleryPhotos/>},
+
+  {path:"/product-group",component:<ProductGroup/>},
+  {path:"/product-detail",component:<ProductDetail/>},
+  {path:"/user-signin",component:<UserSignIn/>},
+  {path:"/other-products",component:<OtherProducts/>},
+  {path:"/supplier",component:<Supplier/>},
+  {path:"/assign-product", component:<AssignProduct />},
+  {path:"/supplier-quote",component:<SupplierQuote/>},
+  {path:"/preferences",component:<Preferences/>},
+  {path:"/contact-inquiry",component:<ContactInquiry/>},
+  {path:"/supplier-wise-product",component:<SupplierWiseProductReport/>},
+  {path:"/cms",component:<Cms/>},
+  
+
 
   { path: "/product-group", component: <ProductGroup /> },
   { path: "/product-detail", component: <ProductDetail /> },
@@ -70,9 +92,14 @@ const authProtectedRoutes = [
   { path: "/contact-inquiry", component: <ContactInquiry /> },
   { path: "/supplier-wise-product", component: <SupplierWiseProductReport /> },
 
-  { path: "/newspaper", component: <Newspaper /> },
-  { path: "/feature", component: <Feature /> },
-  { path: "/cmsmaster", component: <CmsMaster /> },
+
+  {path:"/newspaper",component:<Newspaper/>},
+  {path:"/feature",component:<Feature/>},
+  {path:"/cmsmaster",component:<CmsMaster/>},
+  {path:"/commitment",component:<Commitment />},
+  {path:"/certificate",component:<Certificate />},
+
+
   {
     path: "/",
     exact: true,

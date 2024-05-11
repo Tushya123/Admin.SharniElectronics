@@ -33,10 +33,10 @@ import {
 } from "../../functions/Blogs/Blogs";
 
 const Blogs = () => {
-  const [blogTitle, setblogTitle] = useState("");
-  const [blogDesc, setblogDesc] = useState("");
-  const [blogImage, setblogImage] = useState("");
-  const [blogThumnailDesc, setblogThumnailDesc] = useState("");
+  const [Title, setTitle] = useState("");
+  const [Description, setDescription] = useState("");
+  const [BlogImage, setBlogImage] = useState("");
+  const [Category, setCategory] = useState("");
   const [views, setViews] = useState(0);
 
   const [loadingOption, setLoadingOption] = useState(false);
@@ -112,14 +112,10 @@ const Blogs = () => {
     set_Id(_id);
     getBlogs(_id)
       .then((res) => {
-        setblogTitle(res.blogTitle);
-        setblogDesc(res.blogDesc);
-        setblogImage(res.blogImage);
-        setlikes(res.likes);
-        setcomments(res.comments);
-        setblogThumnailDesc(res.blogThumnailDesc);
-        setViews(res.views);
-        setuserId(res.userId);
+        setTitle(res.Title);
+        setDescription(res.Description);
+        setBlogImage(res.BlogImage); 
+        setCategory(res.Category); 
         setIsActive(res.IsActive);
       })
       .catch((err) => {
@@ -130,7 +126,7 @@ const Blogs = () => {
   const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    let errors = validate(blogTitle, blogDesc, blogImage);
+    let errors = validate(Title, Description, BlogImage);
     setFormErrors(errors);
     setIsSubmit(true);
 
@@ -138,15 +134,11 @@ const Blogs = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      formdata.append("myFile", blogImage);
-      formdata.append("blogTitle", blogTitle);
-      formdata.append("blogDesc", blogDesc);
-      formdata.append("IsActive", IsActive);
-      formdata.append("comments", comments);
-      formdata.append("views", views);
-      formdata.append("blogThumnailDesc", blogThumnailDesc);
-      formdata.append("likes", likes);
-      formdata.append("userId", localStorage.getItem("AdminUser"));
+      formdata.append("BlogImage", BlogImage);
+      formdata.append("Title", Title);
+      formdata.append("Description", Description);
+      formdata.append("IsActive", IsActive); 
+      formdata.append("Category", Category); 
 
       createBlogs(formdata)
         .then((res) => {
@@ -155,14 +147,14 @@ const Blogs = () => {
           setShowForm(false);
           setLoadingOption(false);
           // setValues(initialState);
-          setblogDesc("");
-          setblogTitle("");
+          setDescription("");
+          setTitle("");
           setlikes([]);
           setcomments([]);
           setuserId("");
           setIsActive(false);
-          setblogImage("");
-          setblogThumnailDesc("");
+          setBlogImage("");
+          setCategory("");
           setViews(0);
           setIsSubmit(false);
           setCheckImagePhoto(false);
@@ -190,7 +182,7 @@ const Blogs = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    let erros = validate(blogTitle, blogDesc, blogImage);
+    let erros = validate(Title, Description, BlogImage);
     setFormErrors(erros);
     setIsSubmit(true);
     const likesString = JSON.stringify(likes);
@@ -200,15 +192,11 @@ const Blogs = () => {
       setLoadingOption(true);
       const formdata = new FormData();
 
-      formdata.append("myFile", blogImage);
-      formdata.append("blogTitle", blogTitle);
-      formdata.append("blogDesc", blogDesc);
-      formdata.append("IsActive", IsActive);
-      formdata.append("comments", commentString);
-      formdata.append("views", views);
-      formdata.append("blogThumnailDesc", blogThumnailDesc);
-      formdata.append("likes", likesString);
-      formdata.append("userId", userId);
+      formdata.append("BlogImage", BlogImage);
+      formdata.append("Title", Title);
+      formdata.append("Description", Description);
+      formdata.append("IsActive", IsActive); 
+      formdata.append("Category", Category); 
 
       updateBlogs(_id, formdata)
         .then((res) => {
@@ -219,15 +207,15 @@ const Blogs = () => {
 
           setCheckImagePhoto(false);
           // setValues(initialState);
-          setblogDesc("");
-          setblogTitle("");
+          setDescription("");
+          setTitle("");
           setlikes([]);
           setcomments([]);
           setuserId("");
           setIsActive(false);
-          setblogThumnailDesc("");
+          setCategory("");
           setViews(0);
-          setblogImage("");
+          setBlogImage("");
           fetchCategories();
         })
         .catch((err) => {
@@ -241,37 +229,37 @@ const Blogs = () => {
   const [errBTD, setErrBTD] = useState(false);
   const [errBI, setErrBI] = useState(false);
 
-  const validate = (blogDesc, blogTitle, blogImage) => {
+  const validate = (Description, Title, BlogImage) => {
     const errors = {};
 
-    if (blogTitle === "") {
-      errors.blogTitle = "Blog Title is required!";
+    if (Title === "") {
+      errors.Title = "Blog Title is required!";
       setErrBT(true);
     }
-    if (blogTitle !== "") {
+    if (Title !== "") {
       setErrBT(false);
     }
 
-    if (blogDesc === "") {
-      errors.blogDesc = "Blog Description is required!";
+    if (Description === "") {
+      errors.Description = "Blog Description is required!";
       setErrBD(true);
     }
-    if (blogDesc !== "") {
+    if (Description !== "") {
       setErrBD(false);
     }
-    if (blogThumnailDesc === "") {
-      errors.blogThumnailDesc = "Blog Thumbnail Description is required!";
+    if (Category === "") {
+      errors.Category = "Blog Thumbnail Description is required!";
       setErrBTD(true);
     }
-    if (blogThumnailDesc !== "") {
+    if (Category !== "") {
       setErrBTD(false);
     }
 
-    if (blogImage === "") {
-      errors.blogImage = "Blog Image is required!";
+    if (BlogImage === "") {
+      errors.BlogImage = "Blog Image is required!";
       setErrBI(true);
     }
-    if (blogImage !== "") {
+    if (BlogImage !== "") {
       setErrBI(false);
     }
 
@@ -318,7 +306,7 @@ const Blogs = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/blogs`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Blog`,
         {
           skip: skip,
           per_page: perPage,
@@ -358,8 +346,8 @@ const Blogs = () => {
       console.log("img", e.target.files[0]);
 
       setPhotoAdd(imageurl);
-      // setValues({ ...values, blogImage: e.target.files[0] });
-      setblogImage(e.target.files[0]);
+      // setValues({ ...values, BlogImage: e.target.files[0] });
+      setBlogImage(e.target.files[0]);
       setCheckImagePhoto(true);
     }
   };
@@ -379,16 +367,16 @@ const Blogs = () => {
     setCheckImagePhoto(false);
     setShowForm(false);
     setUpdateForm(false);
-    setblogThumnailDesc("");
+    setCategory("");
     setViews(0);
     // setValues(initialState);
-    setblogDesc("");
-    setblogTitle("");
+    setDescription("");
+    setTitle("");
     setlikes([]);
     setcomments([]);
     setuserId("");
     setIsActive(false);
-    setblogImage("");
+    setBlogImage("");
   };
 
   const handleUpdateCancel = (e) => {
@@ -397,54 +385,54 @@ const Blogs = () => {
     setPhotoAdd("");
     setUpdateForm(false);
     setShowForm(false);
-    setblogThumnailDesc("");
+    setCategory("");
     setViews(0);
     setCheckImagePhoto(false);
     // setValues(initialState);
-    setblogDesc("");
-    setblogTitle("");
+    setDescription("");
+    setTitle("");
     setlikes([]);
     setcomments([]);
     setuserId("");
     setIsActive(false);
-    setblogImage("");
+    setBlogImage("");
   };
-
+  const stripHtmlTags = (html) => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+    return tempElement.textContent || tempElement.innerText || '';
+  };
   const col = [
     {
       name: "Title",
-      cell: (row) => row.blogTitle,
+      cell: (row) => row.Title,
       sortable: true,
-      sortField: "blogTitle",
+      sortField: "Title",
       minWidth: "150px",
     },
 
-    // {
-    //   name: " Written By",
-    //   cell: (row) => row.adminuser,
-    //   sortable: true,
-    //   sortField: "adminuser",
-    //   minWidth: "150px",
-    // },
+    {
+      name: "Category",
+      cell: (row) => row.Category,
+      sortable: true,
+      sortField: "Category",
+      minWidth: "150px",
+    },
+    {
+      name: "Description",
+      cell: (row) =>stripHtmlTags(row.Description),
+      sortable: true,
+      sortField: "Description",
+      minWidth: "150px",
+    },
 
     {
-      name: "Date & Time",
-      selector: (row) => {
-        const dateObject = new Date(row.createdAt);
-
-        return (
-          <React.Fragment>
-            {moment(new Date(dateObject.getTime())).format(
-              "DD-MM-YYYY hh:mm A"
-            )}
-          </React.Fragment>
-        );
-      },
+      name: "Date",
+      cell: (row) => row.createdAt.split("T")[0],
       sortable: true,
       sortField: "createdAt",
       minWidth: "150px",
     },
-
     {
       name: "Status",
       selector: (row) => {
@@ -544,13 +532,13 @@ const Blogs = () => {
                                     onClick={() => {
                                       setShowForm(!showForm);
                                       // setValues(initialState);
-                                      setblogDesc("");
-                                      setblogTitle("");
+                                      setDescription("");
+                                      setTitle("");
                                       setlikes([]);
                                       setcomments([]);
                                       setuserId("");
                                       setIsActive(false);
-                                      setblogImage("");
+                                      setBlogImage("");
                                       // setFileId(Math.random() * 100000);
                                     }}
                                     // onClick={() => tog_list()}
@@ -579,13 +567,13 @@ const Blogs = () => {
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
                                     // setValues(initialState);
-                                    setblogDesc("");
-                                    setblogTitle("");
+                                    setDescription("");
+                                    setTitle("");
                                     setlikes([]);
                                     setcomments([]);
                                     setuserId("");
                                     setIsActive(false);
-                                    setblogImage("");
+                                    setBlogImage("");
                                     setShowForm(false);
                                     setUpdateForm(false);
                                     // setFileId(Math.random() * 100000);
@@ -637,15 +625,15 @@ const Blogs = () => {
                                   <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
-                                        key={"blogTitle_" + _id}
+                                        key={"Title_" + _id}
                                         type="text"
                                         className={validClassBT}
                                         placeholder="Enter blog title"
                                         required
-                                        name="blogTitle"
-                                        value={blogTitle}
+                                        name="Title"
+                                        value={Title}
                                         onChange={(e) => {
-                                          setblogTitle(e.target.value);
+                                          setTitle(e.target.value);
                                         }}
                                       />
                                       <Label>
@@ -654,7 +642,7 @@ const Blogs = () => {
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogTitle}
+                                          {formErrors.Title}
                                         </p>
                                       )}
                                     </div>
@@ -663,22 +651,22 @@ const Blogs = () => {
                                   <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
-                                        type="textarea"
+                                        type="text"
                                         className={validClassBTD}
-                                        style={{ height: "100px" }}
-                                        placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
+                                       
+                                        placeholder="Blog Category"
+                                        name="Category"
+                                        value={Category}
                                         onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
+                                          setCategory(e.target.value);
                                         }}
                                       />
                                       <Label className="form-label">
-                                        Blog Thumbnail Description
+                                        Blog Category
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
+                                          {formErrors.Category}
                                         </p>
                                       )}
                                     </div>
@@ -693,22 +681,22 @@ const Blogs = () => {
                                       <CardBody>
                                         {/* <Form method="post"> */}
                                         <CKEditor
-                                          key={"blogDesc_" + _id}
+                                          key={"Description_" + _id}
                                           editor={ClassicEditor}
-                                          data={blogDesc}
+                                          data={Description}
                                           config={{
                                             extraPlugins: [uploadPlugin],
                                           }}
                                           onChange={(event, editor) => {
                                             const data = editor.getData();
 
-                                            setblogDesc(data);
-                                            console.log(blogDesc);
+                                            setDescription(data);
+                                            console.log(Description);
                                           }}
                                         />
                                         {isSubmit && (
                                           <p className="text-danger">
-                                            {formErrors.blogDesc}
+                                            {formErrors.Description}
                                           </p>
                                         )}
                                       </CardBody>
@@ -722,9 +710,9 @@ const Blogs = () => {
                                     </label>
 
                                     <Input
-                                      key={"blogImage_" + _id}
+                                      key={"BlogImage_" + _id}
                                       type="file"
-                                      name="blogImage"
+                                      name="BlogImage"
                                       className={validClassBI}
                                       // accept="images/*"
                                       accept=".jpg, .jpeg, .png"
@@ -732,7 +720,7 @@ const Blogs = () => {
                                     />
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.blogImage}
+                                        {formErrors.BlogImage}
                                       </p>
                                     )}
                                     {checkImagePhoto ? (
@@ -834,16 +822,16 @@ const Blogs = () => {
                                   <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
-                                        key={"blogTitle_" + _id}
+                                        key={"Title_" + _id}
                                         type="text"
                                         className={validClassBT}
                                         placeholder="Enter blog title"
                                         required
-                                        name="blogTitle"
-                                        value={blogTitle}
+                                        name="Title"
+                                        value={Title}
                                         // onChange={handleChange}
                                         onChange={(e) => {
-                                          setblogTitle(e.target.value);
+                                          setTitle(e.target.value);
                                         }}
                                       />
                                       <Label>
@@ -852,7 +840,7 @@ const Blogs = () => {
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogTitle}
+                                          {formErrors.Title}
                                         </p>
                                       )}
                                     </div>
@@ -861,22 +849,22 @@ const Blogs = () => {
                                   <Col lg={6}>
                                     <div className="form-floating mb-3">
                                       <Input
-                                        type="textarea"
+                                        type="text"
                                         className={validClassBTD}
-                                        style={{ height: "100px" }}
+                                       
                                         placeholder="Remarks..."
-                                        name="blogThumnailDesc"
-                                        value={blogThumnailDesc}
+                                        name="Category"
+                                        value={Category}
                                         onChange={(e) => {
-                                          setblogThumnailDesc(e.target.value);
+                                          setCategory(e.target.value);
                                         }}
                                       />
                                       <Label className="form-label">
-                                        Blog Thumbnail Description
+                                        Blog Category
                                       </Label>
                                       {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.blogThumnailDesc}
+                                          {formErrors.Category}
                                         </p>
                                       )}
                                     </div>
@@ -890,21 +878,21 @@ const Blogs = () => {
                                       <CardBody>
                                         {/* <Form method="post"> */}
                                         <CKEditor
-                                          key={"blogDesc_" + _id}
+                                          key={"Description_" + _id}
                                           editor={ClassicEditor}
-                                          data={blogDesc}
+                                          data={Description}
                                           config={{
                                             extraPlugins: [uploadPlugin],
                                           }}
                                           onChange={(event, editor) => {
                                             const data = editor.getData();
 
-                                            setblogDesc(data);
+                                            setDescription(data);
                                           }}
                                         />
                                         {isSubmit && (
                                           <p className="text-danger">
-                                            {formErrors.blogDesc}
+                                            {formErrors.Description}
                                           </p>
                                         )}
                                       </CardBody>
@@ -917,9 +905,9 @@ const Blogs = () => {
                                       <span className="text-danger">*</span>
                                     </label>
                                     <Input
-                                      key={"blogImage_" + _id}
+                                      key={"BlogImage_" + _id}
                                       type="file"
-                                      name="blogImage"
+                                      name="BlogImage"
                                       className={validClassBI}
                                       // accept="images/*"
                                       accept=".jpg, .jpeg, .png"
@@ -927,18 +915,18 @@ const Blogs = () => {
                                     />
                                     {isSubmit && (
                                       <p className="text-danger">
-                                        {formErrors.blogImage}
+                                        {formErrors.BlogImage}
                                       </p>
                                     )}
 
-                                    {blogImage || photoAdd ? (
+                                    {BlogImage || photoAdd ? (
                                       <img
                                         // key={photoAdd}
                                         className="m-2"
                                         src={
                                           checkImagePhoto
                                             ? photoAdd
-                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${blogImage}`
+                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${BlogImage}`
                                         }
                                         width="180"
                                         height="200"
@@ -1060,13 +1048,13 @@ const Blogs = () => {
         toggle={() => {
           tog_delete();
           // setValues([]);
-          setblogDesc("");
-          setblogTitle("");
+          setDescription("");
+          setTitle("");
           setlikes([]);
           setcomments([]);
           setuserId("");
           setIsActive(false);
-          setblogImage("");
+          setBlogImage("");
         }}
         centered
       >
