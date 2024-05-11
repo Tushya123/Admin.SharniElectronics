@@ -32,11 +32,11 @@ import CmsMaster from "../pages/CMS/CmsMaster";
 import OtherProducts from "../pages/OtherProducts/OtherProducts";
 import Supplier from "../pages/SupplierSetup/SupplierSetup";
 import SupplierQuote from "../pages/SupplierQuote/SupplierQuote";
-import AssignProduct from "../pages/SupplierSetup/AssignProduct"; 
+import AssignProduct from "../pages/SupplierSetup/AssignProduct";
 import GalleryPhotos from "../pages/GalleryPhotos/GalleryPhotos";
 import ContactInquiry from "../pages/Inquiry/ContactInquiry";
 import SupplierWiseProductReport from "../pages/Report/SupplierWiseProduct";
-
+import CountryWiseReport from "../pages/Report/CountryWiseReports";
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
   { path: "/profile", component: <UserProfile /> },
@@ -46,41 +46,40 @@ const authProtectedRoutes = [
   { path: "/location", component: <CompanyLocation /> },
   { path: "/admin-user", component: <AdminUser /> },
   { path: "/company-details", component: <CompanyDetails /> },
-  {path:"/contact",component:<ContactUs/>},
+  { path: "/contact", component: <ContactUs /> },
   { path: "/category", component: <Category /> },
-  {path:"/review",component:<Review/>},
+  { path: "/review", component: <Review /> },
   { path: "/blogs", component: <Blogs /> },
   { path: "/banner", component: <Banner /> },
   { path: "/promocode-master", component: <PromocodeMaster /> },
-  {path:"/newproject",component:<NewProject/>},
+  { path: "/newproject", component: <NewProject /> },
   { path: "/product-details", component: <ProductDetails /> },
-  {path:"/getintouch",component:<GetInTouch/>},
-  {path:"/roles",component:<Roles/>},
-  {path:"/product-inquiry",component:<ProductInquiry/>},
-  {path:"/gallery-photos",component:<GalleryPhotos/>},
+  { path: "/getintouch", component: <GetInTouch /> },
+  { path: "/roles", component: <Roles /> },
+  { path: "/product-inquiry", component: <ProductInquiry /> },
+  { path: "/gallery-photos", component: <GalleryPhotos /> },
 
-  {path:"/product-group",component:<ProductGroup/>},
-  {path:"/product-detail",component:<ProductDetail/>},
-  {path:"/user-signin",component:<UserSignIn/>},
-  {path:"/other-products",component:<OtherProducts/>},
-  {path:"/supplier",component:<Supplier/>},
-  {path:"/assign-product", component:<AssignProduct />},
-  {path:"/supplier-quote",component:<SupplierQuote/>},
-  {path:"/preferences",component:<Preferences/>},
-  {path:"/contact-inquiry",component:<ContactInquiry/>},
-  {path:"/supplier-wise-product",component:<SupplierWiseProductReport/>},
+  { path: "/product-group", component: <ProductGroup /> },
+  { path: "/product-detail", component: <ProductDetail /> },
+  { path: "/user-signin", component: <UserSignIn /> },
+  { path: "/other-products", component: <OtherProducts /> },
+  { path: "/supplier", component: <Supplier /> },
+  { path: "/assign-product", component: <AssignProduct /> },
+  { path: "/supplier-quote", component: <SupplierQuote /> },
+  { path: "/preferences", component: <Preferences /> },
+  { path: "/contact-inquiry", component: <ContactInquiry /> },
+  { path: "/supplier-wise-product", component: <SupplierWiseProductReport /> },
 
-
-
-  {path:"/newspaper",component:<Newspaper/>},
-  {path:"/feature",component:<Feature/>},
-  {path:"/cmsmaster",component:<CmsMaster/>},
+  { path: "/newspaper", component: <Newspaper /> },
+  { path: "/feature", component: <Feature /> },
+  { path: "/cmsmaster", component: <CmsMaster /> },
   {
     path: "/",
     exact: true,
     component: <Navigate to="/category" />,
   },
   { path: "*", component: <Navigate to="/category" /> },
+  { path: "/country-wise-report", component: <CountryWiseReport /> },
 ];
 
 const publicRoutes = [
