@@ -38,9 +38,11 @@ export const editCmsContactUsDetailContent = async (values) => {
   }
 };
 
-export const editCmsAboutUsContent = async (values) => {
+export const editCmsAboutUsContent = async (_id,values) => {
   try {
-    const { _id } = values;
+    console.log(values)
+    // const id= _id._id
+    // const { _id } = values;
     const response = await axios.put(
       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/cms/${_id}`,
       values

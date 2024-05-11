@@ -317,21 +317,21 @@ const Commitment = () => {
         selector: (row,index) => index+1,
         sortable: true,
         sortField: "srno",
-        minWidth: "150px",
+    
       },
     {
-      name: "First Name",
+      name: "Title",
       selector: (row) => row.Title,
       sortable: true,
       sortField: "Title",
-      minWidth: "150px",
+    
     },
     {
-      name: "Last Name",
+      name: "Description",
       selector: (row) => row.Description,
       sortable: true,
       sortField: "Description",
-      minWidth: "150px",
+    
     },
  
  
@@ -340,7 +340,7 @@ const Commitment = () => {
       selector: (row) => renderImage(row.CommitmentImage),
       sortable: true,
       sortField: "password",
-      minWidth: "150px",
+  
     },
 
     {
@@ -477,7 +477,7 @@ const Commitment = () => {
             setIsSubmit(false);
           }}
         >
-          Add Admin
+          Add Commitment Master
         </ModalHeader>
         <form>
           <ModalBody>
@@ -499,15 +499,15 @@ const Commitment = () => {
               )}
             </div>
             <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassLN}
-                placeholder="Enter last Name"
-                required
-                name="Description"
-                value={Description}
-                onChange={handleChange}
-              />
+            <textarea
+  className={validClassLN}
+  placeholder="Enter Description"
+  required
+  name="Description"
+  value={Description}
+  onChange={handleChange}
+  rows={4} />
+
               <Label>
                Description <span className="text-danger">*</span>
               </Label>
@@ -518,7 +518,7 @@ const Commitment = () => {
 
             <Col lg={6}>
               <label>
-                Admin Image <span className="text-danger">*</span>
+               Image <span className="text-danger">*</span>
               </label>
 
               <input
@@ -620,15 +620,15 @@ const Commitment = () => {
               )}
             </div>
             <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassLN}
-                placeholder="Enter last Name"
-                required
-                name="Description"
-                value={Description}
-                onChange={handleChange}
-              />
+            <textarea
+  className={validClassLN}
+  placeholder="Enter Description"
+  required
+  name="Description"
+  value={Description}
+  onChange={handleChange}
+  rows={4} />
+
               <Label>
                Description<span className="text-danger">*</span>{" "}
               </Label>
@@ -638,7 +638,7 @@ const Commitment = () => {
              
             <Col lg={6}>
               <label>
-                Admin Image <span className="text-danger">*</span>
+                 Image <span className="text-danger">*</span>
               </label>
               <input
                 key={"CommitmentImage" + _id}

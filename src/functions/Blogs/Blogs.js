@@ -20,6 +20,8 @@ export const listBlogs = async () => {
 };
 
 export const updateBlogs = async (_id, values) => {
+  console.log(_id)
+  console.log(values)
   return await axios.put(
     `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/Blog/${_id}`,
     values
