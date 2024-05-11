@@ -310,7 +310,7 @@ const Certificate = () => {
         minWidth: "150px",
       },
     {
-      name: "First Name",
+      name: "Title",
       selector: (row) => row.Title,
       sortable: true,
       sortField: "Title",
@@ -488,7 +488,7 @@ const Certificate = () => {
 
             <Col lg={6}>
               <label>
-                Admin Image <span className="text-danger">*</span>
+                Certificate Image <span className="text-danger">*</span>
               </label>
 
               <input
@@ -594,7 +594,7 @@ const Certificate = () => {
              
             <Col lg={6}>
               <label>
-                Admin Image <span className="text-danger">*</span>
+                Certificate Image <span className="text-danger">*</span>
               </label>
               <input
                 key={"CertificateImage" + _id}
