@@ -898,7 +898,7 @@ const VerticalLayout = (props) => {
           </ul>
         </Collapse>
 
-        <Link
+        {/* <Link
           className="nav-link menu-link"
           to="#"
           data-bs-toggle="collapse"
@@ -907,7 +907,7 @@ const VerticalLayout = (props) => {
           }}
         >
           <span data-key="t-apps"> CMS </span>
-        </Link>
+        </Link> */}
         <Collapse
           className="menu-dropdown"
           isOpen={reports}
@@ -943,12 +943,12 @@ const VerticalLayout = (props) => {
         >
           <ul className="nav nav-sm flex-column test">
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/cmsmaster" className="nav-link">
                 {" "}
                 Cms Master
               </Link>
-            </li>{" "}
+            </li>{" "} */}
             <li className="nav-item">
               <Link to="/supplier-wise-product" className="nav-link">
                 {" "}
@@ -974,7 +974,7 @@ const VerticalLayout = (props) => {
             setCMSMaster(!cmsmaster);
           }}
         >
-           <span data-key="t-apps">CMS  </span>
+           <span data-key="t-apps">Master  </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -991,6 +991,10 @@ const VerticalLayout = (props) => {
             <li className="nav-item">
               <Link to="/commitment" className="nav-link">
                 Commitment Master
+              </Link>
+            </li> <li className="nav-item">
+              <Link to="/commitment" className="nav-link">
+                Banner Master
               </Link>
             </li>
             <li className="nav-item">

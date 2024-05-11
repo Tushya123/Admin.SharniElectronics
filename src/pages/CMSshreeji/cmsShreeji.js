@@ -615,9 +615,9 @@ const handleSubmitCms = async () => {
   const [values,setValues]=useState("")
   const options = [
  
-    { value: '663c967330ee58405d1a37a5', label: 'About Us' },
+    { value: '663f4d5fef85cf304603e082', label: 'About Us' },
     { value: '663ca6df30ee58405d1a37ab', label: 'Terms and condition' },
-    { value: '663c960130ee58405d1a37a0', label: 'Home About Us' },
+    { value: '663f0071ef85cf304603e046', label: 'Home About Us' },
     
   ];
   const[showButton, SetButton] = useState(true);
@@ -660,7 +660,7 @@ const handleSubmitCms = async () => {
     });
    
 }; 
-  document.title = "Contact To Owner| CMS";
+  document.title = "CMS | Shreeji Pharma";
 
   return (
     <React.Fragment>
@@ -674,12 +674,10 @@ const handleSubmitCms = async () => {
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
-                    <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">CMS</h2>
-                    </Col>
+                   
                     
                     <Row>
-                      <Col lg={12}>
+                      <Col lg={12} className="mt-4">
                       <label>
                                       CMS{" "}
                                       <span class="text-danger">*</span>
@@ -736,9 +734,9 @@ const handleSubmitCms = async () => {
                                             {formErrors.description}
                                           </p>
                                         )} */}
-                                         <Col lg={6}>
+                                         <Col lg={6} className="mt-2">
                                     <label>
-                                      Blog Image{" "}
+                                      CMS Image{" "}
                                       <span className="text-danger">*</span>
                                     </label>
 
