@@ -515,7 +515,13 @@ const CountryWiseReport = () => {
 
                 <Row>
                   <Col lg={6}>
+                 
                     <div style={{ padding: "10px 0 0 10px" }}>
+                    <label>
+                                Select Customer Country{" "}
+                                      <span class="text-danger">*</span>
+                              
+                                    </label>
                       <Select
                         options={countriesArray.map((country, index) => ({
                           value: country.label, // use country.label as value
@@ -571,12 +577,14 @@ const CountryWiseReport = () => {
                   <CardBody>
                     <React.Fragment>
                       <Col xxl={12}>
+                     
                         <Card className="">
                           <CardBody>
                             <div className="live-preview">
                               <Form>
                                 <Row>
                                   <Col lg={6}>
+                                 
                                     <Select
                                       options={countriesArray}
                                       onChange={(selectedOption) => {
