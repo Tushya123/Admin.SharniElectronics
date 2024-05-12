@@ -492,7 +492,7 @@ const handleStartDateChange = (date) => {
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
                       <h2 className="card-title mb-0 fs-4 mt-2">
-                      Customer List Country Wise
+Status Report
                       </h2>
                     </Col>
                     <Col className="text-end">
@@ -513,7 +513,7 @@ const handleStartDateChange = (date) => {
                 
                 <div>
                   <Row>
-                    <Col lg={4} className="px-4">
+                    <Col lg={4} className="px-4 mt-4">
                       <Label for="startDate">Start Date:</Label>
                       <Flatpickr
                         id="startDate"
@@ -525,7 +525,7 @@ const handleStartDateChange = (date) => {
                         }}
                       />
                     </Col>
-                    <Col lg={4} className="px-4">
+                    <Col lg={4} className="px-4  mt-4">
                       <Label for="endDate">End Date:</Label>
                       <Flatpickr
                         id="endDate"
@@ -601,7 +601,7 @@ const handleStartDateChange = (date) => {
                   <Row>
                               <Col lg={5}>
                                 <label>
-                                Select Supplier:{" "}
+                                Select Type:{" "}
                                       <span class="text-danger">*</span>
                               
                                     </label>
