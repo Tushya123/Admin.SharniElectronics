@@ -169,7 +169,7 @@ useEffect(() => {
           setLoading(false);
           setBlogs(res.ProductDetail);
           console.log(res.length)
-          setTotalRows(2);
+          setTotalRows(10);
         } else {
           console.log("Hii")
           setBlogs([]);
@@ -322,7 +322,8 @@ document.title = "Supplier Wise Product |  Shreeji Pharma";
     </Col>
     <Col lg={4} md={6} sm={6}></Col>
     <Col className="text-end">
-    <Button
+    {blogs ? (
+      <Button
   color="primary"
   className="btn-rounded waves-effect waves-light"
   onClick={() => {
@@ -341,6 +342,8 @@ document.title = "Supplier Wise Product |  Shreeji Pharma";
 >
   Generate Excel Sheet
 </Button>
+) : null}
+    
 
     </Col>
   </Row>
