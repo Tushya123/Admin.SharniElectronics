@@ -961,6 +961,12 @@ const VerticalLayout = (props) => {
                 Customer List Country Wise
 
               </Link>
+            </li> <li className="nav-item">
+              <Link to="/status-report" className="nav-link">
+                {" "}
+                Status Report
+
+              </Link>
             </li>
           </ul>
         </Collapse>
