@@ -298,7 +298,7 @@ const Category = () => {
     },
   ];
 
-  document.title = "Category | Contact_Owner";
+  document.title = "Category | Shreeji Pharma";
 
   return (
     <React.Fragment>

@@ -483,16 +483,16 @@ const CountryWiseReport = () => {
   const [speciality, setSpeciality] = useState([]);
   const [values, setValues] = useState("");
 
-  document.title = "Sheldon Medical | Report";
+  document.title = "Customer List Country Wise | Shreeji Pharma"
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
           <BreadCrumb
-            maintitle="Booking Report"
-            title="Booking Report"
-            pageTitle="Booking Report"
+            maintitle="Customer List Country Wise"
+            title="Customer List Country Wise"
+            pageTitle="Customer List Country Wise"
           />
 
           <Row>
@@ -502,10 +502,10 @@ const CountryWiseReport = () => {
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
                       <h2 className="card-title mb-0 fs-4 mt-2">
-                        Booking Report
+                      Customer List Country Wise
                       </h2>
                     </Col>
-                    <Col lg={4} md={6} sm={6}>
+                    <Col lg={4} md={6} sm={6} className="d-flex justify-content-end">
                       <Button variant="primary" onClick={downloadExcel}>
                         Export to Excel
                       </Button>

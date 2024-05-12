@@ -410,7 +410,7 @@ const GalleryPhotos = () => {
     },
   ];
 
-  document.title = "Gallery Photos|Contact to Owner";
+  document.title = "Gallery Photos | Shreeji Pharma";
 
   return (
     <React.Fragment>
