@@ -403,6 +403,71 @@ const handleStartDateChange = (date) => {
     setEndDate(date);
   };
 
+  console.log("THe blogs are:",blogs)
+  const downloadExcel = async (startDate, endDate) => {
+    try {
+      let skip = (pageNo - 1) * perPage;
+      if (skip < 0) {
+        skip = 0;
+      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/downloadexcelstatusreport`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          IsActive: filter,
+          createdAt: { $gte: startDate, $lte: endDate },
+        },
+        { responseType: "blob" }
+      );
+
+      console.log("response", response);
+
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "productinquiry.xlsx"); // or any other extension you want
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
+  }; 
+  const downloadExcel1 = async (startDate, endDate) => {
+    try {
+      let skip = (pageNo - 1) * perPage;
+      if (skip < 0) {
+        skip = 0;
+      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/downloadexcelstatusreportforcontact`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          IsActive: filter,
+          createdAt: { $gte: startDate, $lte: endDate },
+        },
+        { responseType: "blob" }
+      );
+
+      console.log("response", response);
+
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "contactinquiry.xlsx"); // or any other extension you want
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
+  };
   return (
     <React.Fragment>
       <div className="page-content">
@@ -413,35 +478,27 @@ const handleStartDateChange = (date) => {
             <Col lg={12}>
               <Card>
               <CardHeader>
-  <Row className="g-4 mb-1">
-    <Col className="col-sm" lg={4} md={6} sm={6}>
-      <h2 className="card-title mb-0 fs-4 mt-2">Status Report </h2>
-    </Col>
-    <Col lg={4} md={6} sm={6}></Col>
-    <Col className="text-end">
-    <Button
-  color="primary"
-  className="btn-rounded waves-effect waves-light"
-  onClick={() => {
-    const endpoint = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/generateSupplierWiseProductReportExcel/${changedid}`;
-    axios
-      .get(endpoint, { responseType: "blob" })
-      .then((response) => {
-        const blob = new Blob([response]);
-        saveAs(blob, "SupplierWiseProductReport.xlsx");
-        console.log("Excel sheet generated successfully");
-      })
-      .catch((error) => {
-        console.error("Error generating Excel sheet", error);
-      });
-  }}
->
-  Generate Excel Sheet
-</Button>
+                  <Row className="g-4 mb-1">
+                    <Col className="col-sm" lg={4} md={6} sm={6}>
+                      <h2 className="card-title mb-0 fs-4 mt-2">
+                      Customer List Country Wise
+                      </h2>
+                    </Col>
+                    <Col className="text-end">
+                    
+                    {SpecialityValue === 'Product' ? (
+    <Button color="primary" className="btn-rounded waves-effect waves-light" onClick={() => downloadExcel(startDate, endDate)}>
+        Generate Product Inquiry Sheet
+    </Button>
+) : SpecialityValue === 'Customer' ? (
+    <Button color="primary" className="btn-rounded waves-effect waves-light" onClick={() => downloadExcel(startDate, endDate)}>
+        Generate Contact Inquiry Sheet
+    </Button>
+) : null}
 
-    </Col>
-  </Row>
-</CardHeader>
+                    </Col>
+                  </Row>
+                </CardHeader>
                 
                 <div>
                   <Row>
@@ -489,7 +546,7 @@ const handleStartDateChange = (date) => {
                               <Row>
                               <Col lg={5}>
                                 <label>
-                                SpecialityName{" "}
+                                Select Inquiry{" "}
                                       <span class="text-danger">*</span>
                               
                                     </label>
