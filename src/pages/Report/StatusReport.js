@@ -73,7 +73,18 @@ const StatusReport = () => {
     }
     
   }, [formErrors, isSubmit]);
+  useEffect(() => {
+    
+      if(SpecialityName==="Product"){
+        fetchCategories(startDate,endDate);
+      }
+      else if(SpecialityName==="Customer"){
+        fetchCategories1(startDate,endDate);
+      }
+      
 
+  
+  }, [startDate,endDate]);
 
   const handleSpecialityChange = (selectedOption) => {
     // Check if the selected option exists in selectOptions
@@ -491,7 +502,7 @@ const handleStartDateChange = (date) => {
         Generate Product Inquiry Sheet
     </Button>
 ) : SpecialityValue === 'Customer' ? (
-    <Button color="primary" className="btn-rounded waves-effect waves-light" onClick={() => downloadExcel(startDate, endDate)}>
+    <Button color="primary" className="btn-rounded waves-effect waves-light" onClick={() => downloadExcel1(startDate, endDate)}>
         Generate Contact Inquiry Sheet
     </Button>
 ) : null}
@@ -561,12 +572,13 @@ const handleStartDateChange = (date) => {
                                         />
 
                         
-                                      {isSubmit && (
+                                      {/* {isSubmit && (
                                         <p className="text-danger">
                                           {formErrors.errspeciality}
                                         </p>
-                                      )}
+                                      )} */}
                                     </div>
+                                    
                                   </Col>
                               </Row>   
                             </div>
