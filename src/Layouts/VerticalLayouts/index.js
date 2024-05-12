@@ -993,7 +993,7 @@ const VerticalLayout = (props) => {
                 Commitment Master
               </Link>
             </li> <li className="nav-item">
-              <Link to="/commitment" className="nav-link">
+              <Link to="/banner" className="nav-link">
                 Banner Master
               </Link>
             </li>

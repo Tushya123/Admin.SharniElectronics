@@ -499,14 +499,15 @@ const Commitment = () => {
               )}
             </div>
             <div className="form-floating mb-3">
-            <textarea
-  className={validClassLN}
-  placeholder="Enter Description"
-  required
-  name="Description"
-  value={Description}
-  onChange={handleChange}
-  rows={4} />
+            <Input
+                type="textarea"
+                className="form-control"
+                placeholder="Enter Commitment Description..."
+                style={{ height: "150px" }}
+                name="Description"
+                value={Description}
+                onChange={handleChange}
+              />
 
               <Label>
                Description <span className="text-danger">*</span>
@@ -620,14 +621,16 @@ const Commitment = () => {
               )}
             </div>
             <div className="form-floating mb-3">
-            <textarea
-  className={validClassLN}
-  placeholder="Enter Description"
-  required
-  name="Description"
-  value={Description}
-  onChange={handleChange}
-  rows={4} />
+            <Input
+                type="textarea"
+                className="form-control"
+                placeholder="Enter Commitment Description..."
+                style={{ height: "150px" }}
+                name="Description"
+                value={Description}
+                onChange={handleChange}
+              />
+
 
               <Label>
                Description<span className="text-danger">*</span>{" "}

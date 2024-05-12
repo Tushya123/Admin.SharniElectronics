@@ -337,7 +337,7 @@ const CountryWiseReport = () => {
           setCategories([]);
         }
       });
-    // setLoading(false);
+    setLoading(false);
   };
 
   const downloadExcel = async () => {
@@ -505,9 +505,10 @@ const CountryWiseReport = () => {
                       Customer List Country Wise
                       </h2>
                     </Col>
-                    <Col lg={4} md={6} sm={6} className="d-flex justify-content-end">
-                      <Button variant="primary" onClick={downloadExcel}>
-                        Export to Excel
+                    <Col className="text-end">
+                      <Button color="primary"
+  className="btn-rounded waves-effect waves-light" onClick={downloadExcel}>
+                       Generate Excel Sheet
                       </Button>
                     </Col>
                   </Row>

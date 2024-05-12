@@ -42,6 +42,7 @@ import Commitment from "../pages/CMSshreeji/Commitment";
 import Certificate from "../pages/CMSshreeji/Certificate";
 
 
+
 import CountryWiseReport from "../pages/Report/CountryWiseReports";
 
 const authProtectedRoutes = [
@@ -66,6 +67,7 @@ const authProtectedRoutes = [
   {path:"/roles",component:<Roles/>},
   {path:"/product-inquiry",component:<ProductInquiry/>},
   {path:"/gallery-photos",component:<GalleryPhotos/>},
+  {path:"/banner-master",component:<Banner/>},
 
   {path:"/product-group",component:<ProductGroup/>},
   {path:"/product-detail",component:<ProductDetail/>},

@@ -27,7 +27,7 @@ import {
 } from "../../functions/CMS/Banner";
 const initialState = {
   Title: "",
-  keyWord: "",
+  
   Description: "",
   bannerImage: "",
   IsActive: false,
@@ -35,10 +35,12 @@ const initialState = {
 
 const Banner = () => {
   const [values, setValues] = useState(initialState);
-  const { Title, keyWord, Description, bannerImage, IsActive } = values;
+  const { Title, Description, bannerImage, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [updateForm, setUpdateForm] = useState(false);
 
   const [query, setQuery] = useState("");
 
@@ -70,6 +72,7 @@ const Banner = () => {
   const [modal_edit, setmodal_edit] = useState(false);
   const handleTog_edit = (_id) => {
     setmodal_edit(!modal_edit);
+    setUpdateForm(true);
     setIsSubmit(false);
     set_Id(_id);
     getBannerImages(_id)
@@ -78,7 +81,7 @@ const Banner = () => {
         setValues({
           ...values,
           Title: res.Title,
-          keyWord: res.keyWord,
+      
           Description: res.Description,
           bannerImage: res.bannerImage,
           IsActive: res.IsActive,
@@ -113,13 +116,7 @@ const Banner = () => {
       setErrTT(false);
     }
 
-    if (values.keyWord === "") {
-      errors.keyWord = "KeyWord is required!";
-      setErrKW(true);
-    }
-    if (values.keyWord !== "") {
-      setErrKW(false);
-    }
+
 
     if (values.bannerImage === "") {
       errors.bannerImage = "Banner Image is required!";
@@ -151,9 +148,9 @@ const Banner = () => {
     if (Object.keys(erros).length === 0) {
       const formdata = new FormData();
 
-      formdata.append("myFile", values.bannerImage);
+      formdata.append("bannerImage", values.bannerImage);
       formdata.append("Description", values.Description);
-      formdata.append("keyWord", values.keyWord);
+    
       formdata.append("IsActive", values.IsActive);
       formdata.append("Title", values.Title);
 
@@ -161,6 +158,7 @@ const Banner = () => {
         .then((res) => {
           setmodal_list(!modal_list);
           setValues(initialState);
+          setShowForm(false);
           setCheckImagePhoto(false);
           setIsSubmit(false);
           setFormErrors({});
@@ -191,13 +189,14 @@ const Banner = () => {
     let erros = validate(values);
     setFormErrors(erros);
     setIsSubmit(true);
+    setIsSubmit(true);
 
     if (Object.keys(erros).length === 0) {
       const formdata = new FormData();
 
-      formdata.append("myFile", values.bannerImage);
+      formdata.append("bannerImage", values.bannerImage);
       formdata.append("Description", values.Description);
-      formdata.append("keyWord", values.keyWord);
+   
       formdata.append("IsActive", values.IsActive);
       formdata.append("Title", values.Title);
 
@@ -206,6 +205,9 @@ const Banner = () => {
           setmodal_edit(!modal_edit);
           fetchCategories();
           setPhotoAdd("");
+          setUpdateForm(false);
+          // setLoadingOption(false);
+
 
           setCheckImagePhoto(false);
         })
@@ -244,7 +246,7 @@ const Banner = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/banner-images`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Banner`,
         {
           skip: skip,
           per_page: perPage,
@@ -296,22 +298,40 @@ const Banner = () => {
   const handleFilter = (e) => {
     setFilter(e.target.checked);
   };
+  const renderImage = (uploadimage) => {
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+
+    return (
+      <img
+        src={imageUrl}
+        alt="Image"
+        style={{ width: "75px", height: "75px", padding: "5px" }}
+      />
+    );
+  };
 
   const col = [
+    {
+      name: "Sr No",
+      selector: (row,index) => index+1,
+      sortable: true,
+      sortField: "srno",
+  
+    },
     {
       name: "Title",
       selector: (row) => row.Title,
       sortable: true,
       sortField: "Title",
       minWidth: "150px",
-    },
-    {
-      name: "Key Word",
-      selector: (row) => row.keyWord,
+    },{
+      name: "Description",
+      selector: (row) => row.Description,
       sortable: true,
-      sortField: "keyWord",
+      sortField: "Title",
       minWidth: "150px",
     },
+ 
 
     {
       name: "Status",
@@ -320,6 +340,13 @@ const Banner = () => {
       },
       sortable: false,
       sortField: "Status",
+    },
+    {
+      name: "Image",
+      selector: (row) => renderImage(row.bannerImage),
+      sortable: true,
+      sortField: "password",
+  
     },
     {
       name: "Action",
@@ -357,7 +384,7 @@ const Banner = () => {
     },
   ];
 
-  document.title = "Bannner | Contact_Owner";
+  document.title = "Banner | Shreeji Pharma";
 
   return (
     <React.Fragment>
@@ -475,7 +502,7 @@ const Banner = () => {
               {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
 
-            <div className="form-floating mb-3">
+            {/* <div className="form-floating mb-3">
               <Input
                 type="text"
                 className={validClassKW}
@@ -489,7 +516,7 @@ const Banner = () => {
                 key Word<span className="text-danger">*</span>{" "}
               </Label>
               {isSubmit && <p className="text-danger">{formErrors.keyWord}</p>}
-            </div>
+            </div> */}
 
             <div className="form-floating mb-3">
               <Input
@@ -606,7 +633,7 @@ const Banner = () => {
               {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
 
-            <div className="form-floating mb-3">
+            {/* <div className="form-floating mb-3">
               <Input
                 type="text"
                 className={validClassKW}
@@ -620,7 +647,7 @@ const Banner = () => {
                 key Word <span className="text-danger">*</span>
               </Label>
               {isSubmit && <p className="text-danger">{formErrors.keyWord}</p>}
-            </div>
+            </div> */}
 
             <div className="form-floating mb-3">
               <Input

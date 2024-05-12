@@ -304,7 +304,7 @@ useEffect(() => {
   const [speciality,setSpeciality]=useState([]);
   const [values,setValues]=useState("");
 
-document.title = "Report |  Shreeji Pharma";
+document.title = "Supplier Wise Product |  Shreeji Pharma";
 
   return (
     <React.Fragment>

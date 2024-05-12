@@ -518,6 +518,13 @@ const ContactInquiry = () => {
   };
   const col = [
     {
+      name: "Sr No",
+      selector: (row,index) => index+1,
+      sortable: true,
+      sortField: "srno",
+      minWidth: "150px",
+    },
+    {
       name: "Contact Person",
       selector: (row) => row.ContactPerson,
       sortable: true,
@@ -538,11 +545,18 @@ const ContactInquiry = () => {
         sortField: "Mobile",
         minWidth: "150px",
       },
+    // {
+    //   name: "Remark",
+    //   selector: (row) => row.Remark,
+    //   sortable: true,
+    //   sortField: "Remark",
+    //   minWidth: "150px",
+    // },
     {
-      name: "Remark",
-      selector: (row) => row.Remark,
+      name: "Inquiry Date",
+      cell: (row) => row.createdAt.split("T")[0],
       sortable: true,
-      sortField: "Remark",
+      sortField: "createdAt",
       minWidth: "150px",
     },
     {

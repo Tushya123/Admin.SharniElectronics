@@ -404,6 +404,13 @@ const Blogs = () => {
   };
   const col = [
     {
+      name: "Sr No",
+      selector: (row,index) => index+1,
+      sortable: true,
+      sortField: "srno",
+  
+    },
+    {
       name: "Title",
       cell: (row) => row.Title,
       sortable: true,
@@ -477,7 +484,7 @@ const Blogs = () => {
     },
   ];
 
-  document.title = "Blogs | Contact_Owner";
+  document.title = "Blogs | Shreeji Pharma";
 
   return (
     <React.Fragment>
