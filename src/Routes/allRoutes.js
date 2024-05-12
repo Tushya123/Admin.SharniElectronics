@@ -40,7 +40,7 @@ import SupplierWiseProductReport from "../pages/Report/SupplierWiseProduct";
 import Cms from "../pages/CMSshreeji/cmsShreeji";
 import Commitment from "../pages/CMSshreeji/Commitment";
 import Certificate from "../pages/CMSshreeji/Certificate";
-
+import StatusReport from "../pages/Report/StatusReport";
 
 
 import CountryWiseReport from "../pages/Report/CountryWiseReports";
@@ -80,6 +80,7 @@ const authProtectedRoutes = [
   {path:"/contact-inquiry",component:<ContactInquiry/>},
   {path:"/supplier-wise-product",component:<SupplierWiseProductReport/>},
   {path:"/cms",component:<Cms/>},
+  {path:"/status-report",component:<StatusReport/>},
   
 
 
