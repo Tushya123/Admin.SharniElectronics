@@ -322,7 +322,7 @@ document.title = "Supplier Wise Product |  Shreeji Pharma";
     </Col>
     <Col lg={4} md={6} sm={6}></Col>
     <Col className="text-end">
-    {blogs ? (
+    {blogs.length>0 ? (
       <Button
   color="primary"
   className="btn-rounded waves-effect waves-light"
@@ -596,15 +596,15 @@ document.title = "Supplier Wise Product |  Shreeji Pharma";
                           }}
                           pagination
                           paginationServer
-                        //   paginationTotalRows={totalRows}
-                        //   paginationRowsPerPageOptions={[
-                        //     10,
-                        //     50,
-                        //     100,
-                        //     totalRows,
-                        //   ]}
-                        //   onChangeRowsPerPage={handlePerRowsChange}
-                        //   onChangePage={handlePageChange}
+                          paginationTotalRows={totalRows}
+                          paginationRowsPerPageOptions={[
+                            10,
+                            50,
+                            100,
+                            totalRows,
+                          ]}
+                          onChangeRowsPerPage={handlePerRowsChange}
+                          onChangePage={handlePageChange}
                         />
                       </div>
                     </div>
