@@ -169,7 +169,7 @@ useEffect(() => {
           setLoading(false);
           setBlogs(res.ProductDetail);
           console.log(res.length)
-          setTotalRows(10);
+          setTotalRows(res.ProductDetail.length);
         } else {
           console.log("Hii")
           setBlogs([]);
