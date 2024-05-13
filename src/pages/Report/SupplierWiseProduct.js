@@ -316,10 +316,10 @@ console.log("changedid",changedid);
 const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
 // setTotalRows(filteredTypes.length)
 
-console.log("bbblogs",filteredTypes)
-for(let i=0;i<filteredTypes.ProductDetailTypes.length;i++){
+// console.log("bbblogs",filteredTypes)
+// for(let i=0;i<filteredTypes.ProductDetailTypes.length;i++){
   
-}
+// }
 
 
   return (
