@@ -586,7 +586,7 @@ const handleSubmitCms = async () => {
       console.log(_id)
       const response = await editCmsAboutUsContent(_id,formdata);
       if (response) {
-        toast.success('Content content updated successfully!');
+        toast.success('Content updated successfully!');
       }  
       else{
         toast.error("oops something went wrong");

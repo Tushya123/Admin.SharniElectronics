@@ -37,7 +37,7 @@ const SupplierWiseProductReport = () => {
   const [SpecialityName, setSpecialityName] = useState("");
   const [SpecialityValue, setSpecialityValue] = useState("");
   const [Detail, setDetail] = useState("");
-  const [IsActive, setIsActive] = useState(false);
+  const [isActive, setisActive] = useState(false);
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -140,46 +140,50 @@ useEffect(() => {
 
 
 
-    if (!changedid) {
-        setLoading(false); // Exit early if changedid is not defined
-        return;
-    }
-    console.log(changedid);
+    // if (!changedid) {
+    //     setLoading(false); // Exit early if changedid is not defined
+    //     return;
+    // }
+    // console.log(changedid);
     
-        const response = await axios.get(
-            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/getAssignProductBySupplierNameId/${changedid}`,
+        const response = await axios.post(
+            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listAssignProductbyparam`,
             {
               skip: skip,
-              per_page: perPage,
-              sorton: column,
-              sortdir: sortDirection,
+          per_page: perPage,
+         
+          match: query,
+          isActive: filter,
               
             }
     
             
         )
+      
 
        .then((response) => {
-        console.log(typeof response)
+        console.log("this is",response)
         if (response) {
           console.log("New Response:",response)
-          let res = response;
+          let res = response[0];
           // console.log(typeof res)
           console.log(res)
           setLoading(false);
-          setBlogs(res.ProductDetail);
-          console.log(res.length)
-          setTotalRows(10);
+          setBlogs(res.data);
+          console.log(res)
+          setTotalRows(res.count);
         } else {
           console.log("Hii")
           setBlogs([]);
         }
         // console.log(res);
       });
-      // setLoading(false);
+      setLoading(false);
 
  
 };
+
+
 
 
   const handlePageChange = (page) => {
@@ -243,7 +247,7 @@ useEffect(() => {
 
     {
       name: "Product Name",
-      cell: (row) => row.Description,
+      cell: (row) => row.ProductDetailTypes[0].Description,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
@@ -251,7 +255,7 @@ useEffect(() => {
     
     {
       name: "Product Group",
-      cell: (row) => row.ProductDetail.ProductGroup,
+      cell: (row) => row.ProductGroupTypes[0].ProductGroup,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
@@ -301,10 +305,22 @@ useEffect(() => {
       console.error('Error:', error);
     }
   }
+
+  
   const [speciality,setSpeciality]=useState([]);
   const [values,setValues]=useState("");
 
 document.title = "Supplier Wise Product |  Shreeji Pharma";
+console.log("changedid",changedid);
+
+const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
+// setTotalRows(filteredTypes.length)
+
+console.log("bbblogs",filteredTypes)
+for(let i=0;i<filteredTypes.ProductDetailTypes.length;i++){
+  
+}
+
 
   return (
     <React.Fragment>
@@ -581,7 +597,7 @@ document.title = "Supplier Wise Product |  Shreeji Pharma";
                         <DataTable
                           columns={col}
                           
-                          data={blogs}
+                          data={filteredTypes}
                           paginationTotalRows={totalRows}
                           paginationRowsPerPageOptions={[
                             10,
