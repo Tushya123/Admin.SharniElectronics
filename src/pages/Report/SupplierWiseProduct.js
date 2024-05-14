@@ -146,14 +146,15 @@ useEffect(() => {
     // }
     // console.log(changedid);
     
-        const response = await axios.get(
-            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/getAssignProductBySupplierNameId/${changedid}`,
+        const response = await axios.post(
+            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listAssignProductbyparam/${changedid}`,
             {
               skip: skip,
-          per_page: perPage,
-         
-          match: query,
-          isActive: filter,
+              per_page: perPage,
+              sorton: column,
+              sortdir: sortDirection,
+              match: query,
+              isActive: filter,
               
             }
     
@@ -165,16 +166,16 @@ useEffect(() => {
         console.log("this is",response)
         if (response) {
           console.log("New Response:",response)
-          let res = response;
+          let res = response[0].data[0];
           // console.log(typeof res)
           console.log(res)
           setLoading(false);
           // setBlogs(res.data);
           // console.log(res)
           // setTotalRows(res.count);
-          setBlogs(res.ProductDetail);
-          console.log(res.length)
-          setTotalRows(10);
+          setBlogs(res.ProductDetailTypes);
+      console.log(res.ProductDetailTypes);
+      setTotalRows(res.count);
         } else {
           console.log("Hii")
           setBlogs([]);
@@ -250,7 +251,7 @@ useEffect(() => {
 
     {
       name: "Product Name",
-      cell: (row) => row.Description,
+      cell: (row) => row,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
@@ -258,7 +259,7 @@ useEffect(() => {
     
     {
       name: "Product Group",
-      cell: (row) => row.ProductDetail.ProductGroup,
+      cell: (row) => row,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
