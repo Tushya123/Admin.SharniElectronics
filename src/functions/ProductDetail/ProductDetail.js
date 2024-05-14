@@ -9,7 +9,7 @@ export const createProductDetail = async (values) => {
 
 export const removeProductDetail  = async (_id) => {
   return await axios.delete(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/projectdetail/${_id}`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/projectdetail/${_id}`
   );
 };
 

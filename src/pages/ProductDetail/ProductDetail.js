@@ -205,7 +205,7 @@ const ProductDetail = () => {
   const handleUpdateCancel = (e) => {
     e.preventDefault();
     setShowForm(false);
-
+    setTableData([]);
     setUpdateForm(false);
     setIsSubmit(false);
     setvalues(initialState);
@@ -293,6 +293,7 @@ const ProductDetail = () => {
           setvalues(initialState);
           setFormErrorsArr({});
           setCoordinatesArr([]);
+          setTableData([]);
           setEditMode(false);
           setFormErrors({});
           setPhotoAdd("");
@@ -344,6 +345,7 @@ const ProductDetail = () => {
           setCheckImageCV(false);
           setCoordinatesArr([]);
           setFormErrors({});
+          setTableData([]);
           setFormErrorsArr({});
           setPhotoAdd("");
           setCVAdd("");
