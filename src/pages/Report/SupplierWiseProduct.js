@@ -172,6 +172,9 @@ useEffect(() => {
           setBlogs(res.data);
           console.log(res)
           setTotalRows(res.count);
+          setBlogs(res.ProductDetail);
+          console.log(res.length)
+          setTotalRows(res.ProductDetail.length);
         } else {
           console.log("Hii")
           setBlogs([]);
@@ -338,7 +341,7 @@ const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
     </Col>
     <Col lg={4} md={6} sm={6}></Col>
     <Col className="text-end">
-    {blogs ? (
+    {blogs.length>0 ? (
       <Button
   color="primary"
   className="btn-rounded waves-effect waves-light"
@@ -612,15 +615,15 @@ const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
                           }}
                           pagination
                           paginationServer
-                        //   paginationTotalRows={totalRows}
-                        //   paginationRowsPerPageOptions={[
-                        //     10,
-                        //     50,
-                        //     100,
-                        //     totalRows,
-                        //   ]}
-                        //   onChangeRowsPerPage={handlePerRowsChange}
-                        //   onChangePage={handlePageChange}
+                          paginationTotalRows={totalRows}
+                          paginationRowsPerPageOptions={[
+                            10,
+                            50,
+                            100,
+                            totalRows,
+                          ]}
+                          onChangeRowsPerPage={handlePerRowsChange}
+                          onChangePage={handlePageChange}
                         />
                       </div>
                     </div>
