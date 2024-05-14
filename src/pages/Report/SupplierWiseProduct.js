@@ -146,8 +146,8 @@ useEffect(() => {
     // }
     // console.log(changedid);
     
-        const response = await axios.post(
-            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listAssignProductbyparam`,
+        const response = await axios.get(
+            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/getAssignProductBySupplierNameId/${changedid}`,
             {
               skip: skip,
           per_page: perPage,
@@ -165,16 +165,16 @@ useEffect(() => {
         console.log("this is",response)
         if (response) {
           console.log("New Response:",response)
-          let res = response[0];
+          let res = response;
           // console.log(typeof res)
           console.log(res)
           setLoading(false);
-          setBlogs(res.data);
-          console.log(res)
-          setTotalRows(res.count);
+          // setBlogs(res.data);
+          // console.log(res)
+          // setTotalRows(res.count);
           setBlogs(res.ProductDetail);
           console.log(res.length)
-          setTotalRows(res.ProductDetail.length);
+          setTotalRows(10);
         } else {
           console.log("Hii")
           setBlogs([]);
@@ -250,7 +250,7 @@ useEffect(() => {
 
     {
       name: "Product Name",
-      cell: (row) => row.ProductDetailTypes[0].Description,
+      cell: (row) => row.Description,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
@@ -258,7 +258,7 @@ useEffect(() => {
     
     {
       name: "Product Group",
-      cell: (row) => row.ProductGroupTypes[0].ProductGroup,
+      cell: (row) => row.ProductDetail.ProductGroup,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
@@ -316,7 +316,7 @@ useEffect(() => {
 document.title = "Supplier Wise Product |  Shreeji Pharma";
 console.log("changedid",changedid);
 
-const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
+
 // setTotalRows(filteredTypes.length)
 
 // console.log("bbblogs",filteredTypes)
@@ -341,7 +341,7 @@ const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
     </Col>
     <Col lg={4} md={6} sm={6}></Col>
     <Col className="text-end">
-    {blogs.length>0 ? (
+    
       <Button
   color="primary"
   className="btn-rounded waves-effect waves-light"
@@ -361,7 +361,7 @@ const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
 >
   Generate Excel Sheet
 </Button>
-) : null}
+
     
 
     </Col>
@@ -600,7 +600,7 @@ const filteredTypes = blogs.filter(type => type.SupplierName === changedid);
                         <DataTable
                           columns={col}
                           
-                          data={filteredTypes}
+                          data={blogs}
                           paginationTotalRows={totalRows}
                           paginationRowsPerPageOptions={[
                             10,
