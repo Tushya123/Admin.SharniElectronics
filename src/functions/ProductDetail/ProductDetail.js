@@ -1,34 +1,34 @@
 import axios from "axios";
 
-export const createServiceDetail = async (values) => {
+export const createProductDetail = async (values) => {
   return await axios.post(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/ServiceDetail`,
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/projectdetail`,
     values
   );
 };
 
-export const removeServiceDetail  = async (_id) => {
+export const removeProductDetail  = async (_id) => {
   return await axios.delete(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/ServiceDetail/${_id}`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/projectdetail/${_id}`
   );
 };
 
-export const listServiceDetail  = async () => {
+export const listProductDetail  = async () => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/ServiceDetail`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/projectdetail`
   );
 };
 
-export const updateServiceDetail  = async (_id, values) => {
+export const updateProductDetail  = async (_id, values) => {
   return await axios.put(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/ServiceDetail/${_id}`,
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/projectdetail/${_id}`,
     values
   );
 };
 
-export const getServiceDetail= async (_id) => {
+export const getProductDetail= async (_id) => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/ServiceDetail/${_id}`
+    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/getspecific/projectdetail/${_id}`
   );
 };
 
@@ -40,7 +40,7 @@ export const uploadproductImage = async (body) => {
     );
   };
 
-  export const getServiceDetailByParams = async (body) => {
+  export const getProductDetailByParams = async (body) => {
     return await axios.post(
       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/auth/list-by-params/ServiceDetail`,
       body
