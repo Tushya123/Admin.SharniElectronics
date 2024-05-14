@@ -37,9 +37,6 @@ const ProductDetail = () => {
   const [loadingOption, setLoadingOption] = useState(false);
 
   const [likes, setlikes] = useState([]);
-  const [productdetaildescriptionkey,setproductdetaildescriptionkey]=useState("");
-  const [productdetaildescriptionvalue,setproductdetaildescriptionvalue]=useState("");
-  const [temporarydescription,settemporarydescription]=useState([]);
   const [comments, setcomments] = useState([]);
   const [userId, setuserId] = useState(localStorage.getItem("AdminUser"));
   const [IsActive, setIsActive] = useState(false);
@@ -582,12 +579,6 @@ const ProductDetail = () => {
     },
   ];
 
-  const [keyvalueArr, setKeyValueArr]=useState([])
-  function setSubmitArr(key, value) {
-    const updatedArr = [...keyvalueArr, [key, value]]; // Create a new array with the updated values
-    setKeyValueArr(updatedArr); // Update the state array
-  }
-console.log(keyvalueArr)
   document.title = "Products|Shreeji Pharma";
 
   return (
@@ -793,96 +784,6 @@ console.log(keyvalueArr)
                                     </div>
                                     
                                   </Col>
-                                  <Row>
-                                  <Col lg={5}> 
-                                  <Label>
-                                        Key{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                    <div className="form-floating mb-3 p-0">
-                                      <Input
-                                      style={{height:'35px'}}
-                                        key={"blogTitle_" + _id}
-                                        type="textarea"
-                className="form-control"
-                style={{ height: "50px" }}
-
-                                        // className={validClassBT}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="productdetaildescriptionkey"
-                                        value={productdetaildescriptionkey}
-                                        onChange={(e) => {
-                                          setproductdetaildescriptionkey(e.target.value);
-                                        }}
-                                      />
-                                     
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogTitle}
-                                        </p>
-                                      )}
-                                    </div>
-                                    
-                                  </Col>
-                                  <Col lg={5}> 
-                                  <Label>
-                                        Value{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                    <div className="form-floating mb-3 p-0">
-                                      <Input
-                                      style={{height:'35px'}}
-                                        key={"blogTitle_" + _id}
-                                        type="textarea"
-                className="form-control"
-                                        style={{ height: "50px" }}
-                                        
-                                        className={validClassBT}
-                                        placeholder="Enter blog title"
-                                        required
-                                        name="productdetaildescriptionvalue"
-                                        value={productdetaildescriptionvalue}
-                                        onChange={(e) => {
-                                          setproductdetaildescriptionvalue(e.target.value);
-                                        }}
-                                      />
-                                     
-                                      {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.blogTitle}
-                                        </p>
-                                      )}
-                                    </div>
-                                    
-                                  </Col>
-                                  <Col>
-                                  <button
-                                  className="btn bg-success text-light mb-3 "
-                                  onClick={() => {
-                                    setSubmitArr(productdetaildescriptionkey,productdetaildescriptionvalue)
-                                  }}
-                                >
-                                  <i class="ri-list-check align-bottom me-1 mt-10"></i>{" "}
-                                  Add
-                                </button>
-                                  </Col>
-                                  </Row>
-                                  <Row>
-                                    <table>
-                                    {
-  keyvalueArr ? (
-    keyvalueArr.map((item, index) => (
-      <tr key={index}>
-        <td>{item}</td>
-      </tr>
-    ))
-  ) : null
-}
-
-                                     
-                                    </table>
-                                  </Row>
                                   <Col lg={12}>
                                     <Card>
                                       <Label>
