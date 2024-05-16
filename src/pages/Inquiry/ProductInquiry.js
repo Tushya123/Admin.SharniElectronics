@@ -431,7 +431,7 @@ console.log(response)
     set_Id(_id);
     getinquiry(_id)
       .then((res) => {
-        console.log(res);
+        console.log("this",res);
         setValues({
           ...values,
           ProductDetail :res.ProductDetail,
@@ -1657,8 +1657,8 @@ className={validClassProduct}
     </Col>
 </Row>
 <Row>
-{console.log("lol",ProductDetail)}
-  {ProductDetail ? (
+{console.log("lol",allProductDetail)}
+  {allProductDetail ? (
     <table class="table table-striped">
       <thead>
         <tr>
@@ -1671,7 +1671,7 @@ className={validClassProduct}
         </tr>
       </thead>
       <tbody>
-        {ProductDetail.map((items, index) => (
+        {allProductDetail.map((items, index) => (
           <tr key={index}>
             
             <td>{items.Group}</td>
