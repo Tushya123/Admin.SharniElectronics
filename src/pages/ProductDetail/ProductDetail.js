@@ -217,28 +217,31 @@ const ProductDetail = () => {
     setFormErrors({});
     setFormErrorsArr({});
 
-    const newMetalDetails = {
-      ProductKey: "",
-      ProductValue: "",
+    // const newMetalDetails = {
+    //   ProductKey: "",
+    //   ProductValue: "",
       
-    };
+    // };
 
-    setvalues({
-      ...values,
-      ProductDetailDescription: [newMetalDetails], // Add a new empty component
-    });
+    // setvalues({
+    //   ...values,
+    //   ProductDetailDescription: [newMetalDetails], // Add a new empty component
+    // });
 
     setTableData([]);
   };
 
   const handleAddCancel = (e) => {
+    
     e.preventDefault();
+   
     
     setShowForm(false);
     setIsSubmit(false);
     setUpdateForm(false);
     setvalues(initialState);
     setTableData([]);
+    
     setCoordinatesArr([]);
     setCheckImagePhoto(false);
     setCheckImageCV(false);
@@ -260,8 +263,20 @@ const ProductDetail = () => {
     });
 
     setTableData([]);
+   
+    
 
-    setEditMode(false);
+      handleCoordinatesChange(
+        0,
+        "ProductKey",
+        ""
+      )
+      handleCoordinatesChange(
+        0,
+        "ProductValue",
+        ""
+      )
+
   };
 
   const handleSubmit = (e) => {
@@ -639,14 +654,12 @@ const ProductDetail = () => {
 
       // Validate the category for the device
       if (metal.ProductKey === "") {
-        MetalError.ProductKey = "Metal Name is required!";
+        MetalError.ProductKey = "Key is required!";
       }
       if (metal.ProductValue === "") {
         MetalError.ProductValue = "Metal Description is required!";
       }
-      if (metal.MetalWeight === "") {
-        MetalError.MetalWeight = "Metal Weight is required!";
-      }
+      
 
       return MetalError;
     });
@@ -830,6 +843,7 @@ const ProductDetail = () => {
 
   const handleCoordinatesChange = (index, subfield, value) => {
     const updatedDetails = [...ProductDetailDescription];
+    console.log("clg",updatedDetails)
     updatedDetails[index][subfield] = value;
 
     setvalues({
@@ -1356,7 +1370,9 @@ const ProductDetail = () => {
                                       </button>
                                       <button
                                         className="btn btn-outline-danger m-1"
-                                        onClick={handleAddCancel}
+                                        onClick={handleAddCancel
+                                        
+                                        }
                                       >
                                         Cancel
                                       </button>
