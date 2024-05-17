@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from 'styled-components';
 import {
   Button,
   Card,
@@ -246,16 +247,19 @@ const ProductDetail = () => {
     setCVAdd("");
     setPhotoAdd("");
 
+    setvalues(initialState);
     const newMetalDetails = {
       ProductKey: "",
       ProductValue: "",
-    
+      
     };
 
     setvalues({
       ...values,
       ProductDetailDescription: [newMetalDetails], // Add a new empty component
     });
+
+    setTableData([]);
 
     setEditMode(false);
   };
@@ -511,6 +515,16 @@ const ProductDetail = () => {
   const validClassHI =
     errHI && isSubmit ? "form-control is-invalid" : "form-control";
 
+    const DescriptionCell = styled.div`
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  padding: 10px;
+  height: auto;
+  line-height: 1.5;
+`;
+
   const columns = [
     {
       name: "Sr No",
@@ -701,7 +715,7 @@ const ProductDetail = () => {
 
   const columns2 = [
     {
-      name: "Metal Name",
+      name: "Key",
       selector: (row) => {
         const newArray = row.map((r) => r.ProductKey);
         return newArray;
@@ -710,15 +724,20 @@ const ProductDetail = () => {
     },
 
     {
-      name: "Metal Description",
-      selector: (row) => {
-        const newArrayMD = row.map((r) => r.ProductValue);
-        return newArrayMD;
-      },
-
-      sortable: false,
-    },
-   
+  name: "Description",
+  selector: (row) => {
+    const newArrayMD = row.map((r) => r.ProductValue).join(", ");
+    return newArrayMD;
+  },
+  sortable: false,
+  cell: (row) => (
+    <DescriptionCell>
+      {row.map((r) => (
+        <div key={r.ProductKey}>{r.ProductValue}</div>
+      ))}
+    </DescriptionCell>
+  ),
+},
 
     {
       name: "Action",

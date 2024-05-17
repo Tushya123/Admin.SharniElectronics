@@ -74,3 +74,13 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.description-cell {
+  white-space: normal; /* Ensures text wraps within the cell */
+  word-wrap: break-word; /* Breaks long words to fit within the container */
+  overflow-wrap: break-word; /* Also helps with breaking long words */
+  max-width: 100%; /* Ensures it doesn't exceed the available width */
+  padding: 10px; /* Optional: add some padding for better readability */
+  height: auto; /* Ensures height adjusts to content */
+  line-height: 1.5; /* Increases line height for better readability */
+}

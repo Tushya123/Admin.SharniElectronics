@@ -148,7 +148,7 @@ console.log("dddd")
                             height={"70px"}
                             width={"130px"}
 
-                            alt="Contact Owner"
+                            alt="Shreeji Pharma"
 
                           />
                         </Link>
