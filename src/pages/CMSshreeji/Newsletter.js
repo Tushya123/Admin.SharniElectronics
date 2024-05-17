@@ -22,23 +22,20 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 
 import {
-  createCommitment,
-  getCommitment,
-  removeCommitment,
-  updateCommitment,
-} from "../../functions/CMSshreeji/Commitment";
+    getNewsletter,updateNewsletter,listNewsletter,removeNewsletter,createNewsletter
+} from "../../functions/Newsletter/Newsletter";
 
 const initialState = {
   Title: "",
   Description: "",
  
-  CommitmentImage: "",
+  NewsletterImage: "",
   IsActive: false,
 };
 
-const Commitment = () => {
+const Newsletter = () => {
   const [values, setValues] = useState(initialState);
-  const { Title, Description, CommitmentImage, IsActive } =
+  const { Title, Description, NewsletterImage, IsActive } =
     values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -77,13 +74,13 @@ const Commitment = () => {
     setmodal_edit(!modal_edit);
     setIsSubmit(false);
     set_Id(_id);
-    getCommitment(_id)
+    getNewsletter(_id)
       .then((res) => {
         setValues({
           ...values,
           Title: res.Title,
           Description: res.Description, 
-          CommitmentImage:res.CommitmentImage,
+          NewsletterImage:res.NewsletterImage,
           IsActive: res.IsActive,
         });
       })
@@ -110,11 +107,11 @@ const Commitment = () => {
     if (Object.keys(erros).length === 0) {
       const formdata = new FormData();
 
-      formdata.append("CommitmentImage", values.CommitmentImage);
+      formdata.append("NewsletterImage", values.NewsletterImage);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
       formdata.append("IsActive", values.IsActive); 
-      createCommitment(formdata)
+      createNewsletter(formdata)
         .then((res) => {
           setmodal_list(!modal_list);
           setValues(initialState);
@@ -133,7 +130,7 @@ const Commitment = () => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    removeCommitment(remove_id)
+    removeNewsletter(remove_id)
       .then((res) => {
         setmodal_delete(!modal_delete);
         fetchUsers();
@@ -152,12 +149,12 @@ const Commitment = () => {
     if (Object.keys(erros).length === 0) {
       const formdata = new FormData();
 
-      formdata.append("CommitmentImage", values.CommitmentImage);
+      formdata.append("NewsletterImage", values.NewsletterImage);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
       formdata.append("IsActive", values.IsActive); 
 
-      updateCommitment(_id, formdata)
+      updateNewsletter(_id, formdata)
         .then((res) => {
           setmodal_edit(!modal_edit);
           fetchUsers();
@@ -178,7 +175,7 @@ const Commitment = () => {
       console.log("img", e.target.files[0]);
 
       setPhotoAdd(imageurl);
-      setValues({ ...values, CommitmentImage: e.target.files[0] });
+      setValues({ ...values, NewsletterImage: e.target.files[0] });
       setCheckImagePhoto(true);
     }
   };
@@ -209,11 +206,11 @@ const Commitment = () => {
    
  
    
-     if (values.CommitmentImage ==="") {
-      errors.CommitmentImage = " Image is required!";
+     if (values.NewsletterImage ==="") {
+      errors.NewsletterImage = "Image is required!";
       setErrBI(true);
     }
-    if (values.CommitmentImage !== "") {
+    if (values.NewsletterImage !== "") {
       setErrBI(false);
     }
 
@@ -275,7 +272,7 @@ const Commitment = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Commitment`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Newsletter`,
         {
           skip: skip,
           per_page: perPage,
@@ -350,7 +347,7 @@ const Commitment = () => {
  
     {
       name: "Image",
-      selector: (row) => renderImage(row.CommitmentImage),
+      selector: (row) => renderImage(row.NewsletterImage),
       sortable: true,
       sortField: "password",
   
@@ -392,20 +389,20 @@ const Commitment = () => {
     },
   ];
 
-  document.title = "Commitment master|Shreeji Pharma" ;
+  document.title = "Newsletter|Shreeji Pharma" ;
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Commitment master"  />
+          <BreadCrumb  title="Newsletter"  />
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" sm={6} lg={4} md={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Commitment master</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">NewsLetter</h2>
                     </Col>
 
                     <Col sm={6} lg={4} md={6}>
@@ -490,7 +487,7 @@ const Commitment = () => {
             setIsSubmit(false);
           }}
         >
-          Add Commitment Master
+          Add Newsletter
         </ModalHeader>
         <form>
           <ModalBody>
@@ -505,7 +502,7 @@ const Commitment = () => {
                 onChange={handleChange}
               />
               <Label>
-               Commitment title <span className="text-danger">*</span>
+Title <span className="text-danger">*</span>
               </Label>
               {isSubmit && (
                 <p className="text-danger">{formErrors.Title}</p>
@@ -537,14 +534,14 @@ const Commitment = () => {
 
               <input
                 type="file"
-                name="CommitmentImage"
+                name="NewsletterImage"
                 className={validClassBI}
                 // accept="images/*"
                 accept=".jpg, .jpeg, .png"
                 onChange={PhotoUpload}
               />
               {isSubmit && (
-                <p className="text-danger">{formErrors.CommitmentImage}</p>
+                <p className="text-danger">{formErrors.NewsletterImage}</p>
               )}
               {checkImagePhoto ? (
                 <img
@@ -612,7 +609,7 @@ const Commitment = () => {
             setIsSubmit(false);
           }}
         >
-          Edit Commitment master
+          Edit Newsletter
         </ModalHeader>
         <form>
           <ModalBody>
@@ -627,7 +624,7 @@ const Commitment = () => {
                 onChange={handleChange}
               />
               <Label>
-               Commitment title<span className="text-danger">*</span>{" "}
+               Title<span className="text-danger">*</span>{" "}
               </Label>
               {isSubmit && (
                 <p className="text-danger">{formErrors.Title}</p>
@@ -637,7 +634,7 @@ const Commitment = () => {
             <Input
                 type="textarea"
                 className="form-control"
-                placeholder="Enter Commitment Description..."
+                placeholder="Enter Newsletter Description..."
                 style={{ height: "150px" }}
                 name="Description"
                 value={Description}
@@ -657,26 +654,26 @@ const Commitment = () => {
                  Image <span className="text-danger">*</span>
               </label>
               <input
-                key={"CommitmentImage" + _id}
+                key={"NewsletterImage" + _id}
                 type="file"
-                name="CommitmentImage"
+                name="NewsletterImage"
                 className={validClassBI}
                 // accept="images/*"
                 accept=".jpg, .jpeg, .png"
                 onChange={PhotoUpload}
               />
               {isSubmit && (
-                <p className="text-danger">{formErrors.CommitmentImage}</p>
+                <p className="text-danger">{formErrors.NewsletterImage}</p>
               )}
 
-              {values.CommitmentImage || photoAdd ? (
+              {values.NewsletterImage || photoAdd ? (
                 <img
                   // key={photoAdd}
                   className="m-2"
                   src={
                     checkImagePhoto
                       ? photoAdd
-                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.CommitmentImage}`
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.NewsletterImage}`
                   }
                   width="300"
                   height="200"
@@ -782,4 +779,4 @@ const Commitment = () => {
   );
 };
 
-export default Commitment;
+export default Newsletter;
