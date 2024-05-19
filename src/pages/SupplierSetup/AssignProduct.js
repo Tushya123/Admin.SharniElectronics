@@ -422,7 +422,7 @@ console.log("Idsss",_id)
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listAssignProductbyparam`, {
+      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProductByParams`, {
         skip: skip,
         per_page: perPage,
         sorton: column,
