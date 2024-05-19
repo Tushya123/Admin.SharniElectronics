@@ -599,7 +599,7 @@ const ProductGroup = () => {
             setIsSubmit(false);
           }}
         >
-          Edit Admin Users
+          Edit Product Group
         </ModalHeader>
         <form>
           <ModalBody>

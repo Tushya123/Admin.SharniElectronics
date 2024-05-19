@@ -309,7 +309,7 @@ const ProductDetail = () => {
       createProductDetail(formdata)
         .then((res) => {
           console.log(res);
-          setvalues(initialState);
+
           setFormErrorsArr({});
           setCoordinatesArr([]);
           setTableData([]);
@@ -323,6 +323,19 @@ const ProductDetail = () => {
           setCheckImageCV(false);
 
           fetchlayouts();
+          setvalues(initialState)
+          
+          
+      handleCoordinatesChange(
+        0,
+        "ProductKey",
+        ""
+      )
+      handleCoordinatesChange(
+        0,
+        "ProductValue",
+        ""
+      )
         })
         .catch((err) => {
           console.log(err);
