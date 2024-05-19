@@ -38,6 +38,7 @@ const SupplierWiseProductReport = () => {
   const [SpecialityValue, setSpecialityValue] = useState("");
   const [Detail, setDetail] = useState("");
   const [isActive, setisActive] = useState(false);
+  const [selectType,setSelectType] = useState([]);
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -67,6 +68,19 @@ const SupplierWiseProductReport = () => {
     }
     
   }, [formErrors, isSubmit]);
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`);
+        console.log("ressssssss",response)
+        setSelectType(response);
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+      }
+    };
+
+    fetchProductDetails();
+  }, []);
 
 
   const handleSpecialityChange = (selectedOption) => {
@@ -120,17 +134,20 @@ useEffect(() => {
   };
 
   useEffect(() => {
+    if(changedid){
+      fetchCategories();
+    }
     
-  }, []);
+  }, [pageNo, perPage, column, sortDirection, query, filter,changedid]);
 
   useEffect(() => {
-    fetchCategories(changedid);
+   
     selectDropdown();
-  }, [pageNo, perPage, column, sortDirection, query, filter]);
+  }, []);
   console.log();
 
    
-  const fetchCategories = async (changedid) => {
+  const fetchCategories = async () => {
     console.log("inside fetch cat");
     setLoading(true);
     let skip = (pageNo - 1) * perPage;
@@ -140,14 +157,14 @@ useEffect(() => {
 
 
 
-    // if (!changedid) {
-    //     setLoading(false); // Exit early if changedid is not defined
-    //     return;
-    // }
-    // console.log(changedid);
+    if (!changedid) {
+        setLoading(false); // Exit early if changedid is not defined
+        return;
+    }
+    console.log(changedid);
     
         const response = await axios.post(
-            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listAssignProductbyparam/${changedid}`,
+            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProductByParamsforReport/${changedid}`,
             {
               skip: skip,
               per_page: perPage,
@@ -173,9 +190,26 @@ useEffect(() => {
           // setBlogs(res.data);
           // console.log(res)
           // setTotalRows(res.count);
-          setBlogs(res.ProductDetailTypes);
-      console.log(res.ProductDetailTypes);
-      setTotalRows(res.count);
+      //     setBlogs(res.ProductDetailTypes);
+      // console.log(res.ProductDetailTypes);
+      // setTotalRows(res.count);
+      if (res.ProductDetailTypes) {
+        res.ProductDetailTypes.map((item, index) => {
+          selectType.map((hii) => {
+            if (hii._id === item.ProductDetail) {
+              item.ProductDetail = hii.ProductGroup;
+              return;
+            }
+          });
+        });
+      }
+      const flattenedData = res.ProductDetailTypes.map((productDetail, index) => ({
+        srNo: index + 1,
+        ...productDetail
+      }));
+      console.log("xyz", flattenedData);
+      setBlogs(flattenedData);
+      setTotalRows(res.productDetailCount);
         } else {
           console.log("Hii")
           setBlogs([]);
@@ -250,8 +284,8 @@ useEffect(() => {
     },
 
     {
-      name: "Product Name",
-      cell: (row) => row,
+      name: "Product Details",
+      cell: (row) => row.Description,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
@@ -259,7 +293,7 @@ useEffect(() => {
     
     {
       name: "Product Group",
-      cell: (row) => row,
+      cell: (row) => row.ProductDetail,
       sortable: true,
       sortField: "serialNumber",
       minWidth: "150px",
