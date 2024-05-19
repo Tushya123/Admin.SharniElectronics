@@ -483,7 +483,7 @@ const handleStartDateChange = (date) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Status Report " title="Status Report " pageTitle="Status Report " />
+          <BreadCrumb maintitle="Status Report " title="Status Report " pageTitle="Report" />
 
           <Row>
             <Col lg={12}>

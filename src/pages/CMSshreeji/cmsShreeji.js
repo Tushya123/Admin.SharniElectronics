@@ -617,7 +617,7 @@ const handleSubmitCms = async () => {
  
     { value: '663f4d5fef85cf304603e082', label: 'About Us' },
     { value: '663ca6df30ee58405d1a37ab', label: 'Terms and condition' },
-    { value: '663f0071ef85cf304603e046', label: 'Home About Us' },
+    { value: '663f0071ef85cf304603e046', label: 'Footer About Us' },
     
   ];
   const[showButton, SetButton] = useState(true);
