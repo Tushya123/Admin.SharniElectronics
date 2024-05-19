@@ -55,6 +55,7 @@ const AssignProduct = () => {
   const [updateForm, setUpdateForm] = useState(false);
 
   const [query, setQuery] = useState("");
+  const [query1, setQuery1] = useState("");
 
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
@@ -84,26 +85,27 @@ const AssignProduct = () => {
   const [product, setProduct]= useState([])
   const getProductDetails = () => {
     setLoading(true);
-    let skip = (pageNo - 1) * perPage;
+    let skip = (pageNo1 - 1) * perPage1;
     if (skip < 0) {
       skip = 0;
     }
     axios
     .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`, {
       skip: skip,
-      per_page: perPage,
-      sorton: column,
-      sortdir: sortDirection,
-      match: query,
+      per_page: perPage1,
+      sorton: column1,
+      sortdir: sortDirection1,
+      match: query1,
       IsActive: filter,
     })
       .then((response) => {
         if (response.length > 0) {
-          console.log(response[0].data);
+          console.log("xyx",response[0]);
           setProduct(response);
           setBlogs2(response[0].data);
           setBlogs3(response[0].data);
-          setTotalRows2(response.count);
+          setTotalRows2(response[0].count);
+
           setLoading(false);
         } 
         else if (response.length === 0) {
@@ -379,13 +381,20 @@ console.log("Idsss",_id)
   const [totalRows, setTotalRows] = useState(0);
   const [totalRows2, setTotalRows2] = useState(0);
   const [perPage, setPerPage] = useState(10);
+  const [perPage1, setPerPage1] = useState(10);
   const [pageNo, setPageNo] = useState(0);
+  const [pageNo1, setPageNo1] = useState(0);
   const [column, setcolumn] = useState();
+  const [column1, setcolumn1] = useState();
   const [sortDirection, setsortDirection] = useState();
+  const [sortDirection1, setsortDirection1] = useState();
 
   const handleSort = (column, sortDirection) => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
+  };  const handleSort1 = (column1, sortDirection1) => {
+    setcolumn1(column1.sortField);
+    setsortDirection1(sortDirection1);
   };
 
   useEffect(() => {
@@ -395,6 +404,9 @@ console.log("Idsss",_id)
   useEffect(() => {
     fetchCategories();
   }, [pageNo, perPage, column, sortDirection, query, filter]);
+  useEffect(() => {
+    getProductDetails();
+  }, [pageNo1, perPage1, column1, sortDirection1, query1, filter]);
 
   // const fetchCategories = async () => {
   //   setLoading(true);
@@ -447,6 +459,8 @@ console.log("Idsss",_id)
   };
   const handlePageChange = (page) => {
     setPageNo(page);
+  };const handlePageChange1 = (page1) => {
+    setPageNo1(page1);
   };
 
   const [photoAdd, setPhotoAdd] = useState();
@@ -469,6 +483,9 @@ console.log("Idsss",_id)
   const handlePerRowsChange = async (newPerPage, page) => {
     // setPageNo(page);
     setPerPage(newPerPage);
+  }; const handlePerRowsChange1 = async (newPerPage1, page1) => {
+    // setPageNo(page);
+    setPerPage1(newPerPage1);
   };
   const handleFilter = (e) => {
     setFilter(e.target.checked);
@@ -484,6 +501,10 @@ console.log("Idsss",_id)
     setPhotoAdd("");
     setCheckImagePhoto(false);
     setShowForm(false);
+    setPageNo1(0);
+    setPerPage1(10);
+    setcolumn();
+    setsortDirection()
     setUpdateForm(false);
     // setblogThumnailDesc("");
     setViews(0);
@@ -584,14 +605,14 @@ console.log("Idsss",_id)
       },
   
     {
-      name: "Group name",
+      name: "Product Group",
       cell: (row) => row.ProductDetailTypes[0].ProductGroup,
       sortable: true,
       sortField: "blogTitle",
       minWidth: "150px",
     },
     {
-      name: "SupplierName",
+      name: "Product Detail",
       cell: (row) => row.Description,
       sortable: true,
       sortField: "blogTitle",
@@ -921,7 +942,7 @@ console.log("Idsss",_id)
                                       <Col lg={6} md={6}>
                                                     <div className="mb-3">
                                                     <Label>
-                                Assign Products{" "}
+                                Select Supplier{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                        <Select
@@ -935,8 +956,25 @@ console.log("Idsss",_id)
                                    
                                   </Col>
                                    
-                                  <Col>
-                                  </Col>
+                                  <Col lg={3}>
+  <div
+    style={{
+      display: showForm && !updateForm ? "flex" : "none",
+      alignItems: "center"
+    }}
+  >
+    <input
+      className="form-control search"
+      placeholder="Search..."
+      onChange={(e) => setQuery1(e.target.value)}
+      style={{ flex: 1 }}
+    />
+    <i className="search-icon" style={{ marginLeft: '8px' }}></i>
+  </div>
+</Col>
+
+
+                      
                                   <CardBody>
                                     
                     <div>
@@ -946,20 +984,20 @@ console.log("Idsss",_id)
                           data={blogs2}
                           progressPending={loading}
                           sortServer
-                          onSort={(column, sortDirection, sortedRows) => {
-                            handleSort(column, sortDirection);
+                          onSort={(column1, sortDirection1, sortedRows1) => {
+                            handleSort1(column1, sortDirection1);
                           }}
                           pagination
                           paginationServer
-                          paginationTotalRows={totalRows}
+                          paginationTotalRows={totalRows2}
                           paginationRowsPerPageOptions={[
                             10,
                             50,
                             100,
-                            totalRows,
+                            totalRows2,
                           ]}
-                          onChangeRowsPerPage={handlePerRowsChange}
-                          onChangePage={handlePageChange}
+                          onChangeRowsPerPage={handlePerRowsChange1}
+                          onChangePage={handlePageChange1}
                         />
                       </div>
                     </div>
@@ -1001,7 +1039,8 @@ console.log("Idsss",_id)
                                       </button>
                                     </div>
                                   </Col>
-                                </Row>
+
+                                  </Row>
                               </Form>
                             </div>
                           </CardBody>{" "}
@@ -1032,7 +1071,7 @@ console.log("Idsss",_id)
                                       <Col lg={6} md={6}>
                                                     <div className="mb-3">
                                                     <Label>
-                                Assign Products{" "}
+                                Select Supplier{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
                                        <Select
@@ -1049,6 +1088,22 @@ console.log("Idsss",_id)
                                    
                                   <Col>
                                   </Col>
+                                  <Col lg={3}>
+  <div
+    style={{
+      display: !showForm && updateForm  ? "flex" : "none",
+      alignItems: "center"
+    }}
+  >
+    <input
+      className="form-control search"
+      placeholder="Search..."
+      onChange={(e) => setQuery1(e.target.value)}
+      style={{ flex: 1 }}
+    />
+    <i className=" search-icon" style={{ marginLeft: '8px' }}></i>
+  </div>
+</Col>
                                   <CardBody>
                                     
                     <div>
@@ -1058,20 +1113,20 @@ console.log("Idsss",_id)
                           data={blogs3}
                           progressPending={loading}
                           sortServer
-                          onSort={(column, sortDirection, sortedRows) => {
-                            handleSort(column, sortDirection);
+                          onSort={(column1, sortDirection1, sortedRows1) => {
+                            handleSort1(column1, sortDirection1);
                           }}
                           pagination
                           paginationServer
-                          paginationTotalRows={totalRows}
+                          paginationTotalRows={totalRows2}
                           paginationRowsPerPageOptions={[
                             10,
                             50,
                             100,
-                            totalRows,
+                            totalRows2,
                           ]}
-                          onChangeRowsPerPage={handlePerRowsChange}
-                          onChangePage={handlePageChange}
+                          onChangeRowsPerPage={handlePerRowsChange1}
+                          onChangePage={handlePageChange1}
                         />
                       </div>
                     </div>
