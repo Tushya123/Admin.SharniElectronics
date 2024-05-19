@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from 'styled-components';
 import {
   Button,
   Card,
@@ -311,6 +312,16 @@ const Commitment = () => {
   const handleFilter = (e) => {
     setFilter(e.target.checked);
   };
+  const DescriptionCell = styled.div`
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  padding: 10px;
+  height: auto;
+  line-height: 1.5;
+`;
+
   const col = [
     {
         name: "Sr No",
@@ -328,9 +339,11 @@ const Commitment = () => {
     },
     {
       name: "Description",
-      selector: (row) => row.Description,
+      selector: (row) =>
+         row.Description,
       sortable: true,
       sortField: "Description",
+      maxWidth:"150px"
     
     },
  

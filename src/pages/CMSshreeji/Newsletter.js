@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from 'styled-components';
 import {
   Button,
   Card,
@@ -20,69 +21,22 @@ import BreadCrumb from "../../Components/Common/BreadCrumb";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 
-// import {
-//   createCategory,
-//   getCategory,
-//   removeCategory,
-//   updateCategory,
-// } from "../../functions/Category/CategoryMaster";
 import {
-  getSpecificContactInquiry,
-  updateContactInquiry,
-  listContactInquiry,
-  removeContactInquiry,
-  createContactInquiry,
-} from "../../functions/Inquiry/ContactInquiry";
+    getNewsletter,updateNewsletter,listNewsletter,removeNewsletter,createNewsletter
+} from "../../functions/Newsletter/Newsletter";
 
 const initialState = {
-  ContactPerson: "",
-  Email: "",
-  Remark: "",
-  Country: "",
-  Mobile: "",
+  Title: "",
+  Description: "",
+ 
+  NewsletterImage: "",
   IsActive: false,
 };
 
-const ContactInquiry = () => {
-  const countriesArray = [
-    { label: "DZ", value: "ALGERIA" },
-    { label: "AR", value: "ARGENTINA" },
-    { label: "AU", value: "AUSTRALIA" },
-    { label: "BD", value: "BANGLADESH" },
-    { label: "BE", value: "BELGIUM" },
-    { label: "BR", value: "BRAZIL" },
-    { label: "CA", value: "CANADA" },
-    { label: "CN", value: "CHINA" },
-    { label: "EG", value: "EGYPT" },
-    { label: "FR", value: "FRANCE" },
-    { label: "DE", value: "GERMANY" },
-    { label: "IN", value: "INDIA" },
-    { label: "IL", value: "ISRAEL" },
-    { label: "IT", value: "ITALY" },
-    { label: "JP", value: "JAPAN" },
-    { label: "MY", value: "MALAYSIA" },
-    { label: "MX", value: "MEXICO" },
-    ,
-    { label: "NP", value: "NEPAL" },
-    { label: "NL", value: "NETHERLANDS" },
-    { label: "NZ", value: "NEW ZEALAND" },
-    { label: "PH", value: "PHILIPPINES" },
-    { label: "PT", value: "PORTUGAL" },
-    { label: "QA", value: "QATAR" },
-    { label: "ZA", value: "SOUTH AFRICA" },
-    { label: "ES", value: "SPAIN" },
-    { label: "SE", value: "SWEDEN" },
-    { label: "CH", value: "SWITZERLAND" },
-    { label: "TR", value: "TURKEY" },
-    { label: "UA", value: "UKRAINE" },
-    { label: "AE", value: "UNITED ARAB EMIRATES" },
-    { label: "GB", value: "UNITED KINGDOM" },
-    { label: "US", value: "UNITED STATES" },
-  
-  ];
-
+const Newsletter = () => {
   const [values, setValues] = useState(initialState);
-  const { categoryName, IsActive } = values;
+  const { Title, Description, NewsletterImage, IsActive } =
+    values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -92,8 +46,9 @@ const ContactInquiry = () => {
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
 
-  const [categories, setCategories] = useState([]);
-
+  const [Commitment, setCommitment] = useState([]);
+  const [photoAdd, setPhotoAdd] = useState();
+  const [checkImagePhoto, setCheckImagePhoto] = useState(false);
   useEffect(() => {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -119,16 +74,13 @@ const ContactInquiry = () => {
     setmodal_edit(!modal_edit);
     setIsSubmit(false);
     set_Id(_id);
-    getSpecificContactInquiry(_id)
+    getNewsletter(_id)
       .then((res) => {
-        console.log(res);
         setValues({
           ...values,
-          ContactPerson: res.ContactPerson,
-          Email: res.Email,
-          Remark: res.Remark,
-          Country: res.Country,
-          Mobile: res.Mobile,
+          Title: res.Title,
+          Description: res.Description, 
+          NewsletterImage:res.NewsletterImage,
           IsActive: res.IsActive,
         });
       })
@@ -144,50 +96,44 @@ const ContactInquiry = () => {
   const handleCheck = (e) => {
     setValues({ ...values, IsActive: e.target.checked });
   };
-  useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log("no errors");
-    }
-  }, [formErrors, isSubmit]);
 
   const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    console.log("country", values);
-    let errors = validate(values);
-    setFormErrors(errors);
+    let erros = validate(values);
+    setFormErrors(erros);
     setIsSubmit(true);
-    if (Object.keys(errors).length === 0) {
-      createContactInquiry(values)
+
+    if (Object.keys(erros).length === 0) {
+      const formdata = new FormData();
+
+      formdata.append("NewsletterImage", values.NewsletterImage);
+      formdata.append("Title", values.Title);
+      formdata.append("Description", values.Description);
+      formdata.append("IsActive", values.IsActive); 
+      createNewsletter(formdata)
         .then((res) => {
           setmodal_list(!modal_list);
           setValues(initialState);
-          fetchCategories();
-          // if (res.isOk) {
-          //   setmodal_list(!modal_list);
-          //   setValues(initialState);
-          //   fetchCategories();
-          // } else {
-          //   if (res.field === 1) {
-          //     setErrCN(true);
-          //     setFormErrors({
-          //       categoryName: "This Category name is already exists!",
-          //     });
-          //   }
-          // }
+          setCheckImagePhoto(false);
+          setIsSubmit(false);
+          setFormErrors({});
+          setPhotoAdd("");
+
+          fetchUsers();
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
     }
   };
 
   const handleDelete = (e) => {
     e.preventDefault();
-    removeContactInquiry(remove_id)
+    removeNewsletter(remove_id)
       .then((res) => {
         setmodal_delete(!modal_delete);
-        fetchCategories();
+        fetchUsers();
       })
       .catch((err) => {
         console.log(err);
@@ -201,90 +147,91 @@ const ContactInquiry = () => {
     setIsSubmit(true);
 
     if (Object.keys(erros).length === 0) {
-      updateContactInquiry(_id, values)
+      const formdata = new FormData();
+
+      formdata.append("NewsletterImage", values.NewsletterImage);
+      formdata.append("Title", values.Title);
+      formdata.append("Description", values.Description);
+      formdata.append("IsActive", values.IsActive); 
+
+      updateNewsletter(_id, formdata)
         .then((res) => {
           setmodal_edit(!modal_edit);
-          fetchCategories();
+          fetchUsers();
+          setPhotoAdd("");
+
+          setCheckImagePhoto(false);
         })
         .catch((err) => {
           console.log(err);
         });
     }
   };
-  const [errNA, setErrNA] = useState(false);
-  const [errEM, setErrEM] = useState(false);
-  const [errSU, setErrSU] = useState(false);
-  const [errME, setErrME] = useState(false);
-  const [errPH, setErrPH] = useState(false);
-  const [errCountry, setErrCountry] = useState(false);
+  const PhotoUpload = (e) => {
+    if (e.target.files.length > 0) {
+      const image = new Image();
 
+      let imageurl = URL.createObjectURL(e.target.files[0]);
+      console.log("img", e.target.files[0]);
+
+      setPhotoAdd(imageurl);
+      setValues({ ...values, NewsletterImage: e.target.files[0] });
+      setCheckImagePhoto(true);
+    }
+  };
+  const [errFN, setErrFN] = useState(false);
+  const [errLN, setErrLN] = useState(false);
+  const [errEM, setErrEM] = useState(false);
+  const [errPA, setErrPA] = useState(false);
+  const [errBI, setErrBI] = useState(false);
   const validate = (values) => {
     const errors = {};
 
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    //const phone = /^\d{10}$/;
-    const phone =
-      /^(?!.*(\d)(-?\1){4})(?!0123456789|1234567890|2345678901|3456789012|4567890123|5678901234|6789012345|7890123456|8901234567|9012345678)\d{10}$/;
-    if (!values.Country) {
-      errors.Country = "Country Name is required!";
-      setErrCountry(true);
-    } else {
-      setErrCountry(false);
+    if (values.Title === "") {
+      errors.Title = "Title is required!";
+      setErrFN(true);
+    }
+    if (values.Title !== "") {
+      setErrFN(false);
     }
 
-    if (values.ContactPerson === "") {
-      errors.ContactPerson = "Name is required!";
-      setErrNA(true);
+    if (values.Description === "") {
+      errors.Description = "Description is required!";
+      setErrLN(true);
     }
-    if (values.ContactPerson !== "") {
-      setErrNA(false);
+    if (values.Description !== "") {
+      setErrLN(false);
     }
-    if (!/\S+@\S+\.\S+/.test(values.Email)) {
-      errors.Email = "Email Email is invalid";
-      // Assuming you have a setter function for the error state of Email field
-      setErrEM(true);
-    } else {
-      setErrEM(false);
+
+   
+ 
+   
+     if (values.NewsletterImage ==="") {
+      errors.NewsletterImage = "Image is required!";
+      setErrBI(true);
     }
-    if (values.Remark === "") {
-      errors.Remark = "Subject is required!";
-      setErrSU(true);
+    if (values.NewsletterImage !== "") {
+      setErrBI(false);
     }
-    if (values.Remark !== "") {
-      setErrSU(false);
-    }
-    if (values.Country === "") {
-      errors.Country = "Country is required!";
-      setErrME(true);
-    }
-    if (values.Country !== "") {
-      setErrME(false);
-    }
-    if (!values.Mobile) {
-      errors.Mobile = "Contact No. is required";
-      setErrPH(true);
-    } else if (!phone.test(values.Mobile)) {
-      errors.Mobile = "This is not a valid Contact Number";
-      setErrPH(true);
-    } else {
-      setErrPH(false);
-    }
+
+    
 
     return errors;
   };
-  const validClassCountry =
-    errCountry && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassName =
-    errNA && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassEmail =
-    errEM && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassSubject =
-    errSU && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassMessage =
-    errME && isSubmit ? "form-control is-invalid" : "form-control";
-  const validClassPhoneNumber =
-    errPH && isSubmit ? "form-control is-invalid" : "form-control";
 
+  const validClassFN =
+    errFN && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const validClassLN =
+    errLN && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const validClassEM =
+    errEM && isSubmit ? "form-control is-invalid" : "form-control";
+
+  const validClassPA =
+    errPA && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassBI =
+    errBI && isSubmit ? "form-control is-invalid" : "form-control";
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -296,16 +243,27 @@ const ContactInquiry = () => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
   };
+  const renderImage = (uploadimage) => {
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+
+    return (
+      <img
+        src={imageUrl}
+        alt="Image"
+        style={{ width: "75px", height: "75px", padding: "5px" }}
+      />
+    );
+  };
 
   useEffect(() => {
     // fetchUsers(1); // fetch page 1 of users
   }, []);
 
   useEffect(() => {
-    fetchCategories();
+    fetchUsers();
   }, [pageNo, perPage, column, sortDirection, query, filter]);
 
-  const fetchCategories = async () => {
+  const fetchUsers = async () => {
     setLoading(true);
     let skip = (pageNo - 1) * perPage;
     if (skip < 0) {
@@ -314,7 +272,7 @@ const ContactInquiry = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/contactinquiry`,
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Newsletter`,
         {
           skip: skip,
           per_page: perPage,
@@ -327,11 +285,12 @@ const ContactInquiry = () => {
       .then((response) => {
         if (response.length > 0) {
           let res = response[0];
+          console.log(">>>", res);
           setLoading(false);
-          setCategories(res.data);
+          setCommitment(res.data);
           setTotalRows(res.count);
         } else if (response.length === 0) {
-          setCategories([]);
+          setCommitment([]);
         }
         // console.log(res);
       });
@@ -350,65 +309,50 @@ const ContactInquiry = () => {
   const handleFilter = (e) => {
     setFilter(e.target.checked);
   };
+  const DescriptionCell = styled.div`
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  padding: 10px;
+  height: auto;
+  line-height: 1.5;
+`;
+
   const col = [
     {
-      name: "Sr No",
-      selector: (row, index) => index + 1,
+        name: "Sr No",
+        selector: (row,index) => index+1,
+        sortable: true,
+        sortField: "srno",
+    
+      },
+    {
+      name: "Title",
+      selector: (row) => row.Title,
       sortable: true,
-      sortField: "srno",
-      minWidth: "150px",
+      sortField: "Title",
+    
     },
     {
-      name: "Contact Person",
-      selector: (row) => row.ContactPerson,
+      name: "Description",
+      selector: (row) =>
+         row.Description,
       sortable: true,
-      sortField: "ContactPerson",
-      minWidth: "150px",
+      sortField: "Description",
+      maxWidth:"150px"
+    
     },
+ 
+ 
     {
-      name: "Email Address",
-      selector: (row) => row.Email,
+      name: "Image",
+      selector: (row) => renderImage(row.NewsletterImage),
       sortable: true,
-      sortField: "Email",
-      minWidth: "150px",
-    },
-    {
-      name: "Phone no",
-      selector: (row) => row.Mobile,
-      sortable: true,
-      sortField: "Mobile",
-      minWidth: "150px",
-    },
-    // {
-    //   name: "Remark",
-    //   selector: (row) => row.Remark,
-    //   sortable: true,
-    //   sortField: "Remark",
-    //   minWidth: "150px",
-    // },
-    {
-      name: "Inquiry Date",
-      cell: (row) => row.createdAt.split("T")[0],
-      sortable: true,
-      sortField: "createdAt",
-      minWidth: "150px",
-    },
-    {
-      name: "Country",
-      selector: (row) => row.Country,
-      sortable: true,
-      sortField: "Country",
-      minWidth: "150px",
+      sortField: "password",
+  
     },
 
-    {
-      name: "Status",
-      selector: (row) => {
-        return <p>{row.IsActive ? "Active" : "InActive"}</p>;
-      },
-      sortable: false,
-      sortField: "Status",
-    },
     {
       name: "Action",
       selector: (row) => {
@@ -445,25 +389,23 @@ const ContactInquiry = () => {
     },
   ];
 
-  document.title = "Contact Inquiry | Shreeji Pharma";
+  document.title = "Newsletter|Shreeji Pharma" ;
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Contact Inquiry" title="Contact Inquiry" />
+          <BreadCrumb  title="Newsletter"  />
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
-                    <Col className="col-sm" sm={6} lg={6} md={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">
-                        Contact Inquiry
-                      </h2>
+                    <Col className="col-sm" sm={6} lg={4} md={6}>
+                      <h2 className="card-title mb-0 fs-4 mt-2">NewsLetter</h2>
                     </Col>
 
-                    <Col sm={6} lg={2} md={6} className="mt-20">
+                    <Col sm={6} lg={4} md={6}>
                       <div className="text-end mt-2">
                         <Input
                           type="checkbox"
@@ -476,7 +418,7 @@ const ContactInquiry = () => {
                         <Label className="form-check-label ms-2">Active</Label>
                       </div>
                     </Col>
-                    <Col className="col-sm-auto" sm={6} lg={4} md={6}>
+                    <Col className="col-sm-auto" sm={12} lg={4} md={12}>
                       <div className="d-flex justify-content-sm-end">
                         <div className="ms-2">
                           <Button
@@ -508,7 +450,7 @@ const ContactInquiry = () => {
                     <div className="table-responsive table-card mt-1 mb-1 text-right">
                       <DataTable
                         columns={col}
-                        data={categories}
+                        data={Commitment}
                         progressPending={loading}
                         sortServer
                         onSort={(column, sortDirection, sortedRows) => {
@@ -545,106 +487,73 @@ const ContactInquiry = () => {
             setIsSubmit(false);
           }}
         >
-          Add Contact Inquiry
+          Add Newsletter
         </ModalHeader>
         <form>
           <ModalBody>
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassName}
-                placeholder="Enter Name"
+                className={validClassFN}
+                placeholder="Enter first Name"
                 required
-                name="ContactPerson"
-                value={values.ContactPerson}
+                name="Title"
+                value={Title}
                 onChange={handleChange}
               />
               <Label>
-                {" "}
-                Name <span className="text-danger">*</span>
+Title <span className="text-danger">*</span>
               </Label>
               {isSubmit && (
-                <p className="text-danger">{formErrors.ContactPerson}</p>
+                <p className="text-danger">{formErrors.Title}</p>
               )}
             </div>
             <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassEmail}
-                placeholder="Enter Email"
-                required
-                name="Email"
-                value={values.Email}
+            <Input
+                type="textarea"
+                className="form-control"
+                placeholder="Enter Commitment Description..."
+                style={{ height: "150px" }}
+                name="Description"
+                value={Description}
                 onChange={handleChange}
               />
-              <Label>
-                {" "}
-                Email <span className="text-danger">*</span>
-              </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Email}</p>}
-            </div>
-            <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassSubject}
-                placeholder="Enter Category Name"
-                required
-                name="Remark"
-                value={values.Remark}
-                onChange={handleChange}
-              />
-              <Label>
-                {" "}
-                Subject <span className="text-danger">*</span>
-              </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Remark}</p>}
-            </div>
-            <Col md={12}>
-              <div className="form-floating mb-3">
-                <select
-                  className={validClassCountry}
-                  name="Country"
-                  value={values.Country}
-                  data-choices
-                  data-choices-sorting="true"
-                  onChange={handleChange}
-                >
-                  <option>Select Country</option>
 
-                  {countriesArray.map((c, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <option value={c.value}>{c.value}</option>
-                      </React.Fragment>
-                    );
-                  })}
-                </select>
-                <Label>
-                  Country
-                  <span className="text-danger">*</span>
-                </Label>
-                {isSubmit && (
-                  <p className="text-danger">{formErrors.Country}</p>
-                )}
-              </div>
+              <Label>
+               Description <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.Description}</p>}
+            </div>
+            
+            
+
+            <Col lg={6}>
+              <label>
+               Image <span className="text-danger">*</span>
+              </label>
+
+              <input
+                type="file"
+                name="NewsletterImage"
+                className={validClassBI}
+                // accept="images/*"
+                accept=".jpg, .jpeg, .png"
+                onChange={PhotoUpload}
+              />
+              {isSubmit && (
+                <p className="text-danger">{formErrors.NewsletterImage}</p>
+              )}
+              {checkImagePhoto ? (
+                <img
+                  //   src={image ?? myImage}
+                  className="m-2"
+                  src={photoAdd}
+                  alt="Profile"
+                  width="300"
+                  height="200"
+                />
+              ) : null}
             </Col>
-
-            <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassPhoneNumber}
-                placeholder="Enter Phone Number"
-                required
-                name="Mobile"
-                value={values.Mobile}
-                onChange={handleChange}
-              />
-              <Label>
-                {" "}
-                Phone Number <span className="text-danger">*</span>
-              </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Mobile}</p>}
-            </div>
 
             <div className="form-check mb-2">
               <Input
@@ -652,13 +561,11 @@ const ContactInquiry = () => {
                 className="form-check-input"
                 name="IsActive"
                 value={IsActive}
-                checked={IsActive}
                 onChange={handleCheck}
               />
               <Label className="form-check-label">Is Active</Label>
             </div>
           </ModalBody>
-
           <ModalFooter>
             <div className="hstack gap-2 justify-content-end">
               <button
@@ -676,6 +583,8 @@ const ContactInquiry = () => {
                   setmodal_list(false);
                   setValues(initialState);
                   setIsSubmit(false);
+                  setCheckImagePhoto(false);
+                  setPhotoAdd("");
                 }}
               >
                 Cancel
@@ -700,107 +609,77 @@ const ContactInquiry = () => {
             setIsSubmit(false);
           }}
         >
-          Edit Contact Inquiry
+          Edit Newsletter
         </ModalHeader>
         <form>
           <ModalBody>
             <div className="form-floating mb-3">
               <Input
                 type="text"
-                className={validClassName}
-                placeholder="Enter Name"
+                className={validClassFN}
+                placeholder="Enter first Name"
                 required
-                name="ContactPerson"
-                value={values.ContactPerson}
+                name="Title"
+                value={Title}
                 onChange={handleChange}
               />
               <Label>
-                {" "}
-                Name <span className="text-danger">*</span>
+               Title<span className="text-danger">*</span>{" "}
               </Label>
               {isSubmit && (
-                <p className="text-danger">{formErrors.ContactPerson}</p>
+                <p className="text-danger">{formErrors.Title}</p>
               )}
             </div>
             <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassEmail}
-                placeholder="Enter Email"
-                required
-                name="Email"
-                value={values.Email}
+            <Input
+                type="textarea"
+                className="form-control"
+                placeholder="Enter Newsletter Description..."
+                style={{ height: "150px" }}
+                name="Description"
+                value={Description}
                 onChange={handleChange}
               />
+
+
               <Label>
-                {" "}
-                Email <span className="text-danger">*</span>
+               Description<span className="text-danger">*</span>{" "}
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Email}</p>}
+              {isSubmit && <p className="text-danger">{formErrors.Description}</p>}
             </div>
-            <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassSubject}
-                placeholder="Enter Category Name"
-                required
-                name="Remark"
-                value={values.Remark}
-                onChange={handleChange}
+           
+             
+            <Col lg={6}>
+              <label>
+                 Image <span className="text-danger">*</span>
+              </label>
+              <input
+                key={"NewsletterImage" + _id}
+                type="file"
+                name="NewsletterImage"
+                className={validClassBI}
+                // accept="images/*"
+                accept=".jpg, .jpeg, .png"
+                onChange={PhotoUpload}
               />
-              <Label>
-                {" "}
-                Subject <span className="text-danger">*</span>
-              </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Remark}</p>}
-            </div>
+              {isSubmit && (
+                <p className="text-danger">{formErrors.NewsletterImage}</p>
+              )}
 
-            <Col md={12}>
-              <div className="form-floating mb-3">
-                <select
-                  className={validClassCountry}
-                  name="Country"
-                  value={values.Country}
-                  data-choices
-                  data-choices-sorting="true"
-                  onChange={handleChange}
-                >
-                  <option>Select Country</option>
-
-                  {countriesArray.map((c, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <option value={c.value}>{c.value}</option>
-                      </React.Fragment>
-                    );
-                  })}
-                </select>
-                <Label>
-                  Country
-                  <span className="text-danger">*</span>
-                </Label>
-                {isSubmit && (
-                  <p className="text-danger">{formErrors.Country}</p>
-                )}
-              </div>
+              {values.NewsletterImage || photoAdd ? (
+                <img
+                  // key={photoAdd}
+                  className="m-2"
+                  src={
+                    checkImagePhoto
+                      ? photoAdd
+                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.NewsletterImage}`
+                  }
+                  width="300"
+                  height="200"
+                />
+              ) : null}
             </Col>
-            <div className="form-floating mb-3">
-              <Input
-                type="text"
-                className={validClassPhoneNumber}
-                placeholder="Enter Phone Number"
-                required
-                name="Mobile"
-                value={values.Mobile}
-                onChange={handleChange}
-              />
-              <Label>
-                {" "}
-                Phone Number <span className="text-danger">*</span>
-              </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Mobile}</p>}
-            </div>
-
             <div className="form-check mb-2">
               <Input
                 type="checkbox"
@@ -855,7 +734,7 @@ const ContactInquiry = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Category
+          Remove Admin
         </ModalHeader>
         <form>
           <ModalBody>
@@ -900,4 +779,4 @@ const ContactInquiry = () => {
   );
 };
 
-export default ContactInquiry;
+export default Newsletter;

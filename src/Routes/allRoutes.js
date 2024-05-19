@@ -44,6 +44,7 @@ import StatusReport from "../pages/Report/StatusReport";
 
 
 import CountryWiseReport from "../pages/Report/CountryWiseReports";
+import Newsletter from "../pages/CMSshreeji/Newsletter";
 
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
@@ -81,6 +82,7 @@ const authProtectedRoutes = [
   {path:"/supplier-wise-product",component:<SupplierWiseProductReport/>},
   {path:"/cms",component:<Cms/>},
   {path:"/status-report",component:<StatusReport/>},
+  {path:"/newsletter",component:<Newsletter/>},
   
 
 
