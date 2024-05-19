@@ -509,12 +509,7 @@ if(Object.keys(errors).length===0){
     } else {
       setErrCPN(false);
     }
-   if (!values.Comments) {
-      errors.Comments = "Remark is required!";
-      setErrCOM(true);
-    } else {
-      setErrCOM(false);
-    }
+  
    
     if (!values.Country) {
       errors.Country = "Country Name is required!";
@@ -560,7 +555,7 @@ if(Object.keys(errors).length===0){
     else{
       setErrSP(false)
     }if(values2.Quantity===""){
-      errors.Quantity="Please Select a Product"
+      errors.Quantity="Please Select a Quantity"
       setErrQU(true)
     }
     else{

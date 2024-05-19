@@ -189,7 +189,7 @@ const ProductGroup = () => {
     const errors = {};
 
     if (values.ProductGroup === "") {
-      errors.ProductGroup = "First Name is required!";
+      errors.ProductGroup = "Product Group is required!";
       setErrFN(true);
     }
     if (values.ProductGroup !== "") {

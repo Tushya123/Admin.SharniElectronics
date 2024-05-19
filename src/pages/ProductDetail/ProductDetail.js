@@ -1064,7 +1064,7 @@ const ProductDetail = () => {
           ))}
         </select>
         <label>
-          ProductDetail <span className="text-danger">*</span>
+          Product Group <span className="text-danger">*</span>
         </label>
         {isSubmit && formErrors.ProductDetail && (
           <p className="text-danger">{formErrors.ProductDetail}</p>
@@ -1434,7 +1434,7 @@ const ProductDetail = () => {
           ))}
         </select>
         <label>
-          ProductDetail <span className="text-danger">*</span>
+          Product Group <span className="text-danger">*</span>
         </label>
         {isSubmit && formErrors.ProductDetail && (
           <p className="text-danger">{formErrors.ProductDetail}</p>

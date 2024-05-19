@@ -248,7 +248,7 @@ const Blogs = () => {
       setErrBD(false);
     }
     if (Category === "") {
-      errors.Category = "Blog Thumbnail Description is required!";
+      errors.Category = "Blog Category is required!";
       setErrBTD(true);
     }
     if (Category !== "") {
