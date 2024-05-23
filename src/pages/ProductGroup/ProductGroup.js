@@ -36,7 +36,7 @@ const initialState = {
 
 const ProductGroup = () => {
   const [values, setValues] = useState(initialState);
-  const { IsActive,ImageUrl,ProductGroups } =
+  const { IsActive,ImageUrl,ProductGroup} =
     values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -196,13 +196,13 @@ const ProductGroup = () => {
       setErrFN(false);
     }
 
-    //  if (values.ImageUrl ==="") {
-    //   errors.ImageUrl = " Image is required!";
-    //   setErrBI(true);
-    // }
-    // if (values.ImageUrl !== "") {
-    //   setErrBI(false);
-    // }
+     if (values.ImageUrl ==="") {
+      errors.ImageUrl = "Product Image is required!";
+      setErrBI(true);
+    }
+    if (values.ImageUrl !== "") {
+      setErrBI(false);
+    }
 
     
 
@@ -358,7 +358,9 @@ const ProductGroup = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Product Group"  />
+          <BreadCrumb    maintitle="Product Group"
+            title="Product Group"
+            pageTitle="Product Setup"  />
           <Row>
             <Col lg={12}>
               <Card>

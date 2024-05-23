@@ -854,7 +854,7 @@ console.log("Idsss",_id)
                                     // id="create-btn"
                                   >
                                     <i className="ri-add-line align-bottom me-1"></i>
-                                    Assign Product
+                                    Add
                                   </Button>
                                 </div>
                               </div>

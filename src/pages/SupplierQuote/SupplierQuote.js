@@ -523,7 +523,7 @@ errNA && isSubmit ? "form-control is-invalid" : "form-control";
             <div>
               {row.SupplierDetailTypes.map((item, index) => (
                 <tr key={index}>
-              <td  >{item.SupplierName}</td>
+              <td >{item.SupplierName}</td>
             </tr>
               ))}
             </div>

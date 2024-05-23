@@ -923,7 +923,7 @@ const ProductDetail = () => {
           <BreadCrumb
             maintitle="Product Details"
             title="Products Detail"
-            pageTitle="Product Details"
+            pageTitle="Product Setup"
           />
           <Row>
             <Col lg={12}>
