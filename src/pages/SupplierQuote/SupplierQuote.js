@@ -227,7 +227,7 @@ console.log(data)
     setFormErrors(errors);
     setIsSubmit(true);
 
-    // if (Object.keys(errors).length === 0) {
+    if (Object.keys(errors).length === 0) {
       setLoadingOption(true);
     //   const formdata = new FormData();
 
@@ -281,7 +281,7 @@ console.log(data)
         });
         tog_list();
     }
-//   };
+  };
 
   const handleDelete = (e) => {
     e.preventDefault();
@@ -305,13 +305,13 @@ console.log(data)
 
   const validate = (values) => {
     const errors = {};
-    // if (types === "") {
-    //   errors.types = "Service Name is required!";
-    //   setErrSN(true);
-    // }
-    // else{
-    //   setErrSN(false);
-    // }
+    if (values.Quantity === "") {
+      errors.Quantity = "Quantity is required!";
+      setErrEM(true);
+    }
+    else{
+      setErrEM(false);
+    }
 
     if (values.ProductDetail === "") {
       errors.ProductDetail = "Product Detail is Required!";
@@ -757,13 +757,22 @@ console.log(values)
                                 Select Product: {" "}
                                         <span className="text-danger">*</span>
                                       </Label>
+                                      
                                        <Select
+                                       className={validClassName}
                                        placeholder={SupplierNamePlaceholder}
                                                             value={prod}
                                                             onChange={handleSelectSingle}
                                                             options={selectProductDetail}
                                                         />
+                                                                       {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.ProductDetail}
+                                        </p>
+                                      )}
+                                                         
                                                     </div>
+                                     
                                     </Col>
                                
                                
@@ -772,7 +781,7 @@ console.log(values)
                                       <Input
                                         key={"blogTitle_" + _id}
                                         type="number"
-                                        // className={validClassEmail}
+                                        className={validClassEmail}
                                         placeholder="Enter blog title"
                                         required
                                         name="Quantity"
@@ -783,11 +792,11 @@ console.log(values)
                                       Quantity{" "}
                                         <span className="text-danger">*</span>
                                       </Label>
-                                      {/* {isSubmit && (
+                                      {isSubmit && (
                                         <p className="text-danger">
-                                          {formErrors.email}
+                                          {formErrors.Quantity}
                                         </p>
-                                      )} */}
+                                      )}
                                     </div>
                                   </Col>
                                  <Col lg={6}>
