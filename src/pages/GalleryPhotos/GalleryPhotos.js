@@ -57,6 +57,8 @@ const GalleryPhotos = () => {
         `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Category`)
       .then((response) => {
         if (response.length > 0) {
+        
+          console.log("resp",response)
           setSelectType(response);
         } else if (response.length === 0) {
           setSelectType([]);
@@ -555,9 +557,11 @@ const GalleryPhotos = () => {
                                           setTypes(e.target.value);
                                         }}>
                                         <option>Select Type</option>
-                                        {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id}>{item.Category}</option>
-                                        )}
+                                        {selectType && Array.isArray(selectType) && selectType
+        .filter(item => item.IsActive)
+        .map((item, index) => (
+          <option key={index} value={item._id}>{item.Category}</option>
+        ))}
                                     </Input>
                                     {isSubmit && (
                                       <p className="text-danger">
