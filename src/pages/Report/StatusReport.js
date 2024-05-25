@@ -54,12 +54,14 @@ const StatusReport = () => {
   const [updateForm, setUpdateForm] = useState(false);
 
   const [query, setQuery] = useState("");
+  const [query1, setQuery1] = useState("");
 
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
   const [booking_id, setBooking_id] = useState("");
 
   const [blogs, setBlogs] = useState([]);
+  const [blogs1, setBlogs1] = useState([]);
   const [Name,setName] =useState("");
   const [Phone, setphone] =useState("");
   const [Email,setEmail] =useState("");
@@ -146,25 +148,42 @@ useEffect(() => {
     errBI && isSubmit ? "form-control is-invalid" : "form-control";
 
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
+  const [totalRows1, setTotalRows1] = useState(0);
   const [perPage, setPerPage] = useState(10);
+  const [perPage1, setPerPage1] = useState(10);
   const [pageNo, setPageNo] = useState(0);
+  const [pageNo1, setPageNo1] = useState(0);
   const [column, setcolumn] = useState();
+  const [column1, setcolumn1] = useState();
   const [sortDirection, setsortDirection] = useState();
+  const [sortDirection1, setsortDirection1] = useState();
 
   const handleSort = (column, sortDirection) => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
+  }; const handleSort1 = (column1, sortDirection1) => {
+    setcolumn1(column1.sortField);
+    setsortDirection1(sortDirection1);
   };
 
   useEffect(() => {
     
   }, []);
+ 
+  useEffect(() => {
+    if(SpecialityName==="Product"){
+    fetchCategories(startDate, endDate);
+    }
 
-//   useEffect(() => {
-//     fetchCategories();
-//     selectDropdown();
-//   }, [pageNo, perPage, column, sortDirection, query, filter]);
+  }, [pageNo, perPage, column, sortDirection, query, filter,startDate,endDate]);
+  useEffect(() => {
+    if(SpecialityName==="Customer"){
+    fetchCategories1(startDate, endDate);
+    }
+
+  }, [pageNo1, perPage1, column1, sortDirection1, query1, filter,startDate,endDate]);
   console.log(startDate);
 
    
@@ -203,7 +222,7 @@ useEffect(() => {
             console.log(res);
             setLoading(false);
             setBlogs(res.data);
-            console.log(res.count);
+            console.log("count is",res.count);
             setTotalRows(res.count);
         } else {
             console.log("Hii");
@@ -218,8 +237,8 @@ useEffect(() => {
 
 const fetchCategories1 = async (startDate, endDate) => {
     console.log("inside fetch cat");
-    setLoading(true);
-    let skip = (pageNo - 1) * perPage;
+    setLoading1(true);
+    let skip = (pageNo1 - 1) * perPage1;
     if (skip < 0) {
       skip = 0;
     }
@@ -232,10 +251,10 @@ const fetchCategories1 = async (startDate, endDate) => {
             `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params-date/contactinquiry`,
             {
               skip: skip,
-              per_page: perPage,
-              sorton: column,
-              sortdir: sortDirection,
-              match: query,
+              per_page: perPage1,
+              sorton: column1,
+              sortdir: sortDirection1,
+              match: query1,
         IsActive: filter,
         createdAt: { $gte: startDate, $lte: endDate },
               
@@ -251,17 +270,17 @@ const fetchCategories1 = async (startDate, endDate) => {
           let res = response[0];
           // console.log(typeof res)
           console.log(res)
-          setLoading(false);
-          setBlogs(res.data);
+          setLoading1(false);
+          setBlogs1(res.data);
           console.log(res.count)
-          setTotalRows(res.count);
+          setTotalRows1(res.count);
         } else {
           console.log("Hii")
-          setBlogs([]);
+          setBlogs1([]);
         }
         // console.log(res);
       });
-      setLoading(false);
+      setLoading1(false);
 
  
 };
@@ -269,6 +288,8 @@ const fetchCategories1 = async (startDate, endDate) => {
 
   const handlePageChange = (page) => {
     setPageNo(page);
+  }; const handlePageChange1 = (page1) => {
+    setPageNo1(page1);
   };
 
   const [photoAdd, setPhotoAdd] = useState();
@@ -280,6 +301,9 @@ const fetchCategories1 = async (startDate, endDate) => {
   const handlePerRowsChange = async (newPerPage, page) => {
     // setPageNo(page);
     setPerPage(newPerPage);
+  };  const handlePerRowsChange1 = async (newPerPage1, page1) => {
+    // setPageNo(page);
+    setPerPage1(newPerPage1);
   };
   const handleFilter = (e) => {
     setFilter(e.target.checked);
@@ -354,30 +378,7 @@ const fetchCategories1 = async (startDate, endDate) => {
       sortField: "serialNumber",
       minWidth: "150px",
     },
-    // {
-    //   name: "Allotment Details",
-    //   cell: (row) => (
-    //     <div>
-    //       <div>DocName: <b>{row.DoctorName || "-"}</b></div>
-    //       <div>Date: <b>{row.AllotmentDate?row.AllotmentDate.split('T')[0]: "-"}</b></div>
-    //       <div>Time: <b>{row.AllotmentTime || "-"}</b></div> {/* Display dash if AllotmentTime is falsy */}
-    //     </div>
-    //   ),
-    //   sortable: false,
-    //   minWidth: "150px",
-    // },
-    // {
-    //   name: "Patient Details",
-    //   cell: (row) => (
-    //     <div>
-    //     <div>Name: <b>{row.Name}</b></div>
-    //     <div>Email: <b>{row.Email}</b> </div>
-    //     <div>Phone: <b>{row.Phone}</b> </div>
-    //   </div>
-    //   ),
-    //   sortable: false, // Assuming you don't want to sort by this column
-    //   minWidth: "300px", // Adjust width as needed
-    // },
+  
    
   ];
   const [Selectoptions,setOptions] = useState("")
@@ -449,7 +450,7 @@ const handleStartDateChange = (date) => {
   }; 
   const downloadExcel1 = async (startDate, endDate) => {
     try {
-      let skip = (pageNo - 1) * perPage;
+      let skip = (pageNo1 - 1) * perPage1;
       if (skip < 0) {
         skip = 0;
       }
@@ -457,10 +458,10 @@ const handleStartDateChange = (date) => {
         `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/downloadexcelstatusreportforcontact`,
         {
           skip: skip,
-          per_page: perPage,
-          sorton: column,
-          sortdir: sortDirection,
-          match: query,
+          per_page: perPage1,
+          sorton: column1,
+          sortdir: sortDirection1,
+          match: query1,
           IsActive: filter,
           createdAt: { $gte: startDate, $lte: endDate },
         },
@@ -629,36 +630,57 @@ Status Report
                   
                     {console.log("Blogs:",blogs)}
                     {console.log("Col:",col)}
-                      <div className="table-responsive table-card mt-1 mb-1 text-right">
-                        <DataTable
-                          columns={col}
-                          
-                          data={blogs}
-                          paginationTotalRows={totalRows}
-                          paginationRowsPerPageOptions={[
-                            10,
-                            50,
-                            100,
-                            totalRows,
-                          ]}
-                          progressPending={loading}
-                          sortServer
-                          onSort={(column, sortDirection, sortedRows) => {
-                            handleSort(column, sortDirection);
-                          }}
-                          pagination
-                          paginationServer
-                        //   paginationTotalRows={totalRows}
-                        //   paginationRowsPerPageOptions={[
-                        //     10,
-                        //     50,
-                        //     100,
-                        //     totalRows,
-                        //   ]}
-                        //   onChangeRowsPerPage={handlePerRowsChange}
-                        //   onChangePage={handlePageChange}
-                        />
-                      </div>
+                    {SpecialityName === "Product" ? (
+  <div className="table-responsive table-card mt-1 mb-1 text-right">
+    <DataTable
+      columns={col}
+      progressPending={loading}
+      data={blogs}
+      sortServer
+      onSort={(column, sortDirection, sortedRows) => {
+        handleSort(column, sortDirection);
+      }}
+      paginationTotalRows={totalRows}
+      paginationRowsPerPageOptions={[
+        10,
+        50,
+        100,
+        totalRows,
+      ]}
+      onChangeRowsPerPage={handlePerRowsChange}
+      onChangePage={handlePageChange}
+      pagination
+      paginationServer
+    />
+  </div>
+) : SpecialityName === "Customer" ? (
+  <div className="table-responsive table-card mt-1 mb-1 text-right">
+    <DataTable
+      columns={col}
+      progressPending={loading1}
+      data={blogs1}
+      sortServer1
+      onSort={(column1, sortDirection1, sortedRows1) => {
+        handleSort1(column1, sortDirection1);
+      }}
+      paginationTotalRows={totalRows1}
+      paginationRowsPerPageOptions={[
+        10,
+        50,
+        100,
+        totalRows1,
+      ]}
+      onChangeRowsPerPage={handlePerRowsChange1}
+      onChangePage={handlePageChange1}
+      pagination
+      paginationServer
+    />
+  </div>
+) : (
+  <div>
+  </div>
+)}
+
                     </div>
                   </CardBody>
                 </div>
