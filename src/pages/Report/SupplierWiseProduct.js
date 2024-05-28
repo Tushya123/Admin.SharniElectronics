@@ -94,10 +94,10 @@ const SupplierWiseProductReport = () => {
     fetchCategories(selectedOption.id);
 
 };
-useEffect(() => {
-  // You can access setchangedid here if you need to perform any side effects
-  console.log("changedid outside handleSpecialityChange:", changedid);
-}, [changedid]);
+// useEffect(() => {
+//   // You can access setchangedid here if you need to perform any side effects
+//   console.log("changedid outside handleSpecialityChange:", changedid);
+// }, [changedid]);
 
   const [categories, setCategories] = useState([]);
   const [modal_delete, setmodal_delete] = useState(false);
