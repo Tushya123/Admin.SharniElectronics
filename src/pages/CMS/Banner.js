@@ -750,7 +750,7 @@ const Banner = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Promocode
+          Remove Banner Master
         </ModalHeader>
         <form>
           <ModalBody>

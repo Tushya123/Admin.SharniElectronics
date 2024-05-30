@@ -734,7 +734,7 @@ Title <span className="text-danger">*</span>
             setmodal_delete(false);
           }}
         >
-          Remove Admin
+          Remove NewsLetter
         </ModalHeader>
         <form>
           <ModalBody>

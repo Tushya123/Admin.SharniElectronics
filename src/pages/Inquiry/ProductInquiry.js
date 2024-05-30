@@ -1709,7 +1709,7 @@ className={validClassProduct}
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+          <span style={{ marginRight: "210px" }}>Remove Product Inquiry</span>
         </ModalHeader>
 
         <form>

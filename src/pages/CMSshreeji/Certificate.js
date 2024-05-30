@@ -677,7 +677,7 @@ const Certificate = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Admin
+          Remove Certificate Master
         </ModalHeader>
         <form>
           <ModalBody>

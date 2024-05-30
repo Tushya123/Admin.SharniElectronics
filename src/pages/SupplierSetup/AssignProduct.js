@@ -210,7 +210,7 @@ const AssignProduct = () => {
   const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    let errors = validate(ProductDetail,SupplierName);
+    let errors = validate(SupplierName);
     setFormErrors(errors);
     setIsSubmit(true);
 
@@ -267,7 +267,7 @@ const AssignProduct = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
     setFormErrors({});
-    let errors = validate(ProductDetail,SupplierName);
+    let errors = validate(SupplierName);
     setFormErrors(errors);
     setIsSubmit(true);
 
@@ -313,22 +313,23 @@ console.log("Idsss",_id)
   };
 
   const [errBT, setErrBT] = useState(false);
+  const [errSN, setErrSN] = useState(false);
   const [errBD, setErrBD] = useState(false);
   const [errBTD, setErrBTD] = useState(false);
   const [errBI, setErrBI] = useState(false);
-  const [errSN,setErrSN]=useState(false);
+ 
 
   const validate = (
     // blogDesc,
-    SupplierName,ProductDetail) => {
+    SupplierName) => {
     const errors = {};
-    // if (types === "") {
-    //   errors.types = "Product Group is required!";
-    //   setErrSN(true);
-    // }
-    // else{
-    //   setErrSN(false);
-    // }
+    if (SupplierName === "") {
+      errors.SupplierName = "Supplier Name is required!";
+      setErrSN(true);
+    }
+    else{
+      setErrSN(false);
+    }
 
     // if (blogTitle === "") {
     //   errors.blogTitle = "Title is required!";
@@ -375,7 +376,7 @@ console.log("Idsss",_id)
   const validClassBI =
     errBI && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassSN =
-    errSN && isSubmit ? "form-control is-invalid" : "form-control";
+    errSN && isSubmit ? "h-100 p-0 form-control is-invalid" : "h-100 p-0 form-control";
 
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
@@ -946,17 +947,25 @@ console.log("Idsss",_id)
                                         <span className="text-danger">*</span>
                                       </Label>
                                        <Select
+                                       className={validClassSN}
                                        placeholder={SupplierNamePlaceholder}
                                                             value={SupplierName}
                                                             onChange={handleSelectSingle}
                                                             options={selectType}
                                                         />
+                                                         {isSubmit && (
+                                        <p className="text-danger">
+                                          {formErrors.SupplierName}
+                                        </p>
+                                      )}
                                                     </div>
                                                 </Col>
                                    
                                   </Col>
-                                   
-                                  <Col lg={3}>
+                                   <Col lg={3}>
+
+                                   </Col>
+                                  <Col lg={3} style={{marginTop:'25px'}}>
   <div
     style={{
       display: showForm && !updateForm ? "flex" : "none",
@@ -1086,9 +1095,11 @@ console.log("Idsss",_id)
                                    
                                   </Col>
                                    
-                                  <Col>
-                                  </Col>
+                                  
                                   <Col lg={3}>
+                                    
+                                  </Col>
+                                  <Col lg={3} style={{marginTop:'25px'}}>
   <div
     style={{
       display: !showForm && updateForm  ? "flex" : "none",

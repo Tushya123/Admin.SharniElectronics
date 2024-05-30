@@ -855,7 +855,7 @@ const ContactInquiry = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Category
+          Remove Contact Inquiry
         </ModalHeader>
         <form>
           <ModalBody>

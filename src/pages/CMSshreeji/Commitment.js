@@ -737,7 +737,7 @@ const Commitment = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Admin
+          Remove Commitment Master
         </ModalHeader>
         <form>
           <ModalBody>

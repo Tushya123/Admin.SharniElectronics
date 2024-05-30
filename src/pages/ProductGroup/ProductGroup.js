@@ -752,7 +752,7 @@ const ProductGroup = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Admin
+          Remove Product Group
         </ModalHeader>
         <form>
           <ModalBody>

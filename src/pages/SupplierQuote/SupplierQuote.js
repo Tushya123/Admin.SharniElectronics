@@ -353,10 +353,10 @@ console.log(data)
   };
 
   const validClassName =
-errNA && isSubmit ? "form-control is-invalid" : "form-control";
+errNA && isSubmit ? "p-0 form-control is-invalid " : "p-0 form-control";
 
   const validClassEmail =
-    errEM && isSubmit ? "form-control is-invalid" : "form-control";
+    errEM && isSubmit ? "h-100 form-control is-invalid" : "h-100 form-control";
   const validClassMobileNumber =
     errMN && isSubmit ? "form-control is-invalid" : "form-control";
 
@@ -777,7 +777,11 @@ console.log(values)
                                
                                
                                   <Col lg={4}>
-                                    <div className="form-floating mt-3  ">
+                                  <Label>
+                                      Quantity{" "}
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                    <div className="form-floating  ">
                                       <Input
                                         key={"blogTitle_" + _id}
                                         type="number"
@@ -788,10 +792,7 @@ console.log(values)
                                         value={Quantity}
                                         onChange={handleChange}
                                       />
-                                      <Label>
-                                      Quantity{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
+                                     
                                       {isSubmit && (
                                         <p className="text-danger">
                                           {formErrors.Quantity}

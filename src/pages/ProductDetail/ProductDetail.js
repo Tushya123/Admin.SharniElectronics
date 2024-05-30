@@ -1789,7 +1789,7 @@ const ProductDetail = () => {
             setmodal_delete(false);
           }}
         >
-          Remove Master Layout
+          Remove Products
         </ModalHeader>
         <form>
           <ModalBody>

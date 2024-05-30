@@ -1113,7 +1113,7 @@ if(Object.keys(errors).length===0){
             setmodal_delete(!modal_delete);
           }}
         >
-          <span style={{ marginRight: "210px" }}>Remove Service Detail</span>
+          <span style={{ marginRight: "210px" }}>Remove Supplier</span>
         </ModalHeader>
 
         <form>
