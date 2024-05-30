@@ -40,7 +40,7 @@ const initialState = {
   Mobile:"",
   Email:"",
   Comments:"",
-  IsActive:true,
+  IsActive:false,
 };
 
 const initialState2={
@@ -150,6 +150,11 @@ const ProductInquiry = () => {
     Quantity 
     , ProductDetailLabel,BasePrice,Group,RFQ_Status2, RFQ_Date,SupplierName
   }= values2
+
+  const handleChecklayout = (e) => {
+    console.log(e.target.checked);
+    setValues({ ...values, IsActive: e.target.checked });
+  };
 
   const [showForm, setShowForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
@@ -626,6 +631,14 @@ if(Object.keys(errors).length===0){
       sortable: true,
       sortField: "createdAt",
       minWidth: "150px",
+    },
+    {
+      name: "Status",
+      selector: (row) => {
+        return <p>{row.IsActive ? "Active" : "InActive"}</p>;
+      },
+      sortable: false,
+      sortField: "Status",
     },
     {
       name: "Action",
@@ -1194,6 +1207,39 @@ className={validClassProduct}
 
 
                                  </Row>
+                                 <Row>
+                                    <Col md={6}>
+                                      <Col md={12}>
+                                        <div
+                                          className="form-check mb-3 mt-5"
+                                          style={{ marginLeft: "2rem" }}
+                                        >
+                                          <Input
+                                            key={"IsActive" + _id}
+                                            // className={validClassActive}
+                                            type="checkbox"
+                                            name="IsActive"
+                                            value={IsActive}
+                                            onChange={handleCheck}
+                                          />
+                                          <Label
+                                            className="form-check-label"
+                                            htmlFor="activeCheckBox"
+                                          >
+                                            Is Active
+                                          </Label>
+                                        </div>
+                                      </Col>
+
+                                      {/*  */}
+                                  
+
+                                      {/*  */}
+                                     
+                                      
+                                    </Col>
+                                   
+                                  </Row>
                                  <Row className="mt-4">
 {console.log("lol2",allProductDetail)}
   {allProductDetail ? (
@@ -1489,6 +1535,40 @@ className={validClassProduct}
         </div>
     </Col>
 </Row>
+<Row>
+                                    <Col md={6}>
+                                      <Col md={12}>
+                                        <div
+                                          className="form-check mb-3 mt-5"
+                                          style={{ marginLeft: "2rem" }}
+                                        >
+                                          <Input
+                                            key={"IsActive" + _id}
+                                            // className={validClassActive}
+                                            type="checkbox"
+                                            name="IsActive"
+                                            value={IsActive}
+                                            checked={IsActive}
+                                            onChange={handleCheck}
+                                          />
+                                          <Label
+                                            className="form-check-label"
+                                            htmlFor="activeCheckBox"
+                                          >
+                                            Is Active
+                                          </Label>
+                                        </div>
+                                      </Col>
+
+                                      {/*  */}
+                                     
+
+                                      {/*  */}
+                                      
+                                     
+                                    </Col>
+                                   
+                                  </Row>
 <Row>
 {console.log("lol",allProductDetail)}
   {allProductDetail ? (
