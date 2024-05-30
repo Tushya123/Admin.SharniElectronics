@@ -435,7 +435,11 @@ const Blogs = () => {
 
     {
       name: "Date",
-      cell: (row) => row.createdAt.split("T")[0],
+      cell: (row) => {
+        const dateParts = row.createdAt.split("T")[0].split("-");
+        const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0].slice(-2)}`;
+        return formattedDate;
+      },
       sortable: true,
       sortField: "createdAt",
       minWidth: "150px",
