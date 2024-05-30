@@ -217,16 +217,6 @@ const ProductDetail = () => {
     setFormErrors({});
     setFormErrorsArr({});
 
-    // const newMetalDetails = {
-    //   ProductKey: "",
-    //   ProductValue: "",
-      
-    // };
-
-    // setvalues({
-    //   ...values,
-    //   ProductDetailDescription: [newMetalDetails], // Add a new empty component
-    // });
 
     setTableData([]);
   };

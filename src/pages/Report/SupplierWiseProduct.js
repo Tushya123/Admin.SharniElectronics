@@ -94,10 +94,10 @@ const SupplierWiseProductReport = () => {
     fetchCategories(selectedOption.id);
 
 };
-// useEffect(() => {
-//   // You can access setchangedid here if you need to perform any side effects
-//   console.log("changedid outside handleSpecialityChange:", changedid);
-// }, [changedid]);
+useEffect(() => {
+  // You can access setchangedid here if you need to perform any side effects
+  console.log("changedid outside handleSpecialityChange:", changedid);
+}, [changedid]);
 
   const [categories, setCategories] = useState([]);
   const [modal_delete, setmodal_delete] = useState(false);
@@ -144,7 +144,7 @@ const SupplierWiseProductReport = () => {
    
     selectDropdown();
   }, []);
-  console.log();
+  console.log("changedid",changedid);
 
    
   const fetchCategories = async () => {
@@ -181,35 +181,37 @@ const SupplierWiseProductReport = () => {
 
        .then((response) => {
         console.log("this is",response)
-        if (response) {
+        if (response.length>0) {
           console.log("New Response:",response)
-          let res = response[0].data[0];
-          // console.log(typeof res)
-          console.log(res)
-          setLoading(false);
-          // setBlogs(res.data);
-          // console.log(res)
-          // setTotalRows(res.count);
-      //     setBlogs(res.ProductDetailTypes);
-      // console.log(res.ProductDetailTypes);
-      // setTotalRows(res.count);
-      if (res.ProductDetailTypes) {
-        res.ProductDetailTypes.map((item, index) => {
-          selectType.map((hii) => {
-            if (hii._id === item.ProductDetail) {
-              item.ProductDetail = hii.ProductGroup;
-              return;
-            }
+          
+            let res = response[0].data[0];
+            // console.log(typeof res)
+            console.log(res)
+            setLoading(false);
+            // setBlogs(res.data);
+            // console.log(res)
+            // setTotalRows(res.count);
+        //     setBlogs(res.ProductDetailTypes);
+        // console.log(res.ProductDetailTypes);
+        // setTotalRows(res.count);
+        if (res.ProductDetailTypes) {
+          res.ProductDetailTypes.map((item, index) => {
+            selectType.map((hii) => {
+              if (hii._id === item.ProductDetail) {
+                item.ProductDetail = hii.ProductGroup;
+                return;
+              }
+            });
           });
-        });
-      }
-      const flattenedData = res.ProductDetailTypes.map((productDetail, index) => ({
-        srNo: index + 1,
-        ...productDetail
-      }));
-      console.log("xyz", flattenedData);
-      setBlogs(flattenedData);
-      setTotalRows(res.productDetailCount);
+        }
+        const flattenedData = res.ProductDetailTypes.map((productDetail, index) => ({
+          srNo: index + 1,
+          ...productDetail
+        }));
+        console.log("xyz", flattenedData);
+        setBlogs(flattenedData);
+        setTotalRows(res.productDetailCount);
+          
         } else {
           console.log("Hii")
           setBlogs([]);
