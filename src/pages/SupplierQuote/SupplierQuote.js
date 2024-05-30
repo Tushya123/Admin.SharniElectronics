@@ -801,6 +801,9 @@ console.log(values)
                                     </div>
                                   </Col>
                                  <Col lg={6}>
+                                 <Label>
+                                  Select Supplier:
+                                 </Label>
                                   {data.map((items,index)=>{
                                     return(
                                       <Row className="px-5" key={index}>

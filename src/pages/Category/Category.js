@@ -102,7 +102,7 @@ const Category = () => {
     let erros = validate(values);
     setFormErrors(erros);
     setIsSubmit(true);
-
+    if (Object.keys(erros).length === 0) {
       createCategory(values)
         .then((res) => {
           setmodal_list(!modal_list);
@@ -124,6 +124,7 @@ const Category = () => {
         .catch((error) => {
           console.log(error);
         });
+      }
   };
 
   const handleDelete = (e) => {
