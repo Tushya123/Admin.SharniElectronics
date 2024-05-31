@@ -875,7 +875,7 @@ console.log(values)
                             <Col lg={12}>
                               <div className="d-flex justify-content-sm-end">
                                 <div>
-                                  <Button
+                                  {/* <Button
                                     color="success"
                                     className="add-btn me-1"
                                     onClick={() => {
@@ -890,7 +890,7 @@ console.log(values)
                                   >
                                     <i className="ri-add-line align-bottom me-1"></i>
                                     Add
-                                  </Button>
+                                  </Button> */}
                                 </div>
                               </div>
                             </Col>

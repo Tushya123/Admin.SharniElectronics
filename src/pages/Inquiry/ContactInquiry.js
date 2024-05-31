@@ -483,7 +483,7 @@ const ContactInquiry = () => {
                     <Col className="col-sm-auto" sm={6} lg={4} md={6}>
                       <div className="d-flex justify-content-sm-end">
                         <div className="ms-2">
-                          <Button
+                          {/* <Button
                             color="success"
                             className="add-btn me-1"
                             onClick={() => tog_list()}
@@ -491,7 +491,7 @@ const ContactInquiry = () => {
                           >
                             <i className="ri-add-line align-bottom me-1"></i>
                             Add
-                          </Button>
+                          </Button> */}
                         </div>
                         <div className="search-box ms-2">
                           <input
