@@ -412,16 +412,16 @@ console.log(response)
     e.preventDefault();
 
     setFormErrors(validate(values));
-    setFormErrors1(validateinquiry(values2));
+
     let errors = validate(values);
-    let errors1 = validateinquiry(values2);
+
     
     setFormErrors(errors);
-    setFormErrors1(errors1);
+
     setIsSubmit(true);
     values.ProductDetail=allProductId
     console.log(values)
-if(Object.keys(errors).length===0&&Object.keys(errors1).length===0){
+if(Object.keys(errors).length===0){
 
 
     createinquiry(values)
@@ -659,6 +659,12 @@ if(Object.keys(errors).length===0){
     {
       name: "Email",
       cell: (row) => row.Email,
+      sortable: true,
+      sortField: "Email",
+
+    }, {
+      name: "Mobile Number",
+      cell: (row) => row.Mobile,
       sortable: true,
       sortField: "Email",
 
