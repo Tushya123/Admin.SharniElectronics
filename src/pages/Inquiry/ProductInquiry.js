@@ -96,6 +96,7 @@ const ProductInquiry = () => {
   ];
   
   const [formErrors, setFormErrors] = useState({});
+  const [formErrors1, setFormErrors1] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
   const [query, setQuery] = useState("");
@@ -348,6 +349,37 @@ console.log(response)
       });
     setLoading(false);
   };
+  const downloadExcel = async () => {
+    try {
+      let skip = (pageNo - 1) * perPage;
+      if (skip < 0) {
+        skip = 0;
+      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params-excel/inquiry`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          IsActive: filter,
+        },
+        { responseType: "blob" }
+      );
+
+      console.log("response", response);
+
+      const url = window.URL.createObjectURL(new Blob([response]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "report.xlsx"); // or any other extension you want
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error downloading the file:", error);
+    }
+  };
   const handlePageChange = (page) => {
     setPageNo(page);
   };
@@ -378,13 +410,18 @@ console.log(response)
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     setFormErrors(validate(values));
+    setFormErrors1(validateinquiry(values2));
     let errors = validate(values);
+    let errors1 = validateinquiry(values2);
+    
     setFormErrors(errors);
+    setFormErrors1(errors1);
     setIsSubmit(true);
     values.ProductDetail=allProductId
     console.log(values)
-if(Object.keys(errors).length===0){
+if(Object.keys(errors).length===0&&Object.keys(errors1).length===0){
 
 
     createinquiry(values)
@@ -598,28 +635,39 @@ if(Object.keys(errors).length===0){
       selector: (row,index) => index+1,
       sortable: true,
       sortField: "srno",
-      minWidth: "150px",
     },
     {
       name: "ContactPerson",
       cell: (row) => row.ContactPerson,
       sortable: true,
       sortField: "ContactPerson",
-      minWidth: "150px",
+
+    },{
+      name: "Company Name",
+      cell: (row) => row.CompanyName,
+      sortable: true,
+      sortField: "ContactPerson",
+
+    }, 
+    {
+      name: "Country",
+      cell: (row) => row.Country,
+      sortable: true,
+      sortField: "ContactPerson",
+
     },
     {
       name: "Email",
       cell: (row) => row.Email,
       sortable: true,
       sortField: "Email",
-      minWidth: "150px",
+
     },
     {
       name: "Inquiry No",
       cell: (row) => row._id,
       sortable: true,
       sortField: "_id",
-      minWidth: "150px",
     },
     {
       name: "Inquiry Date",
@@ -632,6 +680,37 @@ if(Object.keys(errors).length===0){
       sortField: "createdAt",
       minWidth: "150px",
     },
+    {
+      name: "Product Details",
+      cell: (row) => {
+        return (
+          <table style={{ borderCollapse: "collapse", width: "100%", marginTop:"5px", marginBottom:"7px"}}>
+            <thead>
+              <tr>
+                <td style={{ border: "1px solid lightgrey", padding: "8px"}}>Product Group</td>
+                <td style={{ border: "1px solid lightgrey", padding: "8px"}}>Product Detail</td>
+                <td style={{ border: "1px solid lightgrey", padding: "8px"}}>Quantity</td>
+              </tr>
+            </thead>
+            <tbody>
+              {row.InquiryDetails.map((item, index) => (
+                <tr key={index}>
+                  <td style={{ border: "1px solid lightgrey",  padding: "5px"}}>{item.Group}</td>
+                  <td style={{ border: "1px solid lightgrey",  padding: "5px" }}>{item.ProductDetailLabel}</td>
+                  <td style={{ border: "1px solid lightgrey",  padding: "5px" }}>{item.Quantity}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
+      },
+      sortable: true,
+      sortField: "blogTitle",
+      minWidth: "420px",
+      
+    }
+,    
+    
     {
       name: "Status",
       selector: (row) => {
@@ -845,6 +924,7 @@ console.log(values)
                         </div>
                         </div>
                         </Col>
+                          
                             {/* <Row>
                               <Col lg={12}>
                                 <div className="text-end">
@@ -862,7 +942,9 @@ console.log(values)
                                 </div>
                               </Col>
                             </Row> */}
+                       
                             <Col className="col-sm-auto" lg={4} md={12} sm={12}>
+                            
                       <div className="d-flex justify-content-sm-end">
                         {/* add btn */}
 
@@ -871,11 +953,12 @@ console.log(values)
                             display: showForm || updateForm || rfqForm ? "none" : "",
                           }}
                         >
+                        
                           <Row>
                             <Col lg={12}>
                               <div className="d-flex justify-content-sm-end">
                                 <div>
-                                  {/* <Button
+                                  <Button
                                     color="success"
                                     className="add-btn me-1"
                                     onClick={() => {
@@ -890,7 +973,7 @@ console.log(values)
                                   >
                                     <i className="ri-add-line align-bottom me-1"></i>
                                     Add
-                                  </Button> */}
+                                  </Button>
                                 </div>
                               </div>
                             </Col>
@@ -943,6 +1026,12 @@ console.log(values)
                           <i className="ri-search-line search-icon "></i>
                         </div>
                       </div>
+                    </Col>
+                    <Col className="text-end">
+                      <Button color="primary"
+  className="btn-rounded waves-effect waves-light" onClick={downloadExcel}>
+                       Generate Excel Sheet
+                      </Button>
                     </Col>
                         
                         
