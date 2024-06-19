@@ -1416,7 +1416,7 @@ const ProductDetail = () => {
           value={ProductDetail}
           onChange={handleChange}
         >
-          <option>Select Product GroupGroup</option>
+          <option>Select Product Group</option>
           {selectType.map((detail, index) => (
             <option key={index} value={detail._id}>
               {detail.ProductGroup}
