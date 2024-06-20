@@ -130,7 +130,7 @@ console.log("dddd")
 
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
-              <Card style={{ marginTop: "35%" }}>
+              <Card style={{ marginTop: "10%" }}>
                 <CardBody className="p-4">
                   <div className="text-center mt-2">
                     <div
