@@ -477,14 +477,14 @@ const ProductDetail = () => {
     // if (values.Detail !== "") {
     //   setErrPW(false);
     // }
-    if (values.ProductImage === "") {
-      errors.ProductImage = "Product Image is required";
-      setErrPI(true);
-    }
+    // if (values.ProductImage === "") {
+    //   errors.ProductImage = "Product Image is required";
+    //   setErrPI(true);
+    // }
 
-    if (values.ProductImage !== "") {
-      setErrPI(false);
-    }
+    // if (values.ProductImage !== "") {
+    //   setErrPI(false);
+    // }
 
     if (
       values.IsTopProduct &&
