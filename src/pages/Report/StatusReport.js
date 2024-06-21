@@ -522,7 +522,7 @@ Status Report
                         value={startDate}
                         onChange={handleStartDateChange}
                         options={{
-                          dateFormat: "Y-m-d", // Change date format if needed
+                          dateFormat: "d-m-Y", // Change date format if needed
                         }}
                       />
                     </Col>
@@ -534,7 +534,7 @@ Status Report
                         value={endDate}
                         onChange={handleEndDateChange}
                         options={{
-                          dateFormat: "Y-m-d", // Change date format if needed
+                          dateFormat: "d-m-Y", // Change date format if needed
                         }}
                       />
                     </Col>
