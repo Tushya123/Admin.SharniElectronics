@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
+import Flatpickr from "react-flatpickr";
 import {
   Button,
   Card,
@@ -40,12 +41,12 @@ const Newsletter = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
-
+  const[AllotmentDate,setAllotmentDate]=useState('');
   const [query, setQuery] = useState("");
 
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
-
+  const [errEditDate, setEditDate] = useState(false);
   const [Commitment, setCommitment] = useState([]);
   const [photoAdd, setPhotoAdd] = useState();
   const [checkImagePhoto, setCheckImagePhoto] = useState(false);
@@ -82,7 +83,9 @@ const Newsletter = () => {
           Description: res.Description, 
           NewsletterImage:res.NewsletterImage,
           IsActive: res.IsActive,
+
         });
+        setAllotmentDate(res.NewsDate);
       })
       .catch((err) => {
         console.log(err);
@@ -108,6 +111,7 @@ const Newsletter = () => {
       const formdata = new FormData();
 
       formdata.append("NewsletterImage", values.NewsletterImage);
+      formdata.append("NewsDate", AllotmentDate);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
       formdata.append("IsActive", values.IsActive); 
@@ -119,7 +123,7 @@ const Newsletter = () => {
           setIsSubmit(false);
           setFormErrors({});
           setPhotoAdd("");
-
+setAllotmentDate("");
           fetchUsers();
         })
         .catch((err) => {
@@ -150,6 +154,7 @@ const Newsletter = () => {
       const formdata = new FormData();
 
       formdata.append("NewsletterImage", values.NewsletterImage);
+      formdata.append("NewsDate", AllotmentDate);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
       formdata.append("IsActive", values.IsActive); 
@@ -159,7 +164,7 @@ const Newsletter = () => {
           setmodal_edit(!modal_edit);
           fetchUsers();
           setPhotoAdd("");
-
+          setAllotmentDate("");
           setCheckImagePhoto(false);
         })
         .catch((err) => {
@@ -213,11 +218,19 @@ const Newsletter = () => {
     if (values.NewsletterImage !== "") {
       setErrBI(false);
     }
+    if (!AllotmentDate) {
+      errors.AllotmentDate = "AllotmentDate is required";
+      // Assuming you have a setter function for the error state of BookingDate field
+      setEditDate(true);
+    }
+    else{ setEditDate(false);}
 
     
 
     return errors;
   };
+  const validEditDate =
+    errEditDate && isSubmit ? "p-0 form-control is-invalid" : "p-0 form-control";
 
   const validClassFN =
     errFN && isSubmit ? "form-control is-invalid" : "form-control";
@@ -330,6 +343,12 @@ const Newsletter = () => {
     {
       name: "Title",
       selector: (row) => row.Title,
+      sortable: true,
+      sortField: "Title",
+    
+    }, {
+      name: "News Date",
+      selector: (row) => row.NewsDate,
       sortable: true,
       sortField: "Title",
     
@@ -508,6 +527,49 @@ Title <span className="text-danger">*</span>
                 <p className="text-danger">{formErrors.Title}</p>
               )}
             </div>
+          
+<div className="mt-3 mb-3">
+                <Label > Date  <span className="text-danger">*</span></Label>
+                <div className={validEditDate}>
+                <Flatpickr
+                  value={AllotmentDate}
+                  className="form-control"
+                  options={{
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "d-m-Y",
+                  }}
+                  onChange={(selectedDates) => {
+                                            const selectedDate = selectedDates[0];
+                                            if (
+                                              selectedDate instanceof Date &&
+                                              !isNaN(selectedDate)
+                                            ) {
+                                              const day = String(
+                                                selectedDate.getDate()
+                                              ).padStart(2, "0");
+                                              const month = String(
+                                                selectedDate.getMonth() + 1
+                                              ).padStart(2, "0");
+                                              const year =
+                                                selectedDate.getFullYear();
+                                              const formattedDate = `${day}-${month}-${year}`;
+                                              setAllotmentDate(formattedDate);
+                                            } else {
+                                              setAllotmentDate("");
+                                            }
+                                          }}
+                />
+               
+                </div>
+                {isSubmit && (
+                    <p className="text-danger">
+                      {formErrors.AllotmentDate}
+                    </p>
+                  )}
+                 
+                  </div>
+
             <div className="form-floating mb-3">
             <Input
                 type="textarea"
@@ -630,6 +692,47 @@ Title <span className="text-danger">*</span>
                 <p className="text-danger">{formErrors.Title}</p>
               )}
             </div>
+            <div className="mt-3 mb-3">
+                <Label > Date  <span className="text-danger">*</span></Label>
+                <div className={validEditDate}>
+                <Flatpickr
+                  value={AllotmentDate}
+                  className="form-control"
+                  options={{
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "d-m-Y",
+                  }}
+                  onChange={(selectedDates) => {
+                                            const selectedDate = selectedDates[0];
+                                            if (
+                                              selectedDate instanceof Date &&
+                                              !isNaN(selectedDate)
+                                            ) {
+                                              const day = String(
+                                                selectedDate.getDate()
+                                              ).padStart(2, "0");
+                                              const month = String(
+                                                selectedDate.getMonth() + 1
+                                              ).padStart(2, "0");
+                                              const year =
+                                                selectedDate.getFullYear();
+                                              const formattedDate = `${day}-${month}-${year}`;
+                                              setAllotmentDate(formattedDate);
+                                            } else {
+                                              setAllotmentDate("");
+                                            }
+                                          }}
+                />
+               
+                </div>
+                {isSubmit && (
+                    <p className="text-danger">
+                      {formErrors.AllotmentDate}
+                    </p>
+                  )}
+                 
+                  </div>
             <div className="form-floating mb-3">
             <Input
                 type="textarea"
