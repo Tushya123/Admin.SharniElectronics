@@ -219,7 +219,7 @@ setAllotmentDate("");
       setErrBI(false);
     }
     if (!AllotmentDate) {
-      errors.AllotmentDate = "AllotmentDate is required";
+      errors.AllotmentDate = "News Date is required";
       // Assuming you have a setter function for the error state of BookingDate field
       setEditDate(true);
     }
