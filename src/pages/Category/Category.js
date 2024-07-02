@@ -38,7 +38,7 @@ const Category = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
- 
+
   const [errCN, setErrCN] = useState(false);
 
   const [query, setQuery] = useState("");
@@ -106,8 +106,8 @@ const Category = () => {
       createCategory(values)
         .then((res) => {
           setmodal_list(!modal_list);
-            setValues(initialState);
-            fetchCategories();
+          setValues(initialState);
+          fetchCategories();
           // if (res.isOk) {
           //   setmodal_list(!modal_list);
           //   setValues(initialState);
@@ -124,7 +124,7 @@ const Category = () => {
         .catch((error) => {
           console.log(error);
         });
-      }
+    }
   };
 
   const handleDelete = (e) => {
@@ -306,9 +306,9 @@ const Category = () => {
       <div className="page-content">
         <Container fluid>
           <BreadCrumb
-            maintitle="Category"
+            maintitle="Gallery Management"
             title="Category"
-            pageTitle="Category"
+            pageTitle="Gallery Management"
           />
           <Row>
             <Col lg={12}>
@@ -415,10 +415,10 @@ const Category = () => {
                 value={Category}
                 onChange={handleChange}
               />
-              <Label>Category Name <span className="text-danger">*</span></Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Category}</p>
-              )}
+              <Label>
+                Category Name <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.Category}</p>}
             </div>
 
             <div className="form-check mb-2">
@@ -487,10 +487,10 @@ const Category = () => {
                 value={Category}
                 onChange={handleChange}
               />
-              <Label>Category Name <span className="text-danger">*</span></Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Category}</p>
-              )}
+              <Label>
+                Category Name <span className="text-danger">*</span>
+              </Label>
+              {isSubmit && <p className="text-danger">{formErrors.Category}</p>}
             </div>
 
             <div className="form-check mb-2">

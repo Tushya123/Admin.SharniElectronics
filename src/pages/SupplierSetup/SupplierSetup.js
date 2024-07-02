@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from "axios";
 import {
   Button,
   Form,
@@ -12,7 +12,8 @@ import {
   Label,
   Input,
   FormFeedback,
-  FormGroup,Modal,
+  FormGroup,
+  Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
@@ -31,7 +32,13 @@ import {
   getDetail,
   CompanyFileUpload,
 } from "../../functions/Setup/CompanyDetails";
-import {getProductDetails,updateProductDetails,createProductDetails,listProductDetails,removeProductDetails} from "../../functions/SupplierSetup/SupplierSetup"
+import {
+  getProductDetails,
+  updateProductDetails,
+  createProductDetails,
+  listProductDetails,
+  removeProductDetails,
+} from "../../functions/SupplierSetup/SupplierSetup";
 import { listState, listCountry } from "../../functions/Location/Location";
 
 const initialState = {
@@ -40,9 +47,8 @@ const initialState = {
   ContactNo_Office: "",
 
   EmailID_Office: "",
-  
-  Country:"",
-  
+
+  Country: "",
 
   IsActive: true,
 };
@@ -82,14 +88,13 @@ const Supplier = () => {
     { label: "AE", value: "UNITED ARAB EMIRATES" },
     { label: "GB", value: "UNITED KINGDOM" },
     { label: "US", value: "UNITED STATES" },
-  
   ];
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
   const [query, setQuery] = useState("");
   const [blogs, setBlogs] = useState([]);
- 
+
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
   const [pageNo, setPageNo] = useState(0);
@@ -122,14 +127,14 @@ const Supplier = () => {
   const [values, setValues] = useState(initialState);
   const {
     SupplierName,
-  Website1,
-  ContactNo_Office,
-  CompanyName,
-  EmailID_Office,
-  
-  Country,
-  
-  IsActive,
+    Website1,
+    ContactNo_Office,
+    CompanyName,
+    EmailID_Office,
+
+    Country,
+
+    IsActive,
   } = values;
 
   const [showForm, setShowForm] = useState(false);
@@ -163,14 +168,13 @@ const Supplier = () => {
         console.log(res);
         setValues({
           ...values,
-          
+
           SupplierName: res.SupplierName,
-          
-         
+
           Country: res.Country,
           ContactNo_Office: res.ContactNo_Office,
           EmailID_Office: res.EmailID_Office,
-          
+
           CompanyName: res.CompanyName,
           IsActive: res.IsActive,
         });
@@ -213,19 +217,22 @@ const Supplier = () => {
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/supplier`, {
-        skip: skip,
-        per_page: perPage,
-        sorton: column,
-        sortdir: sortDirection,
-        match: query,
-        IsActive: filter,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/supplier`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          IsActive: filter,
+        }
+      )
       .then((response) => {
-        console.log(response.length)
+        console.log(response.length);
         if (response.length > 0) {
           let res = response[0];
-          console.log("Response:",res.data)
+          console.log("Response:", res.data);
           setLoading(false);
           setBlogs(res.data);
           setTotalRows(res.count);
@@ -245,7 +252,7 @@ const Supplier = () => {
   };
   const handleFilter = (e) => {
     setFilter(e.target.checked);
-    console.log("lol",e.target.value)
+    console.log("lol", e.target.value);
   };
   const loadCountries = () => {
     listCountry().then((res) => setCountries(res));
@@ -268,19 +275,17 @@ const Supplier = () => {
     let errors = validate(values);
     setFormErrors(errors);
     setIsSubmit(true);
-if(Object.keys(errors).length===0){
-
-
-    createProductDetails(values)
-      .then((res) => {
-        setValues(initialState);
-        setShowForm(false);
-        setUpdateForm(false);
-        fetchCategories();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (Object.keys(errors).length === 0) {
+      createProductDetails(values)
+        .then((res) => {
+          setValues(initialState);
+          setShowForm(false);
+          setUpdateForm(false);
+          fetchCategories();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -295,7 +300,8 @@ if(Object.keys(errors).length===0){
     e.preventDefault();
     axios
       .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/supplier/${remove_id}`)
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/supplier/${remove_id}`
+      )
       .then((res) => {
         setmodal_delete(!modal_delete);
         fetchCategories();
@@ -343,27 +349,27 @@ if(Object.keys(errors).length===0){
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
     //const phone = /^\d{10}$/;
     const phone =
-/^(?!.*(\d)(-?\1){4})(?!0123456789|1234567890|2345678901|3456789012|4567890123|5678901234|6789012345|7890123456|8901234567|9012345678)\d{10}$/;
+      /^(?!.*(\d)(-?\1){4})(?!0123456789|1234567890|2345678901|3456789012|4567890123|5678901234|6789012345|7890123456|8901234567|9012345678)\d{10}$/;
     if (!values.SupplierName) {
       errors.SupplierName = "Supplier Name is required!";
       setErrSN(true);
     } else {
       setErrSN(false);
     }
-   
+
     if (!values.Country) {
       errors.Country = "Country Name is required!";
       setErrCountry(true);
     } else {
       setErrCountry(false);
     }
-    
+
     if (!values.CompanyName) {
       errors.CompanyName = "Company Name is required!";
       setErrAddress1(true);
     } else {
       setErrAddress1(false);
-    } 
+    }
     if (!values.EmailID_Office) {
       errors.EmailID_Office = "Email is required!";
       setErrEmailOffice(true);
@@ -382,14 +388,13 @@ if(Object.keys(errors).length===0){
     } else {
       setErrCNOffice(false);
     }
-    
 
     return errors;
   };
 
   const validClassSN =
     errSN && isSubmit ? "form-control is-invalid" : "form-control";
-  
+
   const validClassCountry =
     errCountry && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassState =
@@ -397,7 +402,8 @@ if(Object.keys(errors).length===0){
   const validClassCity =
     errCity && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassCompanyName =
-    errAddress1 && isSubmit ? "form-control is-invalid" : "form-control";const validClassAddress2 =
+    errAddress1 && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassAddress2 =
     errAddress2 && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassPincode =
     errPincode && isSubmit ? "form-control is-invalid" : "form-control";
@@ -421,7 +427,7 @@ if(Object.keys(errors).length===0){
   const columns = [
     {
       name: "Sr No",
-      selector: (row,index) => index+1,
+      selector: (row, index) => index + 1,
       sortable: true,
       sortField: "srno",
       minWidth: "150px",
@@ -518,9 +524,9 @@ if(Object.keys(errors).length===0){
       <div className="page-content">
         <Container fluid>
           <BreadCrumb
-            
+            pageTitle="Supplier Setup"
+            maintitle="Supplier Setup"
             title="Supplier"
-          
           />
 
           <Row>
@@ -528,22 +534,19 @@ if(Object.keys(errors).length===0){
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
-                    <Col className="col-sm"  lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">
-                        Supplier
-                      </h2>
+                    <Col className="col-sm" lg={4} md={6} sm={6}>
+                      <h2 className="card-title mb-0 fs-4 mt-2">Supplier</h2>
                     </Col>
 
                     <Col lg={4} md={6} sm={6}>
-                      
-                        
-                          <div
-                            style={{
-                              display: !showForm || updateForm ? "" : "none",
-                            }}
-                          >{console.log(showForm)}
-                      {console.log(updateForm)}
-                           <div className="text-end mt-1">
+                      <div
+                        style={{
+                          display: !showForm || updateForm ? "" : "none",
+                        }}
+                      >
+                        {console.log(showForm)}
+                        {console.log(updateForm)}
+                        <div className="text-end mt-1">
                           <Input
                             type="checkbox"
                             className="form-check-input"
@@ -556,9 +559,9 @@ if(Object.keys(errors).length===0){
                             Active
                           </Label>
                         </div>
-                        </div>
-                        </Col>
-                            {/* <Row>
+                      </div>
+                    </Col>
+                    {/* <Row>
                               <Col lg={12}>
                                 <div className="text-end">
                                   <button
@@ -575,7 +578,7 @@ if(Object.keys(errors).length===0){
                                 </div>
                               </Col>
                             </Row> */}
-                            <Col className="col-sm-auto" lg={4} md={12} sm={12}>
+                    <Col className="col-sm-auto" lg={4} md={12} sm={12}>
                       <div className="d-flex justify-content-sm-end">
                         {/* add btn */}
 
@@ -610,7 +613,7 @@ if(Object.keys(errors).length===0){
                         </div>
 
                         {/* update list btn */}
-                       
+
                         <div
                           style={{
                             display: showForm || updateForm ? "" : "none",
@@ -624,9 +627,9 @@ if(Object.keys(errors).length===0){
                                   onClick={() => {
                                     // setValues(initialState);
                                     setValues(initialState);
-                                      setShowForm(false);
-                                      setUpdateForm(false);
-                                      
+                                    setShowForm(false);
+                                    setUpdateForm(false);
+
                                     // setFileId(Math.random() * 100000);
                                   }}
                                 >
@@ -655,13 +658,9 @@ if(Object.keys(errors).length===0){
                         </div>
                       </div>
                     </Col>
-                        
-                        
-                    
-                  
                   </Row>
                 </CardHeader>
-                
+
                 <div
                   style={{
                     display: showForm && !updateForm ? "block" : "none",
@@ -733,14 +732,12 @@ if(Object.keys(errors).length===0){
                                     >
                                       <option>Select Country</option>
 
-                                      {countriesArray.map((c,index) => {
+                                      {countriesArray.map((c, index) => {
                                         return (
                                           <React.Fragment key={index}>
-                                            
-                                              <option value={c.value}>
-                                                {c.value}
-                                              </option>
-                                            
+                                            <option value={c.value}>
+                                              {c.value}
+                                            </option>
                                           </React.Fragment>
                                         );
                                       })}
@@ -756,14 +753,13 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                               
+
                                 <Col md={3}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="text"
                                       className={validClassCompanyName}
                                       placeholder="Enter address"
-                                   
                                       name="CompanyName"
                                       value={CompanyName}
                                       onChange={handleChange}
@@ -779,7 +775,6 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                
 
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
@@ -802,7 +797,7 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                
+
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
@@ -825,7 +820,6 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                
 
                                 <Row>
                                   <Col lg={6}>
@@ -870,7 +864,6 @@ if(Object.keys(errors).length===0){
                     </Col>
                   </Row>
                 </div>
-                
 
                 {/* update form */}
                 <div
@@ -910,7 +903,7 @@ if(Object.keys(errors).length===0){
                                     </div>
                                   </FormGroup>
                                 </Col>
-                                
+
                                 <Col md={3}>
                                   <div className="form-floating mb-3">
                                     <select
@@ -923,14 +916,12 @@ if(Object.keys(errors).length===0){
                                     >
                                       <option>Select Country</option>
 
-                                      {countriesArray.map((c,index) => {
+                                      {countriesArray.map((c, index) => {
                                         return (
                                           <React.Fragment key={index}>
-                                          
-                                              <option value={c.value}>
-                                                {c.value}
-                                              </option>
-                                            
+                                            <option value={c.value}>
+                                              {c.value}
+                                            </option>
                                           </React.Fragment>
                                         );
                                       })}
@@ -946,20 +937,19 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                
+
                                 <Col md={3}>
                                   <div className="form-floating mb-3">
                                     <Input
                                       type="text"
                                       className={validClassCompanyName}
                                       placeholder="Enter address"
-                                      
                                       name="CompanyName"
                                       value={CompanyName}
-                                      onChange={handleChange} 
+                                      onChange={handleChange}
                                     />
                                     <Label>
-                                    CompanyName
+                                      CompanyName
                                       <span className="text-danger">*</span>
                                     </Label>
                                     {isSubmit && (
@@ -969,7 +959,6 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                               
 
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
@@ -992,7 +981,7 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                               
+
                                 <Col md={4}>
                                   <div className="form-floating mb-3">
                                     <Input
@@ -1015,9 +1004,7 @@ if(Object.keys(errors).length===0){
                                     )}
                                   </div>
                                 </Col>
-                                
-                                
-                               
+
                                 <Row>
                                   <Col lg={6}>
                                     <div className="mb-3">

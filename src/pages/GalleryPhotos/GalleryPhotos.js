@@ -23,15 +23,20 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import {getGalleryPhotosByParams,getGalleryPhotos,updateGalleryPhotos,listGalleryPhotos,removeGalleryPhotos,createGalleryPhotos} from "../../functions/GalleryPhotos/GalleryPhotos"
-
+import {
+  getGalleryPhotosByParams,
+  getGalleryPhotos,
+  updateGalleryPhotos,
+  listGalleryPhotos,
+  removeGalleryPhotos,
+  createGalleryPhotos,
+} from "../../functions/GalleryPhotos/GalleryPhotos";
 
 const GalleryPhotos = () => {
-  const [selectType,setSelectType] = useState([]);
+  const [selectType, setSelectType] = useState([]);
 
   const [blogImage, setblogImage] = useState("");
-  const [types,setTypes] = useState("");
-
+  const [types, setTypes] = useState("");
 
   const [loadingOption, setLoadingOption] = useState(false);
 
@@ -51,20 +56,20 @@ const GalleryPhotos = () => {
 
   const [blogs, setBlogs] = useState([]);
 
-  const getSelectType=()=>{
+  const getSelectType = () => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Category`)
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Category`
+      )
       .then((response) => {
         if (response.length > 0) {
-        
-          console.log("resp",response)
+          console.log("resp", response);
           setSelectType(response);
         } else if (response.length === 0) {
           setSelectType([]);
         }
       });
-  }
+  };
 
   useEffect(() => {
     console.log(formErrors);
@@ -73,7 +78,6 @@ const GalleryPhotos = () => {
     }
   }, [formErrors, isSubmit]);
 
-
   const [modal_delete, setmodal_delete] = useState(false);
   const tog_delete = (_id) => {
     setmodal_delete(!modal_delete);
@@ -81,14 +85,16 @@ const GalleryPhotos = () => {
   };
 
   const [modal_edit, setmodal_edit] = useState(false);
-  const handleTog_edit = (row,_id) => {
+  const handleTog_edit = (row, _id) => {
     getSelectType();
     setIsSubmit(false);
     setUpdateForm(true);
     set_Id(_id);
     setblogImage(row.imageURL);
     setTypes(row.Category);
-    setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
+    setPhotoAdd(
+      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`
+    );
     setIsActive(row.IsActive);
     setCheckImagePhoto(true);
   };
@@ -96,7 +102,7 @@ const GalleryPhotos = () => {
   const handleClick = (e) => {
     e.preventDefault();
     setFormErrors({});
-    let errors = validate(blogImage,types);
+    let errors = validate(blogImage, types);
     setFormErrors(errors);
     setIsSubmit(true);
 
@@ -105,15 +111,13 @@ const GalleryPhotos = () => {
       const formdata = new FormData();
 
       formdata.append("imageURL", blogImage);
-      formdata.append("Category",types);
+      formdata.append("Category", types);
       formdata.append("IsActive", IsActive);
-  
-
 
       createGalleryPhotos(formdata)
         .then((res) => {
           console.log(res);
-          
+
           setShowForm(false);
           setLoadingOption(false);
           setIsActive(false);
@@ -146,7 +150,7 @@ const GalleryPhotos = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    let erros = validate(blogImage,types);
+    let erros = validate(blogImage, types);
     setFormErrors(erros);
     setIsSubmit(true);
 
@@ -155,11 +159,11 @@ const GalleryPhotos = () => {
       const formdata = new FormData();
 
       formdata.append("imageURL", blogImage);
-      formdata.append("Category",types);
-     
+      formdata.append("Category", types);
+
       formdata.append("IsActive", IsActive);
 
-      updateGalleryPhotos(_id,formdata)
+      updateGalleryPhotos(_id, formdata)
         .then((res) => {
           // setmodal_edit(!modal_edit);
           setPhotoAdd("");
@@ -167,12 +171,12 @@ const GalleryPhotos = () => {
           setLoadingOption(false);
 
           setCheckImagePhoto(false);
-     
+
           setCheckImagePhoto(false);
           setblogImage("");
           setPhotoAdd("");
           setIsActive(false);
- 
+
           setblogImage("");
           fetchCategories();
           setSelectType("");
@@ -188,19 +192,16 @@ const GalleryPhotos = () => {
   const [errBD, setErrBD] = useState(false);
   const [errBTD, setErrBTD] = useState(false);
   const [errBI, setErrBI] = useState(false);
-  const [errSN,setErrSN]=useState(false);
+  const [errSN, setErrSN] = useState(false);
 
-  const validate = (blogImage,types) => {
+  const validate = (blogImage, types) => {
     const errors = {};
     if (types === "") {
       errors.types = "Category is required!";
       setErrSN(true);
-    }
-    else{
+    } else {
       setErrSN(false);
     }
-
-
 
     if (blogImage === "") {
       errors.blogImage = "Gallery Image is required!";
@@ -254,24 +255,23 @@ const GalleryPhotos = () => {
     }
 
     getGalleryPhotosByParams({
-        skip: skip,
-        per_page: perPage,
-        sorton: column,
-        sortdir: sortDirection,
-        match: query,
-        IsActive: filter,
-      })
-      .then((response) => {
-        if (response.length > 0) {
-          let res = response[0];
-          setLoading(false);
-          setBlogs(res.data);
-          setTotalRows(res.count);
-        } else if (response.length === 0) {
-          setBlogs([]);
-        }
-        // console.log(res);
-      });
+      skip: skip,
+      per_page: perPage,
+      sorton: column,
+      sortdir: sortDirection,
+      match: query,
+      IsActive: filter,
+    }).then((response) => {
+      if (response.length > 0) {
+        let res = response[0];
+        setLoading(false);
+        setBlogs(res.data);
+        setTotalRows(res.count);
+      } else if (response.length === 0) {
+        setBlogs([]);
+      }
+      // console.log(res);
+    });
     setLoading(false);
   };
   const handlePageChange = (page) => {
@@ -348,12 +348,12 @@ const GalleryPhotos = () => {
 
   const col = [
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-        minWidth: "150px",
-      },
+      name: "Sr No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      sortField: "srno",
+      minWidth: "150px",
+    },
     {
       name: "Category Name",
       cell: (row) => row.GalleryTypeDetails.Category,
@@ -362,12 +362,12 @@ const GalleryPhotos = () => {
       minWidth: "150px",
     },
     {
-        name: "Image",
-        selector: (row) => renderImage(row.imageURL),
-        sortable: true,
-        sortField: "password",
-        minWidth: "150px",
-      },
+      name: "Image",
+      selector: (row) => renderImage(row.imageURL),
+      sortable: true,
+      sortField: "password",
+      minWidth: "150px",
+    },
     {
       name: "Status",
       selector: (row) => {
@@ -387,7 +387,7 @@ const GalleryPhotos = () => {
                   className="btn btn-sm btn-success edit-item-btn "
                   data-bs-toggle="modal"
                   data-bs-target="#showModal"
-                  onClick={() => handleTog_edit(row,row._id)}
+                  onClick={() => handleTog_edit(row, row._id)}
                 >
                   Edit
                 </button>
@@ -400,7 +400,7 @@ const GalleryPhotos = () => {
                   data-bs-target="#deleteRecordModal"
                   onClick={() => tog_delete(row._id)}
                 >
-                  Remove 
+                  Remove
                 </button>
               </div>
             </div>
@@ -418,7 +418,7 @@ const GalleryPhotos = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Gallery Photos"  />
+          <BreadCrumb title="Gallery Photos" pageTitle="Gallery Management" />
 
           <Row>
             <Col lg={12}>
@@ -426,7 +426,9 @@ const GalleryPhotos = () => {
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Gallery Photos</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">
+                        Gallery Photos
+                      </h2>
                     </Col>
                     <Col lg={4} md={6} sm={6}>
                       <div
@@ -467,7 +469,7 @@ const GalleryPhotos = () => {
                                     onClick={() => {
                                       getSelectType();
                                       setShowForm(!showForm);
-                                     
+
                                       setIsActive(false);
                                       setblogImage("");
                                       // setFileId(Math.random() * 100000);
@@ -497,7 +499,6 @@ const GalleryPhotos = () => {
                                 <button
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
-                
                                     setIsActive(false);
                                     setblogImage("");
                                     setShowForm(false);
@@ -548,28 +549,39 @@ const GalleryPhotos = () => {
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                <Col lg={6}>
-                                <Label>
-                                        Category Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                    <Input name="Type" id="" type="select" onChange={(e) => {
-                                          setTypes(e.target.value);
-                                        }}>
-                                        <option>Select Type</option>
-                                        {selectType && Array.isArray(selectType) && selectType
-        .filter(item => item.IsActive)
-        .map((item, index) => (
-          <option key={index} value={item._id}>{item.Category}</option>
-        ))}
+                                  <Col lg={6}>
+                                    <Label>
+                                      Category Name{" "}
+                                      <span className="text-danger">*</span>
+                                    </Label>
+                                    <Input
+                                      name="Type"
+                                      id=""
+                                      type="select"
+                                      onChange={(e) => {
+                                        setTypes(e.target.value);
+                                      }}
+                                    >
+                                      <option>Select Type</option>
+                                      {selectType &&
+                                        Array.isArray(selectType) &&
+                                        selectType
+                                          .filter((item) => item.IsActive)
+                                          .map((item, index) => (
+                                            <option
+                                              key={index}
+                                              value={item._id}
+                                            >
+                                              {item.Category}
+                                            </option>
+                                          ))}
                                     </Input>
                                     {isSubmit && (
                                       <p className="text-danger">
-                                      {console.log(formErrors.types)}
+                                        {console.log(formErrors.types)}
                                         {formErrors.types}
                                       </p>
                                     )}
-                                   
                                   </Col>
 
                                   <Col lg={6}>
@@ -688,17 +700,26 @@ const GalleryPhotos = () => {
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                <Col lg={6}>
-                                <Label>
-                                        Category Name{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                    <Input name="Type" id="" type="select" value={types} onChange={(e) => {
-                                          setTypes(e.target.value); 
-                                        }}>
-                                        {selectType && selectType.map((item,index)=>
-                                        <option key={index} value={item._id}>{item.Category}</option>
-                                        )}
+                                  <Col lg={6}>
+                                    <Label>
+                                      Category Name{" "}
+                                      <span className="text-danger">*</span>
+                                    </Label>
+                                    <Input
+                                      name="Type"
+                                      id=""
+                                      type="select"
+                                      value={types}
+                                      onChange={(e) => {
+                                        setTypes(e.target.value);
+                                      }}
+                                    >
+                                      {selectType &&
+                                        selectType.map((item, index) => (
+                                          <option key={index} value={item._id}>
+                                            {item.Category}
+                                          </option>
+                                        ))}
                                     </Input>
                                     {isSubmit && (
                                       <p className="text-danger">
@@ -706,7 +727,6 @@ const GalleryPhotos = () => {
                                       </p>
                                     )}
                                   </Col>
-                                  
 
                                   <Col lg={6}>
                                     <label>
@@ -739,7 +759,6 @@ const GalleryPhotos = () => {
                                       />
                                     ) : null}
                                   </Col>
-
 
                                   <div className="mt-5">
                                     <Col lg={6}>
@@ -854,7 +873,7 @@ const GalleryPhotos = () => {
         isOpen={modal_delete}
         toggle={() => {
           tog_delete();
-         
+
           setIsActive(false);
           setblogImage("");
         }}

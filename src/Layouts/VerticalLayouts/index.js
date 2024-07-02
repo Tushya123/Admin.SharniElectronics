@@ -377,7 +377,7 @@ const VerticalLayout = (props) => {
   const [gallery, setgallery] = useState(false);
   const [reports, setreports] = useState(false);
   const [cmsss, setcmsss] = useState(false);
-  const [cmsmaster,setCMSMaster]= useState(false);
+  const [cmsmaster, setCMSMaster] = useState(false);
   const navData = navdata().props.children;
   const path = props.router.location.pathname;
 
@@ -564,10 +564,10 @@ const VerticalLayout = (props) => {
         </Collapse>
       </li>
       <li className="nav-item">
-              <Link to="/admin-user" className="nav-link">
-                Admin User
-              </Link>
-            </li>
+        <Link to="/admin-user" className="nav-link">
+          Admin User
+        </Link>
+      </li>
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -616,12 +616,12 @@ const VerticalLayout = (props) => {
             </li> */}
             <li className="nav-item">
               <Link to="/product-group" className="nav-link">
-                ProductGroup
+                Product Group
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/product-detail" className="nav-link">
-                Products
+                Product Details
               </Link>
             </li>
             {/* <li className="nav-item">
@@ -926,10 +926,7 @@ const VerticalLayout = (props) => {
             </li>
           </ul>
         </Collapse>
-
-
       </li>{" "}
-
       <li className="nav-item">
         <Link
           className="nav-link menu-link"
@@ -947,7 +944,6 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-
             {/* <li className="nav-item">
               <Link to="/cmsmaster" className="nav-link">
                 {" "}
@@ -964,13 +960,12 @@ const VerticalLayout = (props) => {
               <Link to="/country-wise-report" className="nav-link">
                 {" "}
                 Customer List Country Wise
-
               </Link>
-            </li> <li className="nav-item">
+            </li>{" "}
+            <li className="nav-item">
               <Link to="/status-report" className="nav-link">
                 {" "}
                 Status Report
-
               </Link>
             </li>
           </ul>
@@ -985,7 +980,7 @@ const VerticalLayout = (props) => {
             setCMSMaster(!cmsmaster);
           }}
         >
-           <span data-key="t-apps">Master  </span>
+          <span data-key="t-apps">Master </span>
         </Link>
         <Collapse
           className="menu-dropdown"
@@ -993,21 +988,22 @@ const VerticalLayout = (props) => {
           //   id="sidebarApps"
         >
           <ul className="nav nav-sm flex-column test">
-           
             <li className="nav-item">
               <Link to="/cms" className="nav-link">
-                CMS Master 
+                CMS Master
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/commitment" className="nav-link">
                 Commitment Master
               </Link>
-            </li> <li className="nav-item">
+            </li>{" "}
+            <li className="nav-item">
               <Link to="/newsletter" className="nav-link">
                 Newsletter
               </Link>
-            </li> <li className="nav-item">
+            </li>{" "}
+            <li className="nav-item">
               <Link to="/banner" className="nav-link">
                 Banner Master
               </Link>
@@ -1017,12 +1013,11 @@ const VerticalLayout = (props) => {
                 Certificate Master
               </Link>
             </li>
-             
             <li className="nav-item">
               <Link className="nav-link menu-link" to="/blogs">
-                 <span data-key="t-apps">Blogs </span>
-               </Link>
-             </li>
+                <span data-key="t-apps">Blogs </span>
+              </Link>
+            </li>
           </ul>
         </Collapse>
       </li>

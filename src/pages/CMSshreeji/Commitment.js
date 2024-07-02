@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   Button,
   Card,
@@ -31,15 +31,14 @@ import {
 const initialState = {
   Title: "",
   Description: "",
- 
+
   CommitmentImage: "",
   IsActive: false,
 };
 
 const Commitment = () => {
   const [values, setValues] = useState(initialState);
-  const { Title, Description, CommitmentImage, IsActive } =
-    values;
+  const { Title, Description, CommitmentImage, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -82,8 +81,8 @@ const Commitment = () => {
         setValues({
           ...values,
           Title: res.Title,
-          Description: res.Description, 
-          CommitmentImage:res.CommitmentImage,
+          Description: res.Description,
+          CommitmentImage: res.CommitmentImage,
           IsActive: res.IsActive,
         });
       })
@@ -113,7 +112,7 @@ const Commitment = () => {
       formdata.append("CommitmentImage", values.CommitmentImage);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
-      formdata.append("IsActive", values.IsActive); 
+      formdata.append("IsActive", values.IsActive);
       createCommitment(formdata)
         .then((res) => {
           setmodal_list(!modal_list);
@@ -155,7 +154,7 @@ const Commitment = () => {
       formdata.append("CommitmentImage", values.CommitmentImage);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
-      formdata.append("IsActive", values.IsActive); 
+      formdata.append("IsActive", values.IsActive);
 
       updateCommitment(_id, formdata)
         .then((res) => {
@@ -206,18 +205,13 @@ const Commitment = () => {
       setErrLN(false);
     }
 
-   
- 
-   
-     if (values.CommitmentImage ==="") {
+    if (values.CommitmentImage === "") {
       errors.CommitmentImage = " Image is required!";
       setErrBI(true);
     }
     if (values.CommitmentImage !== "") {
       setErrBI(false);
     }
-
-    
 
     return errors;
   };
@@ -313,47 +307,41 @@ const Commitment = () => {
     setFilter(e.target.checked);
   };
   const DescriptionCell = styled.div`
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-  padding: 10px;
-  height: auto;
-  line-height: 1.5;
-`;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    padding: 10px;
+    height: auto;
+    line-height: 1.5;
+  `;
 
   const col = [
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-    
-      },
+      name: "Sr No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      sortField: "srno",
+    },
     {
       name: "Title",
       selector: (row) => row.Title,
       sortable: true,
       sortField: "Title",
-    
     },
     {
       name: "Description",
-      selector: (row) =>
-         row.Description,
+      selector: (row) => row.Description,
       sortable: true,
       sortField: "Description",
-      maxWidth:"150px"
-    
+      maxWidth: "150px",
     },
- 
- 
+
     {
       name: "Image",
       selector: (row) => renderImage(row.CommitmentImage),
       sortable: true,
       sortField: "password",
-  
     },
 
     {
@@ -392,20 +380,22 @@ const Commitment = () => {
     },
   ];
 
-  document.title = "Commitment master|Shreeji Pharma" ;
+  document.title = "Commitment master|Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Commitment master"  />
+          <BreadCrumb title="Commitment master" pageTitle="Master" />
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" sm={6} lg={4} md={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Commitment master</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">
+                        Commitment master
+                      </h2>
                     </Col>
 
                     <Col sm={6} lg={4} md={6}>
@@ -490,7 +480,7 @@ const Commitment = () => {
             setIsSubmit(false);
           }}
         >
-          Add Commitment Master
+          Add Commitment
         </ModalHeader>
         <form>
           <ModalBody>
@@ -505,14 +495,12 @@ const Commitment = () => {
                 onChange={handleChange}
               />
               <Label>
-               Commitment title <span className="text-danger">*</span>
+                Commitment title <span className="text-danger">*</span>
               </Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Title}</p>
-              )}
+              {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
             <div className="form-floating mb-3">
-            <Input
+              <Input
                 type="textarea"
                 className="form-control"
                 placeholder="Enter Commitment Description..."
@@ -523,16 +511,16 @@ const Commitment = () => {
               />
 
               <Label>
-               Description <span className="text-danger">*</span>
+                Description <span className="text-danger">*</span>
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Description}</p>}
+              {isSubmit && (
+                <p className="text-danger">{formErrors.Description}</p>
+              )}
             </div>
-            
-            
 
             <Col lg={6}>
               <label>
-               Image <span className="text-danger">*</span>
+                Image <span className="text-danger">*</span>
               </label>
 
               <input
@@ -612,7 +600,7 @@ const Commitment = () => {
             setIsSubmit(false);
           }}
         >
-          Edit Commitment master
+          Edit Commitment
         </ModalHeader>
         <form>
           <ModalBody>
@@ -627,14 +615,12 @@ const Commitment = () => {
                 onChange={handleChange}
               />
               <Label>
-               Commitment title<span className="text-danger">*</span>{" "}
+                Commitment title<span className="text-danger">*</span>{" "}
               </Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Title}</p>
-              )}
+              {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
             <div className="form-floating mb-3">
-            <Input
+              <Input
                 type="textarea"
                 className="form-control"
                 placeholder="Enter Commitment Description..."
@@ -644,17 +630,17 @@ const Commitment = () => {
                 onChange={handleChange}
               />
 
-
               <Label>
-               Description<span className="text-danger">*</span>{" "}
+                Description<span className="text-danger">*</span>{" "}
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Description}</p>}
+              {isSubmit && (
+                <p className="text-danger">{formErrors.Description}</p>
+              )}
             </div>
-           
-             
+
             <Col lg={6}>
               <label>
-                 Image <span className="text-danger">*</span>
+                Image <span className="text-danger">*</span>
               </label>
               <input
                 key={"CommitmentImage" + _id}

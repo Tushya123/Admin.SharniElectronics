@@ -78,7 +78,6 @@ const ContactInquiry = () => {
     { label: "AE", value: "UNITED ARAB EMIRATES" },
     { label: "GB", value: "UNITED KINGDOM" },
     { label: "US", value: "UNITED STATES" },
-  
   ];
 
   const [values, setValues] = useState(initialState);
@@ -390,7 +389,9 @@ const ContactInquiry = () => {
       name: "Inquiry Date",
       cell: (row) => {
         const dateParts = row.createdAt.split("T")[0].split("-");
-        const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0].slice(-2)}`;
+        const formattedDate = `${dateParts[2]}/${
+          dateParts[1]
+        }/${dateParts[0].slice(-2)}`;
         return formattedDate;
       },
       sortable: true,
@@ -455,7 +456,11 @@ const ContactInquiry = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Contact Inquiry" title="Contact Inquiry" />
+          <BreadCrumb
+            maintitle="Contact Inquiry"
+            pageTitle="Inquiry Management"
+            title="Contact Inquiry"
+          />
           <Row>
             <Col lg={12}>
               <Card>

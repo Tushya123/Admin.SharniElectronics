@@ -21,8 +21,12 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 
 import {
-  updateSubscriber,listSubscriber,createSubscribers,deleteSubscribers,getSpecificSubscriber,
-  removeSubscribers
+  updateSubscriber,
+  listSubscriber,
+  createSubscribers,
+  deleteSubscribers,
+  getSpecificSubscriber,
+  removeSubscribers,
 } from "../../functions/Preferences/Preferences";
 
 const initialState = {
@@ -33,7 +37,7 @@ const initialState = {
 
 const Preferences = () => {
   const [values, setValues] = useState(initialState);
-  const { QuoteEmail,InquiryEmail, IsActive } = values;
+  const { QuoteEmail, InquiryEmail, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -64,107 +68,103 @@ const Preferences = () => {
   };
 
   const [modal_delete, setmodal_delete] = useState(false);
-    const tog_delete = (_id) => {
-      setmodal_delete(!modal_delete);
-      setRemove_id(_id);
-    };
+  const tog_delete = (_id) => {
+    setmodal_delete(!modal_delete);
+    setRemove_id(_id);
+  };
 
   const [modal_edit, setmodal_edit] = useState(false);
-    const handleTog_edit = (_id) => {
-      setmodal_edit(!modal_edit);
-      setIsSubmit(false);
-      set_Id(_id);
-      console.log(_id);
-      getSpecificSubscriber(_id)
-        .then((res) => {
-          console.log(res);
-          setValues({
-            ...values,
-            QuoteEmail: res.QuoteEmail,
-            InquiryEmail: res.InquiryEmail,
-            IsActive: res.IsActive,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+  const handleTog_edit = (_id) => {
+    setmodal_edit(!modal_edit);
+    setIsSubmit(false);
+    set_Id(_id);
+    console.log(_id);
+    getSpecificSubscriber(_id)
+      .then((res) => {
+        console.log(res);
+        setValues({
+          ...values,
+          QuoteEmail: res.QuoteEmail,
+          InquiryEmail: res.InquiryEmail,
+          IsActive: res.IsActive,
         });
-    };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    const handleChange = (e) => {
-      setValues({ ...values, [e.target.name]: e.target.value });
-    };
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
-    const handleCheck = (e) => {
-      setValues({ ...values, IsActive: e.target.checked });
-    };
+  const handleCheck = (e) => {
+    setValues({ ...values, IsActive: e.target.checked });
+  };
 
-    const handleClick = (e) => {
-      e.preventDefault();
-      setFormErrors({});
-      console.log("country", values);
-      let erros = validate(values);
-      setFormErrors(erros);
-      setIsSubmit(true);
+  const handleClick = (e) => {
+    e.preventDefault();
+    setFormErrors({});
+    console.log("country", values);
+    let erros = validate(values);
+    setFormErrors(erros);
+    setIsSubmit(true);
+  };
 
-      
-    };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    removeSubscribers(remove_id)
+      .then((res) => {
+        setmodal_delete(!modal_delete);
+        fetchCategories();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    const handleDelete = (e) => {
-      e.preventDefault();
-      removeSubscribers(remove_id)
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    let erros = validate(values);
+    setFormErrors(erros);
+    setIsSubmit(true);
+
+    if (Object.keys(erros).length === 0) {
+      updateSubscriber(_id, values)
         .then((res) => {
-          setmodal_delete(!modal_delete);
+          setmodal_edit(!modal_edit);
           fetchCategories();
         })
         .catch((err) => {
           console.log(err);
         });
-    };
-
-    const handleUpdate = (e) => {
-      e.preventDefault();
-      let erros = validate(values);
-      setFormErrors(erros);
-      setIsSubmit(true);
-
-      if (Object.keys(erros).length === 0) {
-        updateSubscriber(_id, values)
-          .then((res) => {
-            setmodal_edit(!modal_edit);
-            fetchCategories();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    };
-
-    const validate = (values) => {
-      const errors = {};
-
-      if (!/\S+@\S+\.\S+/.test(values.QuoteEmail)) {
-        errors.QuoteEmail = "Email address is invalid";
-        // Assuming you have a setter function for the error state of Email field
-        setErrCN(true);
-      }
-      else{
-        setErrCN(false);
     }
-  if(!/\S+@\S+\.\S+/.test(values.InquiryEmail)) {
-        errors.InquiryEmail = "Email address is invalid";
-        // Assuming you have a setter function for the error state of Email field
-        setErrDN(true);
-      }
-      else{
-        setErrDN(false);
+  };
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!/\S+@\S+\.\S+/.test(values.QuoteEmail)) {
+      errors.QuoteEmail = "Email address is invalid";
+      // Assuming you have a setter function for the error state of Email field
+      setErrCN(true);
+    } else {
+      setErrCN(false);
+    }
+    if (!/\S+@\S+\.\S+/.test(values.InquiryEmail)) {
+      errors.InquiryEmail = "Email address is invalid";
+      // Assuming you have a setter function for the error state of Email field
+      setErrDN(true);
+    } else {
+      setErrDN(false);
     }
 
-      return errors;
-    };
+    return errors;
+  };
 
   const validClassQuoteEmail =
     errCN && isSubmit ? "form-control is-invalid" : "form-control";
-    const validClassInquiryEmail =
+  const validClassInquiryEmail =
     errDN && isSubmit ? "form-control is-invalid" : "form-control";
 
   const [loading, setLoading] = useState(false);
@@ -196,7 +196,6 @@ const Preferences = () => {
 
     await axios
       .post(
-
         `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/preferences`,
 
         {
@@ -235,24 +234,19 @@ const Preferences = () => {
     setFilter(e.target.checked);
   };
   const col = [
-    
     {
       name: "Quote Email",
       selector: (row) => row.QuoteEmail,
       sortable: true,
       sortField: "address",
-     
-      
     },
     {
       name: "Inquiry Email",
       selector: (row) => row.InquiryEmail,
       sortable: true,
       sortField: "address",
-   
-      
     },
-    
+
     {
       name: "Status",
       selector: (row) => {
@@ -297,21 +291,18 @@ const Preferences = () => {
     },
   ];
 
-
   document.title = "Preferences | Shreeji Pharma";
-
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-
-          <BreadCrumb title="Preference NewsPaper"/>
+          <BreadCrumb pageTitle="Preferences" title="Preference NewsPaper" />
 
           <Row>
             <Col lg={12}>
               <Card>
-              <CardHeader>
+                <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
                       <h2 className="card-title mb-0 fs-4 mt-2">Preference</h2>
@@ -325,12 +316,11 @@ const Preferences = () => {
                         <div className="text-end mt-1">
                           <Input
                             type="checkbox"
-                          className="form-check-input"
-                          name="filter"
-                          value={filter}
-                          defaultChecked={true}
-                          onChange={handleFilter}
-
+                            className="form-check-input"
+                            name="filter"
+                            value={filter}
+                            defaultChecked={true}
+                            onChange={handleFilter}
                           />
                           <Label className="form-check-label ms-2">
                             Active
@@ -345,8 +335,7 @@ const Preferences = () => {
                           style={{
                             display: showForm || updateForm ? "none" : "",
                           }}
-                        >
-                        </div>
+                        ></div>
 
                         {/* update list btn */}
 
@@ -362,7 +351,6 @@ const Preferences = () => {
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
                                     // setValues(initialState);
-                                   
                                     // setFileId(Math.random() * 100000);
                                   }}
                                 >
@@ -393,7 +381,6 @@ const Preferences = () => {
                     </Col>
                   </Row>
                 </CardHeader>
-                
 
                 <CardBody>
                   <div id="customerList">
@@ -523,11 +510,14 @@ const Preferences = () => {
                 value={QuoteEmail}
                 onChange={handleChange}
               />
-              <Label>Quote Email <span className="text-danger">*</span></Label>
+              <Label>
+                Quote Email <span className="text-danger">*</span>
+              </Label>
               {isSubmit && (
                 <p className="text-danger">{formErrors.QuoteEmail}</p>
               )}
-            </div><div className="form-floating mb-3">
+            </div>
+            <div className="form-floating mb-3">
               <Input
                 type="text"
                 className={validClassInquiryEmail}
@@ -537,7 +527,9 @@ const Preferences = () => {
                 value={values.InquiryEmail}
                 onChange={handleChange}
               />
-              <Label>Inquiry Email <span className="text-danger">*</span></Label>
+              <Label>
+                Inquiry Email <span className="text-danger">*</span>
+              </Label>
               {isSubmit && (
                 <p className="text-danger">{formErrors.InquiryEmail}</p>
               )}
