@@ -372,7 +372,7 @@ const ContactInquiry = () => {
       minWidth: "150px",
     },
     {
-      name: "Phone no",
+      name: "Contact no",
       selector: (row) => row.Mobile,
       sortable: true,
       sortField: "Mobile",
@@ -427,7 +427,7 @@ const ContactInquiry = () => {
                   data-bs-target="#showModal"
                   onClick={() => handleTog_edit(row._id)}
                 >
-                  Edit
+                  View
                 </button>
               </div>
 
@@ -720,6 +720,7 @@ const ContactInquiry = () => {
                 placeholder="Enter Name"
                 required
                 name="ContactPerson"
+                disabled
                 value={values.ContactPerson}
                 onChange={handleChange}
               />
@@ -736,6 +737,7 @@ const ContactInquiry = () => {
                 type="text"
                 className={validClassEmail}
                 placeholder="Enter Email"
+                disabled
                 required
                 name="Email"
                 value={values.Email}
@@ -754,6 +756,7 @@ const ContactInquiry = () => {
                 placeholder="Enter Category Name"
                 required
                 name="Remark"
+                disabled
                 value={values.Remark}
                 onChange={handleChange}
               />
@@ -771,6 +774,7 @@ const ContactInquiry = () => {
                   name="Country"
                   value={values.Country}
                   data-choices
+                  disabled
                   data-choices-sorting="true"
                   onChange={handleChange}
                 >
@@ -799,6 +803,7 @@ const ContactInquiry = () => {
                 className={validClassPhoneNumber}
                 placeholder="Enter Phone Number"
                 required
+                disabled
                 name="Mobile"
                 value={values.Mobile}
                 onChange={handleChange}

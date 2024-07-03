@@ -643,6 +643,19 @@ const ProductInquiry = () => {
       sortField: "ContactPerson",
     },
     {
+      name: "Inquiry Date",
+      cell: (row) => {
+        const dateParts = row.createdAt.split("T")[0].split("-");
+        const formattedDate = `${dateParts[2]}/${
+          dateParts[1]
+        }/${dateParts[0].slice(-2)}`;
+        return formattedDate;
+      },
+      sortable: true,
+      sortField: "createdAt",
+      minWidth: "150px",
+    },
+    {
       name: "Country",
       cell: (row) => row.Country,
       sortable: true,
@@ -660,72 +673,60 @@ const ProductInquiry = () => {
       sortable: true,
       sortField: "Email",
     },
-    {
-      name: "Inquiry No",
-      cell: (row) => row._id,
-      sortable: true,
-      sortField: "_id",
-    },
-    {
-      name: "Inquiry Date",
-      cell: (row) => {
-        const dateParts = row.createdAt.split("T")[0].split("-");
-        const formattedDate = `${dateParts[2]}/${
-          dateParts[1]
-        }/${dateParts[0].slice(-2)}`;
-        return formattedDate;
-      },
-      sortable: true,
-      sortField: "createdAt",
-      minWidth: "150px",
-    },
-    {
-      name: "Product Details",
-      cell: (row) => {
-        return (
-          <table
-            style={{
-              borderCollapse: "collapse",
-              width: "100%",
-              marginTop: "5px",
-              marginBottom: "7px",
-            }}
-          >
-            <thead>
-              <tr>
-                <td style={{ border: "1px solid lightgrey", padding: "8px" }}>
-                  Product Group
-                </td>
-                <td style={{ border: "1px solid lightgrey", padding: "8px" }}>
-                  Product Detail
-                </td>
-                <td style={{ border: "1px solid lightgrey", padding: "8px" }}>
-                  Quantity
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              {row.InquiryDetails.map((item, index) => (
-                <tr key={index}>
-                  <td style={{ border: "1px solid lightgrey", padding: "5px" }}>
-                    {item.Group}
-                  </td>
-                  <td style={{ border: "1px solid lightgrey", padding: "5px" }}>
-                    {item.ProductDetailLabel}
-                  </td>
-                  <td style={{ border: "1px solid lightgrey", padding: "5px" }}>
-                    {item.Quantity}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        );
-      },
-      sortable: true,
-      sortField: "blogTitle",
-      minWidth: "420px",
-    },
+    // {
+    //   name: "Inquiry No",
+    //   cell: (row) => row._id,
+    //   sortable: true,
+    //   sortField: "_id",
+    // },
+
+    // {
+    //   name: "Product Details",
+    //   cell: (row) => {
+    //     return (
+    //       <table
+    //         style={{
+    //           borderCollapse: "collapse",
+    //           width: "100%",
+    //           marginTop: "5px",
+    //           marginBottom: "7px",
+    //         }}
+    //       >
+    //         <thead>
+    //           <tr>
+    //             <td style={{ border: "1px solid lightgrey", padding: "8px" }}>
+    //               Product Group
+    //             </td>
+    //             <td style={{ border: "1px solid lightgrey", padding: "8px" }}>
+    //               Product Detail
+    //             </td>
+    //             <td style={{ border: "1px solid lightgrey", padding: "8px" }}>
+    //               Quantity
+    //             </td>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           {row.InquiryDetails.map((item, index) => (
+    //             <tr key={index}>
+    //               <td style={{ border: "1px solid lightgrey", padding: "5px" }}>
+    //                 {item.Group}
+    //               </td>
+    //               <td style={{ border: "1px solid lightgrey", padding: "5px" }}>
+    //                 {item.ProductDetailLabel}
+    //               </td>
+    //               <td style={{ border: "1px solid lightgrey", padding: "5px" }}>
+    //                 {item.Quantity}
+    //               </td>
+    //             </tr>
+    //           ))}
+    //         </tbody>
+    //       </table>
+    //     );
+    //   },
+    //   sortable: true,
+    //   sortField: "blogTitle",
+    //   minWidth: "420px",
+    // },
     {
       name: "Status",
       selector: (row) => {
@@ -747,7 +748,7 @@ const ProductInquiry = () => {
                   data-bs-target="#showModal"
                   onClick={() => handleTog_edit(row._id)}
                 >
-                  Edit
+                  View
                 </button>
               </div>
 
@@ -909,8 +910,6 @@ const ProductInquiry = () => {
                           display: !showForm || updateForm ? "" : "none",
                         }}
                       >
-                        {console.log(showForm)}
-                        {console.log(updateForm)}
                         <div className="text-end mt-1">
                           <Input
                             type="checkbox"
@@ -1427,7 +1426,7 @@ const ProductInquiry = () => {
                                         </div>
                                     ) : null} */}
                           <Row>
-                            <Col lg={3}>
+                            {/* <Col lg={3}>
                               <Label>
                                 Inquiry Number:{" "}
                                 <span className="text-danger">*</span>
@@ -1444,7 +1443,7 @@ const ProductInquiry = () => {
                                   disabled // Added disabled attribute
                                 />
                               </div>
-                            </Col>
+                            </Col> */}
                             <Col lg={3}>
                               <Label>
                                 Contact Person{" "}
@@ -1454,6 +1453,7 @@ const ProductInquiry = () => {
                                 <Input
                                   key={"contactPerson"}
                                   type="text"
+                                  disabled
                                   placeholder="Enter contact person"
                                   required
                                   name="ContactPerson"
@@ -1479,6 +1479,7 @@ const ProductInquiry = () => {
                                 <Input
                                   key={"companyName"}
                                   type="text"
+                                  disabled
                                   placeholder="Enter company name"
                                   required
                                   name="CompanyName"
@@ -1504,6 +1505,7 @@ const ProductInquiry = () => {
                                 <select
                                   className={validClassCountry}
                                   name="Country"
+                                  disabled
                                   value={Country}
                                   data-choices
                                   data-choices-sorting="true"
@@ -1537,6 +1539,7 @@ const ProductInquiry = () => {
                               <div className="form-control-sm mb-3">
                                 <Input
                                   key={"mobile"}
+                                  disabled
                                   type="tel"
                                   placeholder="Enter mobile number"
                                   required
@@ -1561,6 +1564,7 @@ const ProductInquiry = () => {
                               <div className="form-control-sm mb-3">
                                 <Input
                                   key={"email"}
+                                  disabled
                                   type="email"
                                   placeholder="Enter email"
                                   required
@@ -1583,6 +1587,7 @@ const ProductInquiry = () => {
                               <div className="form-control-sm mb-3">
                                 <Input
                                   key={"comments"}
+                                  disabled
                                   type="text"
                                   placeholder="Enter Remarks"
                                   name="Comments"
@@ -1675,14 +1680,14 @@ const ProductInquiry = () => {
 
                           <Col lg={12}>
                             <div className="hstack gap-2 justify-content-end">
-                              <button
+                              {/* <button
                                 type="submit"
                                 className="btn btn-success  m-1"
                                 id="add-btn"
                                 onClick={handleUpdate}
                               >
                                 Update
-                              </button>
+                              </button> */}
                               <button
                                 type="button"
                                 className="btn btn-outline-danger m-1"
@@ -1767,14 +1772,15 @@ const ProductInquiry = () => {
                       </Col>
                       <Col lg={12}>
                         <div className="hstack gap-2 justify-content-end">
-                          <button
+                          {/* <button
                             type="submit"
                             className="btn btn-success  m-1"
                             id="add-btn"
+                            
                             onClick={handleUpdateInquiry}
                           >
                             Update
-                          </button>
+                          </button> */}
                           <button
                             type="button"
                             className="btn btn-outline-danger m-1"
