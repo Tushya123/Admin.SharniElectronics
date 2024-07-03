@@ -78,7 +78,6 @@ const ContactInquiry = () => {
     { label: "AE", value: "UNITED ARAB EMIRATES" },
     { label: "GB", value: "UNITED KINGDOM" },
     { label: "US", value: "UNITED STATES" },
-  
   ];
 
   const [values, setValues] = useState(initialState);
@@ -373,7 +372,7 @@ const ContactInquiry = () => {
       minWidth: "150px",
     },
     {
-      name: "Phone no",
+      name: "Contact no",
       selector: (row) => row.Mobile,
       sortable: true,
       sortField: "Mobile",
@@ -390,7 +389,9 @@ const ContactInquiry = () => {
       name: "Inquiry Date",
       cell: (row) => {
         const dateParts = row.createdAt.split("T")[0].split("-");
-        const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0].slice(-2)}`;
+        const formattedDate = `${dateParts[2]}/${
+          dateParts[1]
+        }/${dateParts[0].slice(-2)}`;
         return formattedDate;
       },
       sortable: true,
@@ -426,7 +427,7 @@ const ContactInquiry = () => {
                   data-bs-target="#showModal"
                   onClick={() => handleTog_edit(row._id)}
                 >
-                  Edit
+                  View
                 </button>
               </div>
 
@@ -455,7 +456,11 @@ const ContactInquiry = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Contact Inquiry" title="Contact Inquiry" />
+          <BreadCrumb
+            maintitle="Contact Inquiry"
+            pageTitle="Inquiry Management"
+            title="Contact Inquiry"
+          />
           <Row>
             <Col lg={12}>
               <Card>
@@ -715,6 +720,7 @@ const ContactInquiry = () => {
                 placeholder="Enter Name"
                 required
                 name="ContactPerson"
+                disabled
                 value={values.ContactPerson}
                 onChange={handleChange}
               />
@@ -731,6 +737,7 @@ const ContactInquiry = () => {
                 type="text"
                 className={validClassEmail}
                 placeholder="Enter Email"
+                disabled
                 required
                 name="Email"
                 value={values.Email}
@@ -749,6 +756,7 @@ const ContactInquiry = () => {
                 placeholder="Enter Category Name"
                 required
                 name="Remark"
+                disabled
                 value={values.Remark}
                 onChange={handleChange}
               />
@@ -766,6 +774,7 @@ const ContactInquiry = () => {
                   name="Country"
                   value={values.Country}
                   data-choices
+                  disabled
                   data-choices-sorting="true"
                   onChange={handleChange}
                 >
@@ -794,6 +803,7 @@ const ContactInquiry = () => {
                 className={validClassPhoneNumber}
                 placeholder="Enter Phone Number"
                 required
+                disabled
                 name="Mobile"
                 value={values.Mobile}
                 onChange={handleChange}

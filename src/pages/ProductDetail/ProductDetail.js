@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import {
   Button,
   Card,
@@ -22,36 +22,33 @@ import { Table } from "antd";
 import DataTable from "react-data-table-component";
 import $ from "jquery";
 
-
-
-
-
 import axios from "axios";
-import { createProductDetail, getProductDetail, removeProductDetail, updateProductDetail } from "../../functions/ProductDetail/ProductDetail";
+import {
+  createProductDetail,
+  getProductDetail,
+  removeProductDetail,
+  updateProductDetail,
+} from "../../functions/ProductDetail/ProductDetail";
 
 const initialState = {
   ProductDetail: "",
   Description: "",
- 
 
-  
   ProductDetailDescription: [
     {
       ProductKey: "",
       ProductValue: "",
-   
     },
   ],
   ProductImage: "",
- 
+
   IsActive: false,
-  
 };
 
 const ProductDetail = () => {
   const [formErrors, setFormErrors] = useState({});
   const [formErrorsArr, setFormErrorsArr] = useState([]);
-  const [selectType,setSelectType] = useState([]);
+  const [selectType, setSelectType] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
   const [_id, set_Id] = useState("");
@@ -70,12 +67,9 @@ const ProductDetail = () => {
     ProductDetail,
     Description,
     ProductImage,
-   
-  
-   
+
     ProductDetailDescription,
     IsActive,
-  
   } = values;
 
   // PHOTO
@@ -135,11 +129,13 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`);
-        console.log("ressssssss",response)
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`
+        );
+        console.log("ressssssss", response);
         setSelectType(response);
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
       }
     };
 
@@ -159,12 +155,9 @@ const ProductDetail = () => {
           ...values,
           Description: res.Description,
           ProductImage: res.ImageUrl,
-         
-         
-         
+
           ProductDetail: res.ProductDetail,
           IsActive: res.IsActive,
-      
         });
 
         const targetArray = [];
@@ -217,21 +210,18 @@ const ProductDetail = () => {
     setFormErrors({});
     setFormErrorsArr({});
 
-
     setTableData([]);
   };
 
   const handleAddCancel = (e) => {
-    
     e.preventDefault();
-   
-    
+
     setShowForm(false);
     setIsSubmit(false);
     setUpdateForm(false);
     setvalues(initialState);
     setTableData([]);
-    
+
     setCoordinatesArr([]);
     setCheckImagePhoto(false);
     setCheckImageCV(false);
@@ -244,7 +234,6 @@ const ProductDetail = () => {
     const newMetalDetails = {
       ProductKey: "",
       ProductValue: "",
-      
     };
 
     setvalues({
@@ -253,20 +242,9 @@ const ProductDetail = () => {
     });
 
     setTableData([]);
-   
-    
 
-      handleCoordinatesChange(
-        0,
-        "ProductKey",
-        ""
-      )
-      handleCoordinatesChange(
-        0,
-        "ProductValue",
-        ""
-      )
-
+    handleCoordinatesChange(0, "ProductKey", "");
+    handleCoordinatesChange(0, "ProductValue", "");
   };
 
   const handleSubmit = (e) => {
@@ -284,16 +262,11 @@ const ProductDetail = () => {
 
       formdata.append("ProductDetail", ProductDetail);
       formdata.append("Description", Description);
-      
-      
 
       formdata.append("ProductImage", ProductImage);
-     
+
       formdata.append("ProductDetailDescription", serializedMetals);
       formdata.append("IsActive", IsActive);
-     
-
-      
 
       console.log("formdara", formdata);
       createProductDetail(formdata)
@@ -313,19 +286,10 @@ const ProductDetail = () => {
           setCheckImageCV(false);
 
           fetchlayouts();
-          setvalues(initialState)
-          
-          
-      handleCoordinatesChange(
-        0,
-        "ProductKey",
-        ""
-      )
-      handleCoordinatesChange(
-        0,
-        "ProductValue",
-        ""
-      )
+          setvalues(initialState);
+
+          handleCoordinatesChange(0, "ProductKey", "");
+          handleCoordinatesChange(0, "ProductValue", "");
         })
         .catch((err) => {
           console.log(err);
@@ -344,18 +308,11 @@ const ProductDetail = () => {
       const serializedMetals = JSON.stringify(CoordinatesArr);
       formdata.append("ProductDetail", ProductDetail);
       formdata.append("Description", Description);
-    
-     
-
-     
 
       formdata.append("ProductImage", ProductImage);
-   
 
       formdata.append("ProductDetailDescription", serializedMetals);
       formdata.append("IsActive", IsActive);
-    
-
 
       updateProductDetail(_id, formdata)
         .then((res) => {
@@ -533,28 +490,27 @@ const ProductDetail = () => {
   const validClassHI =
     errHI && isSubmit ? "form-control is-invalid" : "form-control";
 
-    const DescriptionCell = styled.div`
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-  padding: 10px;
-  height: auto;
-  line-height: 1.5;
-`;
+  const DescriptionCell = styled.div`
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    padding: 10px;
+    height: auto;
+    line-height: 1.5;
+  `;
 
   const columns = [
     {
       name: "Sr No",
-      selector: (row,index) => index+1,
+      selector: (row, index) => index + 1,
       sortable: true,
       sortField: "srno",
       minWidth: "150px",
     },
     {
       name: "Product Group",
-      selector: (row) => row.ProductDetailTypes[0].ProductGroup
-      ,
+      selector: (row) => row.ProductDetailTypes[0].ProductGroup,
       sortable: true,
       sortField: "categ",
       minWidth: "150px",
@@ -567,7 +523,6 @@ const ProductDetail = () => {
       minWidth: "150px",
     },
 
-    
     {
       name: "Status",
       selector: (row) => {
@@ -641,7 +596,6 @@ const ProductDetail = () => {
         {
           ProductKey: row[0].ProductKey,
           ProductValue: row[0].ProductValue,
-         
         },
       ],
     }));
@@ -652,7 +606,6 @@ const ProductDetail = () => {
       const MetalError = {
         ProductKey: "",
         ProductValue: "",
-      
       };
 
       // Validate the category for the device
@@ -662,7 +615,6 @@ const ProductDetail = () => {
       if (metal.ProductValue === "") {
         MetalError.ProductValue = "Metal Description is required!";
       }
-      
 
       return MetalError;
     });
@@ -695,7 +647,6 @@ const ProductDetail = () => {
       return (
         item[0].ProductKey === editRow.ProductKey &&
         item[0].ProductValue === editRow.ProductValue
-    
       );
     });
     console.log("indexToUpdate", indexToUpdate);
@@ -719,7 +670,6 @@ const ProductDetail = () => {
     const newDetails = {
       ProductKey: "",
       ProductValue: "",
-      
     };
 
     setvalues({
@@ -740,20 +690,20 @@ const ProductDetail = () => {
     },
 
     {
-  name: "Description",
-  selector: (row) => {
-    const newArrayMD = row.map((r) => r.ProductValue).join(", ");
-    return newArrayMD;
-  },
-  sortable: false,
-  cell: (row) => (
-    <DescriptionCell>
-      {row.map((r) => (
-        <div key={r.ProductKey}>{r.ProductValue}</div>
-      ))}
-    </DescriptionCell>
-  ),
-},
+      name: "Description",
+      selector: (row) => {
+        const newArrayMD = row.map((r) => r.ProductValue).join(", ");
+        return newArrayMD;
+      },
+      sortable: false,
+      cell: (row) => (
+        <DescriptionCell>
+          {row.map((r) => (
+            <div key={r.ProductKey}>{r.ProductValue}</div>
+          ))}
+        </DescriptionCell>
+      ),
+    },
 
     {
       name: "Action",
@@ -846,7 +796,7 @@ const ProductDetail = () => {
 
   const handleCoordinatesChange = (index, subfield, value) => {
     const updatedDetails = [...ProductDetailDescription];
-    console.log("clg",updatedDetails)
+    console.log("clg", updatedDetails);
     updatedDetails[index][subfield] = value;
 
     setvalues({
@@ -861,15 +811,10 @@ const ProductDetail = () => {
     const errors = validateMetalDetails(ProductDetailDescription);
     setFormErrorsArr(errors);
 
-    if (
-      errors[0].ProductKey === "" &&
-      errors[0].ProductValue === "" 
-     
-    ) {
+    if (errors[0].ProductKey === "" && errors[0].ProductValue === "") {
       const newDetails = {
         ProductKey: "",
         ProductValue: "",
-       
       };
 
       setvalues({
@@ -881,7 +826,10 @@ const ProductDetail = () => {
         ProductDetailDescription,
       ]);
 
-      setTableData((prevTableData) => [...prevTableData, ProductDetailDescription]);
+      setTableData((prevTableData) => [
+        ...prevTableData,
+        ProductDetailDescription,
+      ]);
 
       setvalues({
         ...values,
@@ -912,7 +860,7 @@ const ProductDetail = () => {
         <Container fluid>
           <BreadCrumb
             maintitle="Product Details"
-            title="Products Detail"
+            title="Products Details"
             pageTitle="Product Setup"
           />
           <Row>
@@ -1036,31 +984,35 @@ const ProductDetail = () => {
                             <div className="live-preview">
                               <Form enctype="multipart/form-data">
                                 <Row>
-                                 
-
-                                <Col md={6}>
-      <div className="form-floating mb-3">
-        <select
-          className={validClassHI}
-          name="ProductDetail"
-          value={ProductDetail}
-          onChange={handleChange}
-        >
-          <option>Select Product Group</option>
-          {selectType.map((detail, index) => (
-            <option key={index} value={detail._id}>
-              {detail.ProductGroup}
-            </option>
-          ))}
-        </select>
-        <label>
-          Product Group <span className="text-danger">*</span>
-        </label>
-        {isSubmit && formErrors.ProductDetail && (
-          <p className="text-danger">{formErrors.ProductDetail}</p>
-        )}
-      </div>
-    </Col>
+                                  <Col md={6}>
+                                    <div className="form-floating mb-3">
+                                      <select
+                                        className={validClassHI}
+                                        name="ProductDetail"
+                                        value={ProductDetail}
+                                        onChange={handleChange}
+                                      >
+                                        <option>Select Product Group</option>
+                                        {selectType.map((detail, index) => (
+                                          <option
+                                            key={index}
+                                            value={detail._id}
+                                          >
+                                            {detail.ProductGroup}
+                                          </option>
+                                        ))}
+                                      </select>
+                                      <label>
+                                        Product Group{" "}
+                                        <span className="text-danger">*</span>
+                                      </label>
+                                      {isSubmit && formErrors.ProductDetail && (
+                                        <p className="text-danger">
+                                          {formErrors.ProductDetail}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </Col>
                                   <Col md={6}>
                                     <div className="form-floating mb-3">
                                       <input
@@ -1116,14 +1068,16 @@ const ProductDetail = () => {
                                       </label>
                                     </div>
                                   </Col> */}
-                                
+
                                   {/* DIV */}
                                   <Card>
                                     <CardHeader>
                                       <h2>Add Product Details</h2>
                                     </CardHeader>
                                     <CardBody>
-                                      {Array.isArray(ProductDetailDescription) &&
+                                      {Array.isArray(
+                                        ProductDetailDescription
+                                      ) &&
                                         ProductDetailDescription.map(
                                           (Metaldetail, index) => (
                                             <Row key={index}>
@@ -1167,7 +1121,7 @@ const ProductDetail = () => {
                                                   )}
                                                 </div>
                                               </Col>
-                                             
+
                                               <Row>
                                                 <Col lg={12}>
                                                   <div className="form-floating mb-3">
@@ -1327,8 +1281,6 @@ const ProductDetail = () => {
                                     ) : null}
                                   </Col>
 
-                                  
-
                                   <Row>
                                     <Col md={6}>
                                       <Col md={12}>
@@ -1354,13 +1306,9 @@ const ProductDetail = () => {
                                       </Col>
 
                                       {/*  */}
-                                  
 
                                       {/*  */}
-                                     
-                                      
                                     </Col>
-                                   
                                   </Row>
 
                                   <Col lg={12}>
@@ -1373,9 +1321,7 @@ const ProductDetail = () => {
                                       </button>
                                       <button
                                         className="btn btn-outline-danger m-1"
-                                        onClick={handleAddCancel
-                                        
-                                        }
+                                        onClick={handleAddCancel}
                                       >
                                         Cancel
                                       </button>
@@ -1406,31 +1352,35 @@ const ProductDetail = () => {
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                 
-                                  
-                                <Col md={6}>
-      <div className="form-floating mb-3">
-        <select
-          className={validClassHI}
-          name="ProductDetail"
-          value={ProductDetail}
-          onChange={handleChange}
-        >
-          <option>Select Product Group</option>
-          {selectType.map((detail, index) => (
-            <option key={index} value={detail._id}>
-              {detail.ProductGroup}
-            </option>
-          ))}
-        </select>
-        <label>
-          Product Group <span className="text-danger">*</span>
-        </label>
-        {isSubmit && formErrors.ProductDetail && (
-          <p className="text-danger">{formErrors.ProductDetail}</p>
-        )}
-      </div>
-    </Col>
+                                  <Col md={6}>
+                                    <div className="form-floating mb-3">
+                                      <select
+                                        className={validClassHI}
+                                        name="ProductDetail"
+                                        value={ProductDetail}
+                                        onChange={handleChange}
+                                      >
+                                        <option>Select Product Group</option>
+                                        {selectType.map((detail, index) => (
+                                          <option
+                                            key={index}
+                                            value={detail._id}
+                                          >
+                                            {detail.ProductGroup}
+                                          </option>
+                                        ))}
+                                      </select>
+                                      <label>
+                                        Product Group{" "}
+                                        <span className="text-danger">*</span>
+                                      </label>
+                                      {isSubmit && formErrors.ProductDetail && (
+                                        <p className="text-danger">
+                                          {formErrors.ProductDetail}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </Col>
                                   <Col md={6}>
                                     <div className="form-floating mb-3">
                                       <input
@@ -1459,15 +1409,14 @@ const ProductDetail = () => {
                                     </div>
                                   </Col>
 
-                                
-
-                               
                                   <Card>
                                     <CardHeader>
                                       <h2>Edit Product Details</h2>
                                     </CardHeader>
                                     <CardBody>
-                                      {Array.isArray(ProductDetailDescription) &&
+                                      {Array.isArray(
+                                        ProductDetailDescription
+                                      ) &&
                                         ProductDetailDescription.map(
                                           (Metaldetail, index) => (
                                             <Row key={index}>
@@ -1511,7 +1460,6 @@ const ProductDetail = () => {
                                                   )}
                                                 </div>
                                               </Col>
-                                             
 
                                               <Col lg={12}>
                                                 <div className="form-floating mb-3">
@@ -1673,8 +1621,6 @@ const ProductDetail = () => {
                                     ) : null}
                                   </Col>
 
-                                
-
                                   <Row>
                                     <Col md={6}>
                                       <Col md={12}>
@@ -1701,13 +1647,9 @@ const ProductDetail = () => {
                                       </Col>
 
                                       {/*  */}
-                                     
 
                                       {/*  */}
-                                      
-                                     
                                     </Col>
-                                   
                                   </Row>
 
                                   <Col lg={12}>

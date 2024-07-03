@@ -66,7 +66,6 @@ const CountryWiseReport = () => {
     { label: "AE", value: "UNITED ARAB EMIRATES" },
     { label: "GB", value: "UNITED KINGDOM" },
     { label: "US", value: "UNITED STATES" },
-  
   ];
 
   const [formErrors, setFormErrors] = useState({});
@@ -317,7 +316,7 @@ const CountryWiseReport = () => {
   const [speciality, setSpeciality] = useState([]);
   const [values, setValues] = useState("");
 
-  document.title = "Customer List Country Wise | Shreeji Pharma"
+  document.title = "Customer List Country Wise | Shreeji Pharma";
 
   return (
     <React.Fragment>
@@ -326,7 +325,7 @@ const CountryWiseReport = () => {
           <BreadCrumb
             maintitle="Customer List Country Wise"
             title="Customer List Country Wise"
-            pageTitle="Customer List Country Wise"
+            pageTitle="Reports "
           />
 
           <Row>
@@ -336,13 +335,16 @@ const CountryWiseReport = () => {
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
                       <h2 className="card-title mb-0 fs-4 mt-2">
-                      Customer List Country Wise
+                        Customer List Country Wise
                       </h2>
                     </Col>
                     <Col className="text-end">
-                      <Button color="primary"
-  className="btn-rounded waves-effect waves-light" onClick={downloadExcel}>
-                       Generate Excel Sheet
+                      <Button
+                        color="primary"
+                        className="btn-rounded waves-effect waves-light"
+                        onClick={downloadExcel}
+                      >
+                        Generate Excel Sheet
                       </Button>
                     </Col>
                   </Row>
@@ -350,13 +352,11 @@ const CountryWiseReport = () => {
 
                 <Row>
                   <Col lg={6}>
-                 
                     <div style={{ padding: "10px 0 0 10px" }}>
-                    <label>
-                                Select Customer Country{" "}
-                                      <span class="text-danger">*</span>
-                              
-                                    </label>
+                      <label>
+                        Select Customer Country{" "}
+                        <span class="text-danger">*</span>
+                      </label>
                       <Select
                         options={countriesArray.map((country, index) => ({
                           value: country.label, // use country.label as value
@@ -412,14 +412,12 @@ const CountryWiseReport = () => {
                   <CardBody>
                     <React.Fragment>
                       <Col xxl={12}>
-                     
                         <Card className="">
                           <CardBody>
                             <div className="live-preview">
                               <Form>
                                 <Row>
                                   <Col lg={6}>
-                                 
                                     <Select
                                       options={countriesArray}
                                       onChange={(selectedOption) => {

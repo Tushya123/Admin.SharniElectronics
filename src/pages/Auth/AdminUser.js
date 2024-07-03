@@ -85,7 +85,7 @@ const AdminUser = () => {
           lastName: res.lastName,
           email: res.email,
           password: res.password,
-          bannerImage:res.bannerImage,
+          bannerImage: res.bannerImage,
           IsActive: res.IsActive,
         });
       })
@@ -224,10 +224,9 @@ const AdminUser = () => {
       errors.email = "Email address is invalid";
       // Assuming you have a setter function for the error state of Email field
       setErrEM(true);
-    }
-    else{
+    } else {
       setErrEM(false);
-  }
+    }
     if (values.password === "") {
       errors.password = "password is required!";
       setErrPA(true);
@@ -235,15 +234,13 @@ const AdminUser = () => {
     if (values.password !== "") {
       setErrPA(false);
     }
-     if (values.bannerImage ==="") {
+    if (values.bannerImage === "") {
       errors.bannerImage = " Image is required!";
       setErrBI(true);
     }
     if (values.bannerImage !== "") {
       setErrBI(false);
     }
-
-    
 
     return errors;
   };
@@ -412,13 +409,17 @@ const AdminUser = () => {
     },
   ];
 
-  document.title = "Admin Users|Shreeji Pharma" ;
+  document.title = "Admin Users|Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Admin Users"  />
+          <BreadCrumb
+            maintitle="Admin Users"
+            pageTitle="Admin Users"
+            title="Admin Users"
+          />
           <Row>
             <Col lg={12}>
               <Card>

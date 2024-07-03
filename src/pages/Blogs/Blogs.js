@@ -114,8 +114,8 @@ const Blogs = () => {
       .then((res) => {
         setTitle(res.Title);
         setDescription(res.Description);
-        setBlogImage(res.BlogImage); 
-        setCategory(res.Category); 
+        setBlogImage(res.BlogImage);
+        setCategory(res.Category);
         setIsActive(res.IsActive);
       })
       .catch((err) => {
@@ -137,8 +137,8 @@ const Blogs = () => {
       formdata.append("BlogImage", BlogImage);
       formdata.append("Title", Title);
       formdata.append("Description", Description);
-      formdata.append("IsActive", IsActive); 
-      formdata.append("Category", Category); 
+      formdata.append("IsActive", IsActive);
+      formdata.append("Category", Category);
 
       createBlogs(formdata)
         .then((res) => {
@@ -195,8 +195,8 @@ const Blogs = () => {
       formdata.append("BlogImage", BlogImage);
       formdata.append("Title", Title);
       formdata.append("Description", Description);
-      formdata.append("IsActive", IsActive); 
-      formdata.append("Category", Category); 
+      formdata.append("IsActive", IsActive);
+      formdata.append("Category", Category);
 
       updateBlogs(_id, formdata)
         .then((res) => {
@@ -398,17 +398,16 @@ const Blogs = () => {
     setBlogImage("");
   };
   const stripHtmlTags = (html) => {
-    const tempElement = document.createElement('div');
+    const tempElement = document.createElement("div");
     tempElement.innerHTML = html;
-    return tempElement.textContent || tempElement.innerText || '';
+    return tempElement.textContent || tempElement.innerText || "";
   };
   const col = [
     {
       name: "Sr No",
-      selector: (row,index) => index+1,
+      selector: (row, index) => index + 1,
       sortable: true,
       sortField: "srno",
-  
     },
     {
       name: "Title",
@@ -427,7 +426,7 @@ const Blogs = () => {
     },
     {
       name: "Description",
-      cell: (row) =>stripHtmlTags(row.Description),
+      cell: (row) => stripHtmlTags(row.Description),
       sortable: true,
       sortField: "Description",
       minWidth: "150px",
@@ -437,7 +436,9 @@ const Blogs = () => {
       name: "Date",
       cell: (row) => {
         const dateParts = row.createdAt.split("T")[0].split("-");
-        const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0].slice(-2)}`;
+        const formattedDate = `${dateParts[2]}/${
+          dateParts[1]
+        }/${dateParts[0].slice(-2)}`;
         return formattedDate;
       },
       sortable: true,
@@ -494,7 +495,7 @@ const Blogs = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="Blogs" title="Blogs" pageTitle="Blogs" />
+          <BreadCrumb maintitle="Blogs" title="Blogs" pageTitle="Master" />
 
           <Row>
             <Col lg={12}>
@@ -664,7 +665,6 @@ const Blogs = () => {
                                       <Input
                                         type="text"
                                         className={validClassBTD}
-                                       
                                         placeholder="Blog Category"
                                         name="Category"
                                         value={Category}
@@ -862,7 +862,6 @@ const Blogs = () => {
                                       <Input
                                         type="text"
                                         className={validClassBTD}
-                                       
                                         placeholder="Remarks..."
                                         name="Category"
                                         value={Category}

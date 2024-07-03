@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import Flatpickr from "react-flatpickr";
 import {
   Button,
@@ -23,25 +23,28 @@ import axios from "axios";
 import DataTable from "react-data-table-component";
 
 import {
-    getNewsletter,updateNewsletter,listNewsletter,removeNewsletter,createNewsletter
+  getNewsletter,
+  updateNewsletter,
+  listNewsletter,
+  removeNewsletter,
+  createNewsletter,
 } from "../../functions/Newsletter/Newsletter";
 
 const initialState = {
   Title: "",
   Description: "",
- 
+
   NewsletterImage: "",
   IsActive: false,
 };
 
 const Newsletter = () => {
   const [values, setValues] = useState(initialState);
-  const { Title, Description, NewsletterImage, IsActive } =
-    values;
+  const { Title, Description, NewsletterImage, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
-  const[AllotmentDate,setAllotmentDate]=useState('');
+  const [AllotmentDate, setAllotmentDate] = useState("");
   const [query, setQuery] = useState("");
 
   const [_id, set_Id] = useState("");
@@ -80,10 +83,9 @@ const Newsletter = () => {
         setValues({
           ...values,
           Title: res.Title,
-          Description: res.Description, 
-          NewsletterImage:res.NewsletterImage,
+          Description: res.Description,
+          NewsletterImage: res.NewsletterImage,
           IsActive: res.IsActive,
-
         });
         setAllotmentDate(res.NewsDate);
       })
@@ -114,7 +116,7 @@ const Newsletter = () => {
       formdata.append("NewsDate", AllotmentDate);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
-      formdata.append("IsActive", values.IsActive); 
+      formdata.append("IsActive", values.IsActive);
       createNewsletter(formdata)
         .then((res) => {
           setmodal_list(!modal_list);
@@ -123,7 +125,7 @@ const Newsletter = () => {
           setIsSubmit(false);
           setFormErrors({});
           setPhotoAdd("");
-setAllotmentDate("");
+          setAllotmentDate("");
           fetchUsers();
         })
         .catch((err) => {
@@ -157,7 +159,7 @@ setAllotmentDate("");
       formdata.append("NewsDate", AllotmentDate);
       formdata.append("Title", values.Title);
       formdata.append("Description", values.Description);
-      formdata.append("IsActive", values.IsActive); 
+      formdata.append("IsActive", values.IsActive);
 
       updateNewsletter(_id, formdata)
         .then((res) => {
@@ -208,10 +210,7 @@ setAllotmentDate("");
       setErrLN(false);
     }
 
-   
- 
-   
-     if (values.NewsletterImage ==="") {
+    if (values.NewsletterImage === "") {
       errors.NewsletterImage = "Image is required!";
       setErrBI(true);
     }
@@ -222,15 +221,16 @@ setAllotmentDate("");
       errors.AllotmentDate = "News Date is required";
       // Assuming you have a setter function for the error state of BookingDate field
       setEditDate(true);
+    } else {
+      setEditDate(false);
     }
-    else{ setEditDate(false);}
-
-    
 
     return errors;
   };
   const validEditDate =
-    errEditDate && isSubmit ? "p-0 form-control is-invalid" : "p-0 form-control";
+    errEditDate && isSubmit
+      ? "p-0 form-control is-invalid"
+      : "p-0 form-control";
 
   const validClassFN =
     errFN && isSubmit ? "form-control is-invalid" : "form-control";
@@ -323,53 +323,47 @@ setAllotmentDate("");
     setFilter(e.target.checked);
   };
   const DescriptionCell = styled.div`
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-  padding: 10px;
-  height: auto;
-  line-height: 1.5;
-`;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    padding: 10px;
+    height: auto;
+    line-height: 1.5;
+  `;
 
   const col = [
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-    
-      },
+      name: "Sr No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      sortField: "srno",
+    },
     {
       name: "Title",
       selector: (row) => row.Title,
       sortable: true,
       sortField: "Title",
-    
-    }, {
+    },
+    {
       name: "News Date",
       selector: (row) => row.NewsDate,
       sortable: true,
       sortField: "Title",
-    
     },
     {
       name: "Description",
-      selector: (row) =>
-         row.Description,
+      selector: (row) => row.Description,
       sortable: true,
       sortField: "Description",
-      maxWidth:"150px"
-    
+      maxWidth: "150px",
     },
- 
- 
+
     {
       name: "Image",
       selector: (row) => renderImage(row.NewsletterImage),
       sortable: true,
       sortField: "password",
-  
     },
 
     {
@@ -408,13 +402,13 @@ setAllotmentDate("");
     },
   ];
 
-  document.title = "Newsletter|Shreeji Pharma" ;
+  document.title = "Newsletter|Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Newsletter"  />
+          <BreadCrumb title="Newsletter" pageTitle="Master" />
           <Row>
             <Col lg={12}>
               <Card>
@@ -521,16 +515,17 @@ setAllotmentDate("");
                 onChange={handleChange}
               />
               <Label>
-Title <span className="text-danger">*</span>
+                Title <span className="text-danger">*</span>
               </Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Title}</p>
-              )}
+              {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
-          
-<div className="mt-3 mb-3">
-                <Label > Date  <span className="text-danger">*</span></Label>
-                <div className={validEditDate}>
+
+            <div className="mt-3 mb-3">
+              <Label>
+                {" "}
+                Date <span className="text-danger">*</span>
+              </Label>
+              <div className={validEditDate}>
                 <Flatpickr
                   value={AllotmentDate}
                   className="form-control"
@@ -540,38 +535,31 @@ Title <span className="text-danger">*</span>
                     dateFormat: "d-m-Y",
                   }}
                   onChange={(selectedDates) => {
-                                            const selectedDate = selectedDates[0];
-                                            if (
-                                              selectedDate instanceof Date &&
-                                              !isNaN(selectedDate)
-                                            ) {
-                                              const day = String(
-                                                selectedDate.getDate()
-                                              ).padStart(2, "0");
-                                              const month = String(
-                                                selectedDate.getMonth() + 1
-                                              ).padStart(2, "0");
-                                              const year =
-                                                selectedDate.getFullYear();
-                                              const formattedDate = `${day}-${month}-${year}`;
-                                              setAllotmentDate(formattedDate);
-                                            } else {
-                                              setAllotmentDate("");
-                                            }
-                                          }}
+                    const selectedDate = selectedDates[0];
+                    if (selectedDate instanceof Date && !isNaN(selectedDate)) {
+                      const day = String(selectedDate.getDate()).padStart(
+                        2,
+                        "0"
+                      );
+                      const month = String(
+                        selectedDate.getMonth() + 1
+                      ).padStart(2, "0");
+                      const year = selectedDate.getFullYear();
+                      const formattedDate = `${day}-${month}-${year}`;
+                      setAllotmentDate(formattedDate);
+                    } else {
+                      setAllotmentDate("");
+                    }
+                  }}
                 />
-               
-                </div>
-                {isSubmit && (
-                    <p className="text-danger">
-                      {formErrors.AllotmentDate}
-                    </p>
-                  )}
-                 
-                  </div>
+              </div>
+              {isSubmit && (
+                <p className="text-danger">{formErrors.AllotmentDate}</p>
+              )}
+            </div>
 
             <div className="form-floating mb-3">
-            <Input
+              <Input
                 type="textarea"
                 className="form-control"
                 placeholder="Enter Commitment Description..."
@@ -582,16 +570,16 @@ Title <span className="text-danger">*</span>
               />
 
               <Label>
-               Description <span className="text-danger">*</span>
+                Description <span className="text-danger">*</span>
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Description}</p>}
+              {isSubmit && (
+                <p className="text-danger">{formErrors.Description}</p>
+              )}
             </div>
-            
-            
 
             <Col lg={6}>
               <label>
-               Image <span className="text-danger">*</span>
+                Image <span className="text-danger">*</span>
               </label>
 
               <input
@@ -686,15 +674,16 @@ Title <span className="text-danger">*</span>
                 onChange={handleChange}
               />
               <Label>
-               Title<span className="text-danger">*</span>{" "}
+                Title<span className="text-danger">*</span>{" "}
               </Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Title}</p>
-              )}
+              {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
             <div className="mt-3 mb-3">
-                <Label > Date  <span className="text-danger">*</span></Label>
-                <div className={validEditDate}>
+              <Label>
+                {" "}
+                Date <span className="text-danger">*</span>
+              </Label>
+              <div className={validEditDate}>
                 <Flatpickr
                   value={AllotmentDate}
                   className="form-control"
@@ -704,37 +693,30 @@ Title <span className="text-danger">*</span>
                     dateFormat: "d-m-Y",
                   }}
                   onChange={(selectedDates) => {
-                                            const selectedDate = selectedDates[0];
-                                            if (
-                                              selectedDate instanceof Date &&
-                                              !isNaN(selectedDate)
-                                            ) {
-                                              const day = String(
-                                                selectedDate.getDate()
-                                              ).padStart(2, "0");
-                                              const month = String(
-                                                selectedDate.getMonth() + 1
-                                              ).padStart(2, "0");
-                                              const year =
-                                                selectedDate.getFullYear();
-                                              const formattedDate = `${day}-${month}-${year}`;
-                                              setAllotmentDate(formattedDate);
-                                            } else {
-                                              setAllotmentDate("");
-                                            }
-                                          }}
+                    const selectedDate = selectedDates[0];
+                    if (selectedDate instanceof Date && !isNaN(selectedDate)) {
+                      const day = String(selectedDate.getDate()).padStart(
+                        2,
+                        "0"
+                      );
+                      const month = String(
+                        selectedDate.getMonth() + 1
+                      ).padStart(2, "0");
+                      const year = selectedDate.getFullYear();
+                      const formattedDate = `${day}-${month}-${year}`;
+                      setAllotmentDate(formattedDate);
+                    } else {
+                      setAllotmentDate("");
+                    }
+                  }}
                 />
-               
-                </div>
-                {isSubmit && (
-                    <p className="text-danger">
-                      {formErrors.AllotmentDate}
-                    </p>
-                  )}
-                 
-                  </div>
+              </div>
+              {isSubmit && (
+                <p className="text-danger">{formErrors.AllotmentDate}</p>
+              )}
+            </div>
             <div className="form-floating mb-3">
-            <Input
+              <Input
                 type="textarea"
                 className="form-control"
                 placeholder="Enter Newsletter Description..."
@@ -744,17 +726,17 @@ Title <span className="text-danger">*</span>
                 onChange={handleChange}
               />
 
-
               <Label>
-               Description<span className="text-danger">*</span>{" "}
+                Description<span className="text-danger">*</span>{" "}
               </Label>
-              {isSubmit && <p className="text-danger">{formErrors.Description}</p>}
+              {isSubmit && (
+                <p className="text-danger">{formErrors.Description}</p>
+              )}
             </div>
-           
-             
+
             <Col lg={6}>
               <label>
-                 Image <span className="text-danger">*</span>
+                Image <span className="text-danger">*</span>
               </label>
               <input
                 key={"NewsletterImage" + _id}

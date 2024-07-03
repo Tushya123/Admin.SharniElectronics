@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Select from 'react-select'
+import Select from "react-select";
 import moment from "moment-timezone";
 import {
   Button,
@@ -25,13 +25,12 @@ import DataTable from "react-data-table-component";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const AssignProduct = () => {
-  
   const [SupplierName, setSupplierName] = useState("");
-  const [selectType,setSelectType] = useState([]);
+  const [selectType, setSelectType] = useState([]);
   const [blogTitle, setblogTitle] = useState("");
   const [blogDesc, setblogDesc] = useState("");
   const [blogImage, setblogImage] = useState("");
-  const [types,setTypes] = useState("");
+  const [types, setTypes] = useState("");
   const [blogThumnailDesc, setblogThumnailDesc] = useState("");
   const [views, setViews] = useState(0);
 
@@ -45,7 +44,6 @@ const AssignProduct = () => {
   const [EP, setEP] = useState(false);
   const [USP, setUSP] = useState(false);
   const [BP, setBP] = useState(false);
- 
 
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -64,25 +62,26 @@ const AssignProduct = () => {
   const [blogs2, setBlogs2] = useState([]);
   const [blogs3, setBlogs3] = useState([]);
 
-  const getSelectType=()=>{
+  const getSelectType = () => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`)
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`
+      )
       .then((response) => {
         if (response.length > 0) {
-          console.log(response)
-          const names = response.map((item)=>({
-            value:item._id , label :item.SupplierName,
-          }
-         ));
-          
+          console.log(response);
+          const names = response.map((item) => ({
+            value: item._id,
+            label: item.SupplierName,
+          }));
+
           setSelectType(names);
         } else if (response.length === 0) {
           setSelectType([]);
         }
       });
-  }
-  const [product, setProduct]= useState([])
+  };
+  const [product, setProduct] = useState([]);
   const getProductDetails = () => {
     setLoading(true);
     let skip = (pageNo1 - 1) * perPage1;
@@ -90,41 +89,42 @@ const AssignProduct = () => {
       skip = 0;
     }
     axios
-    .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`, {
-      skip: skip,
-      per_page: perPage1,
-      sorton: column1,
-      sortdir: sortDirection1,
-      match: query1,
-      IsActive: filter,
-    })
+      .post(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`,
+        {
+          skip: skip,
+          per_page: perPage1,
+          sorton: column1,
+          sortdir: sortDirection1,
+          match: query1,
+          IsActive: filter,
+        }
+      )
       .then((response) => {
         if (response.length > 0) {
-          console.log("xyx",response[0]);
+          console.log("xyx", response[0]);
           setProduct(response);
           setBlogs2(response[0].data);
           setBlogs3(response[0].data);
           setTotalRows2(response[0].count);
 
           setLoading(false);
-        } 
-        else if (response.length === 0) {
+        } else if (response.length === 0) {
           setBlogs2([]);
-          setProduct([])
+          setProduct([]);
         }
       })
       .catch((error) => {
         console.error("Error fetching product details:", error);
       });
   };
-  
+
   useEffect(() => {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log("no errors");
     }
   }, [formErrors, isSubmit]);
-
 
   const uploadImage = async (body) => {
     return await axios.post(
@@ -139,14 +139,14 @@ const AssignProduct = () => {
       values
     );
   };
-  
+
   const getBlogs = async (_id) => {
     return await axios.get(
       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/blogs/${_id}`
     );
   };
 
-   const removeBlogs = async (_id) => {
+  const removeBlogs = async (_id) => {
     return await axios.delete(
       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/AssignProduct/${_id}`
     );
@@ -188,22 +188,20 @@ const AssignProduct = () => {
   };
 
   const [modal_edit, setmodal_edit] = useState(false);
-  const handleTog_edit = (row,_id) => {
-   
+  const handleTog_edit = (row, _id) => {
     // setmodal_edit(!modal_edit);
-    console.log("The row is",row.ProductDetail);
+    console.log("The row is", row.ProductDetail);
     getSelectType();
     setIsSubmit(false);
     setUpdateForm(true);
     set_Id(_id);
-    setProductDetail(row.ProductDetail)
-    console.log("Idsss",_id)
-    
+    setProductDetail(row.ProductDetail);
+    console.log("Idsss", _id);
+
     // setTypes(row.ProductDetail);
-   setSupplierName(row.SupplierName);
-   setSupplierNamePlaceholder(row.SupplierDetailTypes[0].SupplierName)
-   
-   
+    setSupplierName(row.SupplierName);
+    setSupplierNamePlaceholder(row.SupplierDetailTypes[0].SupplierName);
+
     setCheckImagePhoto(true);
   };
 
@@ -217,27 +215,29 @@ const AssignProduct = () => {
     if (Object.keys(errors).length === 0) {
       setLoadingOption(true);
       const formdata = new FormData();
-      console.log("ProductDetail",ProductDetail,"SupplierName",SupplierName)
+      console.log("ProductDetail", ProductDetail, "SupplierName", SupplierName);
       // formdata.append("newImage", blogImage);
-      formdata.append("ProductDetail",ProductDetail);
+      formdata.append("ProductDetail", ProductDetail);
       formdata.append("SupplierName", SupplierName);
-     
 
-
-      axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/AssignProduct`,formdata)
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/AssignProduct`,
+          formdata
+        )
         .then((res) => {
           console.log(res);
-          setSelectType([])
-          setProductDetail([])
-          setSupplierNamePlaceholder("")
+          setSelectType([]);
+          setProductDetail([]);
+          setSupplierNamePlaceholder("");
           setSupplierName("");
           // setmodal_list(!modal_list);
           setShowForm(false);
           setLoadingOption(false);
           // setValues(initialState);
-        
+
           setIsActive(false);
-      
+
           setFormErrors({});
           fetchCategories();
           setTypes("");
@@ -254,7 +254,8 @@ const AssignProduct = () => {
 
     axios
       .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/AssignProduct/${remove_id}`)
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/AssignProduct/${remove_id}`
+      )
       .then((res) => {
         setmodal_delete(!modal_delete);
         fetchCategories();
@@ -274,33 +275,37 @@ const AssignProduct = () => {
     if (Object.keys(errors).length === 0) {
       setLoadingOption(true);
       const formdata = new FormData();
-      console.log("ProductDetail",ProductDetail,"SupplierName",SupplierName)
+      console.log("ProductDetail", ProductDetail, "SupplierName", SupplierName);
       // formdata.append("newImage", blogImage);
-      formdata.append("ProductDetail",ProductDetail);
+      formdata.append("ProductDetail", ProductDetail);
       formdata.append("SupplierName", SupplierName);
-     
-console.log("Idsss",_id)
 
-      axios.put(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/AssignProduct/${_id}`,formdata)
+      console.log("Idsss", _id);
+
+      axios
+        .put(
+          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/AssignProduct/${_id}`,
+          formdata
+        )
         .then((res) => {
           console.log(res);
           setIsSubmit(false);
           setUpdateForm(false);
           setShowForm(false);
-          setSelectType([])
-          setSelectType([])
-          setProductDetail([])
-          setSupplierNamePlaceholder("")
+          setSelectType([]);
+          setSelectType([]);
+          setProductDetail([]);
+          setSupplierNamePlaceholder("");
           setSupplierName("");
-          setProductDetail("")
-          setSupplierNamePlaceholder("")
+          setProductDetail("");
+          setSupplierNamePlaceholder("");
           // setmodal_list(!modal_list);
           setShowForm(false);
           setLoadingOption(false);
           // setValues(initialState);
-        
+
           setIsActive(false);
-      
+
           setFormErrors({});
           fetchCategories();
           setTypes("");
@@ -317,17 +322,16 @@ console.log("Idsss",_id)
   const [errBD, setErrBD] = useState(false);
   const [errBTD, setErrBTD] = useState(false);
   const [errBI, setErrBI] = useState(false);
- 
 
   const validate = (
     // blogDesc,
-    SupplierName) => {
+    SupplierName
+  ) => {
     const errors = {};
     if (SupplierName === "") {
       errors.SupplierName = "Supplier Name is required!";
       setErrSN(true);
-    }
-    else{
+    } else {
       setErrSN(false);
     }
 
@@ -376,7 +380,9 @@ console.log("Idsss",_id)
   const validClassBI =
     errBI && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassSN =
-    errSN && isSubmit ? "h-100 p-0 form-control is-invalid" : "h-100 p-0 form-control";
+    errSN && isSubmit
+      ? "h-100 p-0 form-control is-invalid"
+      : "h-100 p-0 form-control";
 
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
@@ -393,7 +399,8 @@ console.log("Idsss",_id)
   const handleSort = (column, sortDirection) => {
     setcolumn(column.sortField);
     setsortDirection(sortDirection);
-  };  const handleSort1 = (column1, sortDirection1) => {
+  };
+  const handleSort1 = (column1, sortDirection1) => {
     setcolumn1(column1.sortField);
     setsortDirection1(sortDirection1);
   };
@@ -435,19 +442,22 @@ console.log("Idsss",_id)
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProductByParams`, {
-        skip: skip,
-        per_page: perPage,
-        sorton: column,
-        sortdir: sortDirection,
-        match: query,
-        isActive: filter,
-      })
+      .post(
+        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProductByParams`,
+        {
+          skip: skip,
+          per_page: perPage,
+          sorton: column,
+          sortdir: sortDirection,
+          match: query,
+          isActive: filter,
+        }
+      )
       .then((response) => {
-        console.log(response.length)
+        console.log(response.length);
         if (response.length > 0) {
           let res = response[0];
-          console.log("Hii",res.data)
+          console.log("Hii", res.data);
           setLoading(false);
           setBlogs(res.data);
           setTotalRows(res.count);
@@ -460,7 +470,8 @@ console.log("Idsss",_id)
   };
   const handlePageChange = (page) => {
     setPageNo(page);
-  };const handlePageChange1 = (page1) => {
+  };
+  const handlePageChange1 = (page1) => {
     setPageNo1(page1);
   };
 
@@ -484,7 +495,8 @@ console.log("Idsss",_id)
   const handlePerRowsChange = async (newPerPage, page) => {
     // setPageNo(page);
     setPerPage(newPerPage);
-  }; const handlePerRowsChange1 = async (newPerPage1, page1) => {
+  };
+  const handlePerRowsChange1 = async (newPerPage1, page1) => {
     // setPageNo(page);
     setPerPage1(newPerPage1);
   };
@@ -494,9 +506,9 @@ console.log("Idsss",_id)
 
   const handleAddCancel = (e) => {
     e.preventDefault();
-    setSelectType([])
-    setProductDetail([])
-    setSupplierNamePlaceholder("")
+    setSelectType([]);
+    setProductDetail([]);
+    setSupplierNamePlaceholder("");
     setSupplierName("");
     setIsSubmit(false);
     setPhotoAdd("");
@@ -505,18 +517,18 @@ console.log("Idsss",_id)
     setPageNo1(0);
     setPerPage1(10);
     setcolumn();
-    setsortDirection()
+    setsortDirection();
     setUpdateForm(false);
     // setblogThumnailDesc("");
     setViews(0);
     // setValues(initialState);
     setblogDesc("");
     setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setEP(false)
-          setBP(false);
-          setUSP(false);
+    setErrBD(false);
+    setOther(false);
+    setEP(false);
+    setBP(false);
+    setUSP(false);
     setblogTitle("");
     setlikes([]);
     setcomments([]);
@@ -530,9 +542,9 @@ console.log("Idsss",_id)
 
   const handleUpdateCancel = (e) => {
     e.preventDefault();
-    setSelectType([])
-    setProductDetail([])
-    setSupplierNamePlaceholder("")
+    setSelectType([]);
+    setProductDetail([]);
+    setSupplierNamePlaceholder("");
     setSupplierName("");
     setIsSubmit(false);
     setPhotoAdd("");
@@ -542,11 +554,11 @@ console.log("Idsss",_id)
     setViews(0);
     setCheckImagePhoto(false);
     setIsActive(false);
-          setErrBD(false);
-          setEP(false)
-          setOther(false);
-          setBP(false);
-          setUSP(false);
+    setErrBD(false);
+    setEP(false);
+    setOther(false);
+    setBP(false);
+    setUSP(false);
     // setValues(initialState);
     setblogDesc("");
     setblogTitle("");
@@ -558,20 +570,20 @@ console.log("Idsss",_id)
     setSelectType("");
     setTypes("");
   };
-  const [SupplierNamePlaceholder, setSupplierNamePlaceholder] = useState("")
-  const handleSelectSingle =(selectedOption)=>{
+  const [SupplierNamePlaceholder, setSupplierNamePlaceholder] = useState("");
+  const handleSelectSingle = (selectedOption) => {
     console.log("Selected Specilty:", selectedOption);
     // Update speciality state with the selected option's value
-    setSupplierName(selectedOption.value)
-    console.log(selectedOption.value)
-    setSupplierNamePlaceholder(selectedOption.label)
-  }
- 
+    setSupplierName(selectedOption.value);
+    console.log(selectedOption.value);
+    setSupplierNamePlaceholder(selectedOption.label);
+  };
+
   const [ProductDetail, setProductDetail] = useState([]);
 
   const handleCheckboxChange = (rowId) => {
-    console.log(rowId)
-    console.log("THis is:",ProductDetail)
+    console.log(rowId);
+    console.log("THis is:", ProductDetail);
     // Check if the checkbox is already checked
     if (ProductDetail.includes(rowId)) {
       // If checked, remove it from the array
@@ -582,9 +594,9 @@ console.log("Idsss",_id)
     }
   };
   const handleCheckboxChange1 = (rowId) => {
-    console.log("THis is it",rowId)
+    console.log("THis is it", rowId);
     // Check if the checkbox is already checked
-    
+
     if (ProductDetail.includes(rowId)) {
       // If checked, remove it from the array
       setProductDetail(ProductDetail.filter((id) => id !== rowId));
@@ -593,18 +605,18 @@ console.log("Idsss",_id)
       setProductDetail([...ProductDetail, rowId]);
     }
   };
-  
-  console.log(ProductDetail)
+
+  console.log(ProductDetail);
 
   const col2 = [
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-        minWidth: "150px",
-      },
-  
+      name: "Sr No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      sortField: "srno",
+      minWidth: "150px",
+    },
+
     {
       name: "Product Group",
       cell: (row) => row.ProductDetailTypes[0].ProductGroup,
@@ -619,7 +631,7 @@ console.log("Idsss",_id)
       sortField: "blogTitle",
       minWidth: "150px",
     },
-   
+
     {
       name: "Action",
       selector: (row) => {
@@ -627,18 +639,13 @@ console.log("Idsss",_id)
           <React.Fragment>
             <div className="d-flex gap-2">
               <div className="edit">
-              <input
-  type="checkbox"
-  className="form-check-input"
-  id={`checkbox-${row._id}`}
-   
-  onClick={() => handleCheckboxChange(row._id)}
-/>
-
-
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id={`checkbox-${row._id}`}
+                  onClick={() => handleCheckboxChange(row._id)}
+                />
               </div>
-
-               
             </div>
           </React.Fragment>
         );
@@ -646,20 +653,16 @@ console.log("Idsss",_id)
       sortable: false,
       minWidth: "180px",
     },
-  ];  
+  ];
   const col3 = [
-
-
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-        minWidth: "150px",
-      },
+      name: "Sr No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      sortField: "srno",
+      minWidth: "150px",
+    },
 
-
-  
     {
       name: "Group name",
       cell: (row) => row.ProductDetailTypes[0].ProductGroup,
@@ -674,39 +677,34 @@ console.log("Idsss",_id)
       sortField: "blogTitle",
       minWidth: "150px",
     },
-   
+
     {
       name: "Action",
       selector: (row) => {
-        console.log(row)
-        let isChecked=false;
-        for(let i=0;i<ProductDetail.length;i++){
-          if(row._id === ProductDetail[i]){
-            isChecked=true;
+        console.log(row);
+        let isChecked = false;
+        for (let i = 0; i < ProductDetail.length; i++) {
+          if (row._id === ProductDetail[i]) {
+            isChecked = true;
             break;
           }
         }
-        
-        console.log("New",row.ProductDetailTypes[0]._id)
-        console.log("New1",ProductDetail)
+
+        console.log("New", row.ProductDetailTypes[0]._id);
+        console.log("New1", ProductDetail);
         console.log("isChecked:", isChecked);
         return (
           <React.Fragment>
             <div className="d-flex gap-2">
               <div className="edit">
-              <input
-  type="checkbox"
-  checked={isChecked}
-  className="form-check-input"
-  id={`checkbox-${row._id}`}
-   
-  onClick={() => handleCheckboxChange1(row._id)}
-/>
-
-
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  className="form-check-input"
+                  id={`checkbox-${row._id}`}
+                  onClick={() => handleCheckboxChange1(row._id)}
+                />
               </div>
-
-               
             </div>
           </React.Fragment>
         );
@@ -717,12 +715,12 @@ console.log("Idsss",_id)
   ];
   const col = [
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-        minWidth: "150px",
-      },
+      name: "Sr No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      sortField: "srno",
+      minWidth: "150px",
+    },
     {
       name: "SupplierName",
       cell: (row) => row.SupplierDetailTypes[0].SupplierName,
@@ -730,7 +728,7 @@ console.log("Idsss",_id)
       sortField: "blogTitle",
       minWidth: "150px",
     },
-   
+
     {
       name: "Status",
       selector: (row) => {
@@ -746,18 +744,17 @@ console.log("Idsss",_id)
           <React.Fragment>
             <div className="d-flex gap-2">
               <div className="edit">
-              <button
-  className="btn btn-sm btn-success edit-item-btn"
-  data-bs-toggle="modal"
-  data-bs-target="#showModal"
-  onClick={() => {
-    handleTog_edit(row, row._id);
-    getProductDetails(); // Call getProductDetails() here
-  }}
->
-  Edit
-</button>
-
+                <button
+                  className="btn btn-sm btn-success edit-item-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#showModal"
+                  onClick={() => {
+                    handleTog_edit(row, row._id);
+                    getProductDetails(); // Call getProductDetails() here
+                  }}
+                >
+                  Edit
+                </button>
               </div>
 
               <div className="remove">
@@ -767,7 +764,7 @@ console.log("Idsss",_id)
                   data-bs-target="#deleteRecordModal"
                   onClick={() => tog_delete(row._id)}
                 >
-                  Remove 
+                  Remove
                 </button>
               </div>
             </div>
@@ -782,11 +779,14 @@ console.log("Idsss",_id)
   document.title = "Assign Product|Shreeji Pharma";
 
   return (
-    
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Assign Product"  />
+          <BreadCrumb
+            pageTitle="Supplier Setup"
+            maintitle="Supplier Setup"
+            title="Assign Product"
+          />
 
           <Row>
             <Col lg={12}>
@@ -794,7 +794,9 @@ console.log("Idsss",_id)
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" lg={4} md={6} sm={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Assign Products</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">
+                        Assign Products
+                      </h2>
                     </Col>
                     <Col lg={4} md={6} sm={6}>
                       <div
@@ -834,7 +836,7 @@ console.log("Idsss",_id)
                                     className="add-btn me-1"
                                     onClick={() => {
                                       getSelectType();
-                                      getProductDetails()
+                                      getProductDetails();
                                       setShowForm(!showForm);
                                       // setValues(initialState);
                                       setblogDesc("");
@@ -844,10 +846,10 @@ console.log("Idsss",_id)
                                       setuserId("");
                                       setIsActive(false);
                                       setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setBP(false);
-          setUSP(false);
+                                      setErrBD(false);
+                                      setOther(false);
+                                      setBP(false);
+                                      setUSP(false);
                                       setblogImage("");
                                       // setFileId(Math.random() * 100000);
                                     }}
@@ -884,10 +886,10 @@ console.log("Idsss",_id)
                                     setuserId("");
                                     setIsActive(false);
                                     setIsActive(false);
-          setErrBD(false);
-          setOther(false);
-          setBP(false);
-          setUSP(false);
+                                    setErrBD(false);
+                                    setOther(false);
+                                    setBP(false);
+                                    setUSP(false);
                                     setblogImage("");
                                     setShowForm(false);
                                     setUpdateForm(false);
@@ -937,80 +939,89 @@ console.log("Idsss",_id)
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                <Col lg={6}>
-                               
-                                      
-                                      <Col lg={6} md={6}>
-                                                    <div className="mb-3">
-                                                    <Label>
-                                Select Supplier{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                       <Select
-                                       className={validClassSN}
-                                       placeholder={SupplierNamePlaceholder}
-                                                            value={SupplierName}
-                                                            onChange={handleSelectSingle}
-                                                            options={selectType}
-                                                        />
-                                                         {isSubmit && (
-                                        <p className="text-danger">
-                                          {formErrors.SupplierName}
-                                        </p>
-                                      )}
-                                                    </div>
-                                                </Col>
-                                   
+                                  <Col lg={6}>
+                                    <Col lg={6} md={6}>
+                                      <div className="mb-3">
+                                        <Label>
+                                          Select Supplier{" "}
+                                          <span className="text-danger">*</span>
+                                        </Label>
+                                        <Select
+                                          className={validClassSN}
+                                          placeholder={SupplierNamePlaceholder}
+                                          value={SupplierName}
+                                          onChange={handleSelectSingle}
+                                          options={selectType}
+                                        />
+                                        {isSubmit && (
+                                          <p className="text-danger">
+                                            {formErrors.SupplierName}
+                                          </p>
+                                        )}
+                                      </div>
+                                    </Col>
                                   </Col>
-                                   <Col lg={3}>
+                                  <Col lg={3}></Col>
+                                  <Col lg={3} style={{ marginTop: "25px" }}>
+                                    <div
+                                      style={{
+                                        display:
+                                          showForm && !updateForm
+                                            ? "flex"
+                                            : "none",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <input
+                                        className="form-control search"
+                                        placeholder="Search..."
+                                        onChange={(e) =>
+                                          setQuery1(e.target.value)
+                                        }
+                                        style={{ flex: 1 }}
+                                      />
+                                      <i
+                                        className="search-icon"
+                                        style={{ marginLeft: "8px" }}
+                                      ></i>
+                                    </div>
+                                  </Col>
 
-                                   </Col>
-                                  <Col lg={3} style={{marginTop:'25px'}}>
-  <div
-    style={{
-      display: showForm && !updateForm ? "flex" : "none",
-      alignItems: "center"
-    }}
-  >
-    <input
-      className="form-control search"
-      placeholder="Search..."
-      onChange={(e) => setQuery1(e.target.value)}
-      style={{ flex: 1 }}
-    />
-    <i className="search-icon" style={{ marginLeft: '8px' }}></i>
-  </div>
-</Col>
-
-
-                      
                                   <CardBody>
-                                    
-                    <div>
-                      <div className="table-responsive table-card mt-1 mb-1 text-right">
-                        <DataTable
-                          columns={col2}
-                          data={blogs2}
-                          progressPending={loading}
-                          sortServer
-                          onSort={(column1, sortDirection1, sortedRows1) => {
-                            handleSort1(column1, sortDirection1);
-                          }}
-                          pagination
-                          paginationServer
-                          paginationTotalRows={totalRows2}
-                          paginationRowsPerPageOptions={[
-                            10,
-                            50,
-                            100,
-                            totalRows2,
-                          ]}
-                          onChangeRowsPerPage={handlePerRowsChange1}
-                          onChangePage={handlePageChange1}
-                        />
-                      </div>
-                    </div>
-                  </CardBody>
+                                    <div>
+                                      <div className="table-responsive table-card mt-1 mb-1 text-right">
+                                        <DataTable
+                                          columns={col2}
+                                          data={blogs2}
+                                          progressPending={loading}
+                                          sortServer
+                                          onSort={(
+                                            column1,
+                                            sortDirection1,
+                                            sortedRows1
+                                          ) => {
+                                            handleSort1(
+                                              column1,
+                                              sortDirection1
+                                            );
+                                          }}
+                                          pagination
+                                          paginationServer
+                                          paginationTotalRows={totalRows2}
+                                          paginationRowsPerPageOptions={[
+                                            10,
+                                            50,
+                                            100,
+                                            totalRows2,
+                                          ]}
+                                          onChangeRowsPerPage={
+                                            handlePerRowsChange1
+                                          }
+                                          onChangePage={handlePageChange1}
+                                        />
+                                      </div>
+                                    </div>
+                                  </CardBody>
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -1048,8 +1059,7 @@ console.log("Idsss",_id)
                                       </button>
                                     </div>
                                   </Col>
-
-                                  </Row>
+                                </Row>
                               </Form>
                             </div>
                           </CardBody>{" "}
@@ -1065,7 +1075,7 @@ console.log("Idsss",_id)
                     display: !showForm && updateForm ? "block" : "none",
                   }}
                 >
-                 <CardBody>
+                  <CardBody>
                     <React.Fragment>
                       <Col xxl={12}>
                         <Card className="">
@@ -1074,74 +1084,84 @@ console.log("Idsss",_id)
                             <div className="live-preview">
                               <Form>
                                 <Row>
-                                <Col lg={6}>
-                               
-                                      
-                                      <Col lg={6} md={6}>
-                                                    <div className="mb-3">
-                                                    <Label>
-                                Select Supplier{" "}
-                                        <span className="text-danger">*</span>
-                                      </Label>
-                                       <Select
-                                       isDisabled={true}
-                                       placeholder={SupplierNamePlaceholder}
-                                                            value={SupplierName}
-                                                            onChange={handleSelectSingle}
-                                                            options={selectType}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                   
+                                  <Col lg={6}>
+                                    <Col lg={6} md={6}>
+                                      <div className="mb-3">
+                                        <Label>
+                                          Select Supplier{" "}
+                                          <span className="text-danger">*</span>
+                                        </Label>
+                                        <Select
+                                          isDisabled={true}
+                                          placeholder={SupplierNamePlaceholder}
+                                          value={SupplierName}
+                                          onChange={handleSelectSingle}
+                                          options={selectType}
+                                        />
+                                      </div>
+                                    </Col>
                                   </Col>
-                                   
-                                  
-                                  <Col lg={3}>
-                                    
+
+                                  <Col lg={3}></Col>
+                                  <Col lg={3} style={{ marginTop: "25px" }}>
+                                    <div
+                                      style={{
+                                        display:
+                                          !showForm && updateForm
+                                            ? "flex"
+                                            : "none",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <input
+                                        className="form-control search"
+                                        placeholder="Search..."
+                                        onChange={(e) =>
+                                          setQuery1(e.target.value)
+                                        }
+                                        style={{ flex: 1 }}
+                                      />
+                                      <i
+                                        className=" search-icon"
+                                        style={{ marginLeft: "8px" }}
+                                      ></i>
+                                    </div>
                                   </Col>
-                                  <Col lg={3} style={{marginTop:'25px'}}>
-  <div
-    style={{
-      display: !showForm && updateForm  ? "flex" : "none",
-      alignItems: "center"
-    }}
-  >
-    <input
-      className="form-control search"
-      placeholder="Search..."
-      onChange={(e) => setQuery1(e.target.value)}
-      style={{ flex: 1 }}
-    />
-    <i className=" search-icon" style={{ marginLeft: '8px' }}></i>
-  </div>
-</Col>
                                   <CardBody>
-                                    
-                    <div>
-                      <div className="table-responsive table-card mt-1 mb-1 text-right">
-                        <DataTable
-                          columns={col3}
-                          data={blogs3}
-                          progressPending={loading}
-                          sortServer
-                          onSort={(column1, sortDirection1, sortedRows1) => {
-                            handleSort1(column1, sortDirection1);
-                          }}
-                          pagination
-                          paginationServer
-                          paginationTotalRows={totalRows2}
-                          paginationRowsPerPageOptions={[
-                            10,
-                            50,
-                            100,
-                            totalRows2,
-                          ]}
-                          onChangeRowsPerPage={handlePerRowsChange1}
-                          onChangePage={handlePageChange1}
-                        />
-                      </div>
-                    </div>
-                  </CardBody>
+                                    <div>
+                                      <div className="table-responsive table-card mt-1 mb-1 text-right">
+                                        <DataTable
+                                          columns={col3}
+                                          data={blogs3}
+                                          progressPending={loading}
+                                          sortServer
+                                          onSort={(
+                                            column1,
+                                            sortDirection1,
+                                            sortedRows1
+                                          ) => {
+                                            handleSort1(
+                                              column1,
+                                              sortDirection1
+                                            );
+                                          }}
+                                          pagination
+                                          paginationServer
+                                          paginationTotalRows={totalRows2}
+                                          paginationRowsPerPageOptions={[
+                                            10,
+                                            50,
+                                            100,
+                                            totalRows2,
+                                          ]}
+                                          onChangeRowsPerPage={
+                                            handlePerRowsChange1
+                                          }
+                                          onChangePage={handlePageChange1}
+                                        />
+                                      </div>
+                                    </div>
+                                  </CardBody>
 
                                   {loadingOption && (
                                     <div className="d-flex justify-content-center">
@@ -1284,7 +1304,6 @@ console.log("Idsss",_id)
                 type="button"
                 className="btn btn-outline-danger"
                 onClick={() => setmodal_delete(false)}
-                
               >
                 Close
               </button>

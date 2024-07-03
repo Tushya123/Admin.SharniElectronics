@@ -29,16 +29,14 @@ import {
 
 const initialState = {
   Title: "",
- 
- 
+
   CertificateImage: "",
   IsActive: false,
 };
 
 const Certificate = () => {
   const [values, setValues] = useState(initialState);
-  const { Title,  CertificateImage, IsActive } =
-    values;
+  const { Title, CertificateImage, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -81,8 +79,8 @@ const Certificate = () => {
         setValues({
           ...values,
           Title: res.Title,
-          
-          CertificateImage:res.CertificateImage,
+
+          CertificateImage: res.CertificateImage,
           IsActive: res.IsActive,
         });
       })
@@ -110,8 +108,8 @@ const Certificate = () => {
       const formdata = new FormData();
 
       formdata.append("CertificateImage", values.CertificateImage);
-      formdata.append("Title", values.Title); 
-      formdata.append("IsActive", values.IsActive); 
+      formdata.append("Title", values.Title);
+      formdata.append("IsActive", values.IsActive);
       createCertificate(formdata)
         .then((res) => {
           setmodal_list(!modal_list);
@@ -151,8 +149,8 @@ const Certificate = () => {
       const formdata = new FormData();
 
       formdata.append("CertificateImage", values.CertificateImage);
-      formdata.append("Title", values.Title); 
-      formdata.append("IsActive", values.IsActive); 
+      formdata.append("Title", values.Title);
+      formdata.append("IsActive", values.IsActive);
 
       updateCertificate(_id, formdata)
         .then((res) => {
@@ -194,19 +192,14 @@ const Certificate = () => {
     if (values.Title !== "") {
       setErrFN(false);
     }
- 
-   
- 
-   
-     if (values.CertificateImage ==="") {
+
+    if (values.CertificateImage === "") {
       errors.CertificateImage = " CertificateImage is required!";
       setErrBI(true);
     }
     if (values.CertificateImage !== "") {
       setErrBI(false);
     }
-
-    
 
     return errors;
   };
@@ -303,12 +296,12 @@ const Certificate = () => {
   };
   const col = [
     {
-        name: "Sr No",
-        selector: (row,index) => index+1,
-        sortable: true,
-        sortField: "srno",
-        minWidth: "150px",
-      },
+      name: "Sr No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      sortField: "srno",
+      minWidth: "150px",
+    },
     {
       name: "Title",
       selector: (row) => row.Title,
@@ -316,9 +309,7 @@ const Certificate = () => {
       sortField: "Title",
       minWidth: "150px",
     },
- 
- 
- 
+
     {
       name: "Image",
       selector: (row) => renderImage(row.CertificateImage),
@@ -363,20 +354,22 @@ const Certificate = () => {
     },
   ];
 
-  document.title = "Certificate master|Shreeji Pharma" ;
+  document.title = "Certificate master|Shreeji Pharma";
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb  title="Certificate master"  />
+          <BreadCrumb title="Certificate master" pageTitle="Master" />
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
                   <Row className="g-4 mb-1">
                     <Col className="col-sm" sm={6} lg={4} md={6}>
-                      <h2 className="card-title mb-0 fs-4 mt-2">Certificate master</h2>
+                      <h2 className="card-title mb-0 fs-4 mt-2">
+                        Certificate master
+                      </h2>
                     </Col>
 
                     <Col sm={6} lg={4} md={6}>
@@ -461,7 +454,7 @@ const Certificate = () => {
             setIsSubmit(false);
           }}
         >
-          Add Admin
+          Add Certificate
         </ModalHeader>
         <form>
           <ModalBody>
@@ -476,15 +469,10 @@ const Certificate = () => {
                 onChange={handleChange}
               />
               <Label>
-               Certificate title <span className="text-danger">*</span>
+                Certificate title <span className="text-danger">*</span>
               </Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Title}</p>
-              )}
+              {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
-           
-            
-            
 
             <Col lg={6}>
               <label>
@@ -583,15 +571,11 @@ const Certificate = () => {
                 onChange={handleChange}
               />
               <Label>
-               Certificate title<span className="text-danger">*</span>{" "}
+                Certificate title<span className="text-danger">*</span>{" "}
               </Label>
-              {isSubmit && (
-                <p className="text-danger">{formErrors.Title}</p>
-              )}
+              {isSubmit && <p className="text-danger">{formErrors.Title}</p>}
             </div>
-           
-           
-             
+
             <Col lg={6}>
               <label>
                 Certificate Image <span className="text-danger">*</span>

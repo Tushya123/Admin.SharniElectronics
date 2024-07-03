@@ -27,7 +27,7 @@ import {
 } from "../../functions/CMS/Banner";
 const initialState = {
   Title: "",
-  
+
   Description: "",
   bannerImage: "",
   IsActive: false,
@@ -81,7 +81,7 @@ const Banner = () => {
         setValues({
           ...values,
           Title: res.Title,
-      
+
           Description: res.Description,
           bannerImage: res.bannerImage,
           IsActive: res.IsActive,
@@ -116,8 +116,6 @@ const Banner = () => {
       setErrTT(false);
     }
 
-
-
     if (values.bannerImage === "") {
       errors.bannerImage = "Banner Image is required!";
       setErrBI(true);
@@ -150,7 +148,7 @@ const Banner = () => {
 
       formdata.append("bannerImage", values.bannerImage);
       formdata.append("Description", values.Description);
-    
+
       formdata.append("IsActive", values.IsActive);
       formdata.append("Title", values.Title);
 
@@ -196,7 +194,7 @@ const Banner = () => {
 
       formdata.append("bannerImage", values.bannerImage);
       formdata.append("Description", values.Description);
-   
+
       formdata.append("IsActive", values.IsActive);
       formdata.append("Title", values.Title);
 
@@ -207,7 +205,6 @@ const Banner = () => {
           setPhotoAdd("");
           setUpdateForm(false);
           // setLoadingOption(false);
-
 
           setCheckImagePhoto(false);
         })
@@ -313,10 +310,9 @@ const Banner = () => {
   const col = [
     {
       name: "Sr No",
-      selector: (row,index) => index+1,
+      selector: (row, index) => index + 1,
       sortable: true,
       sortField: "srno",
-  
     },
     {
       name: "Title",
@@ -324,14 +320,14 @@ const Banner = () => {
       sortable: true,
       sortField: "Title",
       minWidth: "150px",
-    },{
+    },
+    {
       name: "Description",
       selector: (row) => row.Description,
       sortable: true,
       sortField: "Title",
       minWidth: "150px",
     },
- 
 
     {
       name: "Status",
@@ -346,7 +342,6 @@ const Banner = () => {
       selector: (row) => renderImage(row.bannerImage),
       sortable: true,
       sortField: "password",
-  
     },
     {
       name: "Action",
@@ -390,7 +385,7 @@ const Banner = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb maintitle="CMS" title="Banner" pageTitle="CMS" />
+          <BreadCrumb maintitle="CMS" title="Banner" pageTitle="Master" />
           <Row>
             <Col lg={12}>
               <Card>
