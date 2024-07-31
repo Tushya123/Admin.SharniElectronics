@@ -615,9 +615,9 @@ const handleSubmitCms = async () => {
   const [values,setValues]=useState("")
   const options = [
  
-    { value: '663f4d5fef85cf304603e082', label: 'About Us' },
-    { value: '663ca6df30ee58405d1a37ab', label: 'Terms and condition' },
-    { value: '663f0071ef85cf304603e046', label: 'Footer About Us' },
+    { value: '66a8fabe76fa4a7722733a3d', label: 'About Us' },
+    { value: '66a8fad576fa4a7722733a3f', label: 'Terms and condition' },
+    { value: '66a8fae876fa4a7722733a41', label: 'Footer About Us' },
     
   ];
   const[showButton, SetButton] = useState(true);
