@@ -365,6 +365,7 @@ const VerticalLayout = (props) => {
   const [params, setParams] = useState(false);
 
   const [product, setproduct] = useState(false);
+  const [service, setservice] = useState(false);
   const [order, setOrder] = useState(false);
   const [category, setCategory] = useState(false);
   const [subs, setSubs] = useState(false);
@@ -622,6 +623,84 @@ const VerticalLayout = (props) => {
             <li className="nav-item">
               <Link to="/product-detail" className="nav-link">
                 Product Details
+              </Link>
+            </li>
+            {/* <li className="nav-item">
+              <Link to="/other-products" className="nav-link">
+                 Other Products
+               </Link>
+             </li> */}
+            {/* <li className="nav-item">
+          <Link to="/newspaper" className="nav-link">
+                 Subscribe Newspaper
+               </Link>
+             </li>
+           
+           
+            <li className="nav-item">
+               <Link to="/feature" className="nav-link">
+                 Features
+               </Link>
+             </li>
+             <li className="nav-item">
+            <Link to="/cmsmaster" className="nav-link">                Cms Master
+              </Link>
+            </li> */}
+          </ul>
+        </Collapse>
+        <Link
+          className="nav-link menu-link"
+          to="#"
+          data-bs-toggle="collapse"
+          onClick={() => {
+            setservice(!service);
+          }}
+        >
+          <span data-key="t-apps"> Service Setup </span>
+        </Link>
+        <Collapse
+          className="menu-dropdown"
+          isOpen={service}
+          //   id="sidebarApps"
+        >
+          <ul className="nav nav-sm flex-column test">
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/company-details" className="nav-link">
+                Company Details
+              </Link>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <Link to="/admin-user" className="nav-link">
+                {" "}
+                Admin Users{" "}
+              </Link>
+            </li> */}
+            {/* <li className="nav-item">
+              <Link to="/user-signin" className="nav-link">
+                User Details
+              </Link>
+            {/* </li> */}
+            {/* <li className="nav-item">
+              <Link to="/roles" className="nav-link">
+                Roles
+              </Link>
+            </li> */}
+            {/* <li className="nav-item">
+              {" "}
+              <Link to="/getintouch" className="nav-link">
+                GetInTouch
+              </Link>
+            </li> */}
+            <li className="nav-item">
+              <Link to="/service-group" className="nav-link">
+                Service Group
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/service-details" className="nav-link">
+                Service Detail
               </Link>
             </li>
             {/* <li className="nav-item">
