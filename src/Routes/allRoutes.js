@@ -42,10 +42,10 @@ import Commitment from "../pages/CMSshreeji/Commitment";
 import Certificate from "../pages/CMSshreeji/Certificate";
 import StatusReport from "../pages/Report/StatusReport";
 
-
+import ServiceGroup from "../pages/Services/ServiceGroup";
 import CountryWiseReport from "../pages/Report/CountryWiseReports";
 import Newsletter from "../pages/CMSshreeji/Newsletter";
-
+import ServiceDetail from "../pages/Services/ServiceDetails";
 const authProtectedRoutes = [
   // { path: "/dashboard", component: <DashboardCrm /> },
   { path: "/profile", component: <UserProfile /> },
@@ -63,6 +63,7 @@ const authProtectedRoutes = [
   { path: "/promocode-master", component: <PromocodeMaster /> },
   { path: "/newproject", component: <NewProject /> },
   { path: "/product-details", component: <ProductDetails /> },
+  { path: "/service-details", component: <ServiceDetail /> },
 
   {path:"/getintouch",component:<GetInTouch/>},
   {path:"/roles",component:<Roles/>},
@@ -83,6 +84,7 @@ const authProtectedRoutes = [
   {path:"/cms",component:<Cms/>},
   {path:"/status-report",component:<StatusReport/>},
   {path:"/newsletter",component:<Newsletter/>},
+  {path:"/service-group",component:<ServiceGroup/>},
   
 
 
