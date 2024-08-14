@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
   Button,
   Card,
@@ -48,6 +50,7 @@ const initialState = {
 const ServiceDetail = () => {
   const [formErrors, setFormErrors] = useState({});
   const [formErrorsArr, setFormErrorsArr] = useState([]);
+  const [CkDesc,setCkDesc]=useState("");
   const [selectType, setSelectType] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -159,6 +162,7 @@ const ServiceDetail = () => {
           ServiceDetail: res.ServiceDetail,
           IsActive: res.IsActive,
         });
+        setCkDesc(res.CkDesc);
 
         const targetArray = [];
 
@@ -204,6 +208,7 @@ const ServiceDetail = () => {
     setIsSubmit(false);
     setvalues(initialState);
     setPhotoAdd("");
+    setCkDesc("");
     setCVAdd("");
     setCoordinatesArr([]);
     setEditMode(false);
@@ -221,7 +226,7 @@ const ServiceDetail = () => {
     setUpdateForm(false);
     setvalues(initialState);
     setTableData([]);
-
+    setCkDesc("");
     setCoordinatesArr([]);
     setCheckImagePhoto(false);
     setCheckImageCV(false);
@@ -264,7 +269,7 @@ const ServiceDetail = () => {
       formdata.append("Description", Description);
 
       formdata.append("ProductImage", ProductImage);
-
+      formdata.append("CkDesc", CkDesc);
       formdata.append("ProductDetailDescription", serializedMetals);
       formdata.append("IsActive", IsActive);
 
@@ -277,6 +282,7 @@ const ServiceDetail = () => {
           setCoordinatesArr([]);
           setTableData([]);
           setEditMode(false);
+          setCkDesc("");
           setFormErrors({});
           setPhotoAdd("");
           setCVAdd("");
@@ -308,7 +314,7 @@ const ServiceDetail = () => {
       const serializedMetals = JSON.stringify(CoordinatesArr);
       formdata.append("ServiceDetail", ServiceDetail);
       formdata.append("Description", Description);
-
+      formdata.append("CkDesc", CkDesc);
       formdata.append("ProductImage", ProductImage);
 
       formdata.append("ProductDetailDescription", serializedMetals);
@@ -321,6 +327,7 @@ const ServiceDetail = () => {
           // loadlayout();
           setvalues(initialState);
           setCheckImagePhoto(false);
+          setCkDesc("");
           setCheckImageCV(false);
           setCoordinatesArr([]);
           setFormErrors({});
@@ -398,6 +405,7 @@ const ServiceDetail = () => {
 
   const [errPI, setErrPI] = useState(false);
   const [errHI, setErrHI] = useState(false);
+  const [errHCK, setErrHCK] = useState(false);
   const [errHoverImage, setErrHoverImage] = useState(false);
 
   const validate = (values) => {
@@ -425,6 +433,14 @@ const ServiceDetail = () => {
 
     if (values.ProductPrice !== "") {
       setErrPP(false);
+    }
+    if (CkDesc === "") {
+      errors.CkDesc = "Description is Required";
+      setErrHCK(true);
+    }
+
+    if (CkDesc !== "") {
+      setErrHCK(false);
     }
     // if (values.Detail === "") {
     //   errors.Detail = "Product Weight is required";
@@ -489,6 +505,8 @@ const ServiceDetail = () => {
 
   const validClassHI =
     errHI && isSubmit ? "form-control is-invalid" : "form-control";
+    const validClassDescription =
+    errHCK && isSubmit ? "form-control is-invalid" : "form-control";
 
   const DescriptionCell = styled.div`
     white-space: normal;
@@ -932,6 +950,7 @@ const ServiceDetail = () => {
                                     setvalues(initialState);
                                     setShowForm(false);
                                     setUpdateForm(false);
+                                    setCkDesc("");
                                   }}
                                 >
                                   <i class="ri-list-check align-bottom me-1"></i>{" "}
@@ -1068,9 +1087,39 @@ const ServiceDetail = () => {
                                       </label>
                                     </div>
                                   </Col> */}
+                                  <Col lg={12}>
+                                    <Card>
+                                      <Label>
+                                        Product Description
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      <CardBody>
+                                        {/* <Form method="post"> */}
+                                        <CKEditor
+                                        className={validClassDescription}
+                                          key={"Description_" + _id}
+                                          editor={ClassicEditor}
+                                          data={CkDesc}
+                                          // config={{
+                                          //   extraPlugins: [uploadPlugin],
+                                          // }}
+                                          onChange={(event, editor) => {
+                                            const data = editor.getData();
 
+                                            setCkDesc(data);
+                                            console.log(Description);
+                                          }}
+                                        />
+                                        {isSubmit && (
+                                          <p className="text-danger">
+                                            {formErrors.CkDesc}
+                                          </p>
+                                        )}
+                                      </CardBody>
+                                    </Card>
+                                  </Col>
                                   {/* DIV */}
-                                  <Card>
+                                  {/* <Card>
                                     <CardHeader>
                                       <h2>Add Product Details</h2>
                                     </CardHeader>
@@ -1106,9 +1155,7 @@ const ServiceDetail = () => {
                                                   />
                                                   <Label>
                                                     Key{" "}
-                                                    {/* <span className="text-danger">
-                                                      *
-                                                    </span> */}
+                                                
                                                   </Label>
                                                   {formErrorsArr[index]
                                                     ?.ProductKey && (
@@ -1130,7 +1177,7 @@ const ServiceDetail = () => {
                                                         height: "100px",
                                                       }}
                                                       type="text"
-                                                      // className="form-control"
+                                                    
                                                       id="rolefloatingInput"
                                                       placeholder="metal Description"
                                                       name={`ProductDetailDescription[${index}].ProductValue`}
@@ -1165,9 +1212,7 @@ const ServiceDetail = () => {
                                                       className="form-label"
                                                     >
                                                       Description
-                                                      {/* <span className="text-danger">
-                                                        *
-                                                      </span> */}
+                                                    
                                                     </label>
                                                   </div>
                                                 </Col>
@@ -1250,7 +1295,7 @@ const ServiceDetail = () => {
                                         </div>
                                       </CardBody>
                                     </Card>
-                                  </Card>
+                                  </Card> */}
 
                                   <Col lg={6}>
                                     <label>
@@ -1409,7 +1454,7 @@ const ServiceDetail = () => {
                                     </div>
                                   </Col>
 
-                                  <Card>
+                                  {/* <Card>
                                     <CardHeader>
                                       <h2>Edit Product Details</h2>
                                     </CardHeader>
@@ -1445,9 +1490,7 @@ const ServiceDetail = () => {
                                                   />
                                                   <Label>
                                                     Key{" "}
-                                                    {/* <span className="text-danger">
-                                                      *
-                                                    </span> */}
+                                                  
                                                   </Label>
                                                   {formErrorsArr[index]
                                                     ?.ProductKey && (
@@ -1466,8 +1509,7 @@ const ServiceDetail = () => {
                                                   <textarea
                                                     style={{ height: "100px" }}
                                                     type="text"
-                                                    // className={validClassAddProductDesc}
-                                                    // className="form-control"
+                                                  
                                                     className={`form-control ${
                                                       formErrorsArr[index]
                                                         ?.ProductValue
@@ -1501,9 +1543,7 @@ const ServiceDetail = () => {
                                                     className="form-label"
                                                   >
                                                     Description
-                                                    {/* <span className="text-danger">
-                                                      *
-                                                    </span> */}
+                                                   
                                                   </label>
                                                 </div>
                                               </Col>
@@ -1586,7 +1626,38 @@ const ServiceDetail = () => {
                                         </div>
                                       </CardBody>
                                     </Card>
-                                  </Card>
+                                  </Card> */}
+                                  <Col lg={12}>
+                                    <Card>
+                                      <Label>
+                                        Product Description
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      <CardBody>
+                                        {/* <Form method="post"> */}
+                                        <CKEditor
+                                        className={validClassDescription}
+                                          key={"Description_" + _id}
+                                          editor={ClassicEditor}
+                                          data={CkDesc}
+                                          // config={{
+                                          //   extraPlugins: [uploadPlugin],
+                                          // }}
+                                          onChange={(event, editor) => {
+                                            const data = editor.getData();
+
+                                            setCkDesc(data);
+                                            console.log(Description);
+                                          }}
+                                        />
+                                        {isSubmit && (
+                                          <p className="text-danger">
+                                            {formErrors.CkDesc}
+                                          </p>
+                                        )}
+                                      </CardBody>
+                                    </Card>
+                                  </Col>
 
                                   <Col lg={6}>
                                     <label>

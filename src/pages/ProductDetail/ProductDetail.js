@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
   Button,
   Card,
@@ -33,6 +35,7 @@ import {
 const initialState = {
   ProductDetail: "",
   Description: "",
+  
 
   ProductDetailDescription: [
     {
@@ -51,6 +54,7 @@ const ProductDetail = () => {
   const [selectType, setSelectType] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
+  const [CkDesc,setCkDesc]=useState("");
   const [_id, set_Id] = useState("");
   const [remove_id, setRemove_id] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -67,7 +71,7 @@ const ProductDetail = () => {
     ProductDetail,
     Description,
     ProductImage,
-
+    
     ProductDetailDescription,
     IsActive,
   } = values;
@@ -155,10 +159,14 @@ const ProductDetail = () => {
           ...values,
           Description: res.Description,
           ProductImage: res.ImageUrl,
-
+         
           ProductDetail: res.ProductDetail,
           IsActive: res.IsActive,
         });
+        setCkDesc(res.CkDesc);
+
+
+
 
         const targetArray = [];
 
@@ -203,6 +211,7 @@ const ProductDetail = () => {
     setUpdateForm(false);
     setIsSubmit(false);
     setvalues(initialState);
+    setCkDesc("");
     setPhotoAdd("");
     setCVAdd("");
     setCoordinatesArr([]);
@@ -221,7 +230,7 @@ const ProductDetail = () => {
     setUpdateForm(false);
     setvalues(initialState);
     setTableData([]);
-
+setCkDesc("");
     setCoordinatesArr([]);
     setCheckImagePhoto(false);
     setCheckImageCV(false);
@@ -262,6 +271,7 @@ const ProductDetail = () => {
 
       formdata.append("ProductDetail", ProductDetail);
       formdata.append("Description", Description);
+      formdata.append("CkDesc", CkDesc);
 
       formdata.append("ProductImage", ProductImage);
 
@@ -277,6 +287,7 @@ const ProductDetail = () => {
           setCoordinatesArr([]);
           setTableData([]);
           setEditMode(false);
+          setCkDesc("");
           setFormErrors({});
           setPhotoAdd("");
           setCVAdd("");
@@ -308,7 +319,7 @@ const ProductDetail = () => {
       const serializedMetals = JSON.stringify(CoordinatesArr);
       formdata.append("ProductDetail", ProductDetail);
       formdata.append("Description", Description);
-
+      formdata.append("CkDesc", CkDesc);
       formdata.append("ProductImage", ProductImage);
 
       formdata.append("ProductDetailDescription", serializedMetals);
@@ -326,6 +337,7 @@ const ProductDetail = () => {
           setFormErrors({});
           setTableData([]);
           setFormErrorsArr({});
+          setCkDesc("");
           setPhotoAdd("");
           setCVAdd("");
           fetchlayouts();
@@ -398,6 +410,7 @@ const ProductDetail = () => {
 
   const [errPI, setErrPI] = useState(false);
   const [errHI, setErrHI] = useState(false);
+  const [errHCK, setErrHCK] = useState(false);
   const [errHoverImage, setErrHoverImage] = useState(false);
 
   const validate = (values) => {
@@ -426,14 +439,14 @@ const ProductDetail = () => {
     if (values.ProductPrice !== "") {
       setErrPP(false);
     }
-    // if (values.Detail === "") {
-    //   errors.Detail = "Product Weight is required";
-    //   setErrPW(true);
-    // }
+    if (CkDesc === "") {
+      errors.CkDesc = "Description is Required";
+      setErrHCK(true);
+    }
 
-    // if (values.Detail !== "") {
-    //   setErrPW(false);
-    // }
+    if (CkDesc !== "") {
+      setErrHCK(false);
+    }
     // if (values.ProductImage === "") {
     //   errors.ProductImage = "Product Image is required";
     //   setErrPI(true);
@@ -489,6 +502,8 @@ const ProductDetail = () => {
 
   const validClassHI =
     errHI && isSubmit ? "form-control is-invalid" : "form-control";
+    const validClassDescription =
+    errHCK && isSubmit ? "form-control is-invalid" : "form-control";
 
   const DescriptionCell = styled.div`
     white-space: normal;
@@ -930,6 +945,7 @@ const ProductDetail = () => {
                                   className="btn bg-success text-light mb-3 "
                                   onClick={() => {
                                     setvalues(initialState);
+                                    setCkDesc("");
                                     setShowForm(false);
                                     setUpdateForm(false);
                                   }}
@@ -1041,6 +1057,38 @@ const ProductDetail = () => {
                                     </div>
                                   </Col>
 
+                                  <Col lg={12}>
+                                    <Card>
+                                      <Label>
+                                        Product Description
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      <CardBody>
+                                        {/* <Form method="post"> */}
+                                        <CKEditor
+                                        className={validClassDescription}
+                                          key={"Description_" + _id}
+                                          editor={ClassicEditor}
+                                          data={CkDesc}
+                                          // config={{
+                                          //   extraPlugins: [uploadPlugin],
+                                          // }}
+                                          onChange={(event, editor) => {
+                                            const data = editor.getData();
+
+                                            setCkDesc(data);
+                                            console.log(Description);
+                                          }}
+                                        />
+                                        {isSubmit && (
+                                          <p className="text-danger">
+                                            {formErrors.CkDesc}
+                                          </p>
+                                        )}
+                                      </CardBody>
+                                    </Card>
+                                  </Col>
+
                                   {/* <Col md={6}>
                                     <div className="form-floating mb-3">
                                       <input
@@ -1070,7 +1118,7 @@ const ProductDetail = () => {
                                   </Col> */}
 
                                   {/* DIV */}
-                                  <Card>
+                                  {/* <Card>
                                     <CardHeader>
                                       <h2>Add Product Details</h2>
                                     </CardHeader>
@@ -1106,9 +1154,7 @@ const ProductDetail = () => {
                                                   />
                                                   <Label>
                                                     Key{" "}
-                                                    {/* <span className="text-danger">
-                                                      *
-                                                    </span> */}
+                                                  
                                                   </Label>
                                                   {formErrorsArr[index]
                                                     ?.ProductKey && (
@@ -1130,7 +1176,7 @@ const ProductDetail = () => {
                                                         height: "100px",
                                                       }}
                                                       type="text"
-                                                      // className="form-control"
+                                                      
                                                       id="rolefloatingInput"
                                                       placeholder="metal Description"
                                                       name={`ProductDetailDescription[${index}].ProductValue`}
@@ -1165,9 +1211,7 @@ const ProductDetail = () => {
                                                       className="form-label"
                                                     >
                                                       Description
-                                                      {/* <span className="text-danger">
-                                                        *
-                                                      </span> */}
+                                                      
                                                     </label>
                                                   </div>
                                                 </Col>
@@ -1197,7 +1241,7 @@ const ProductDetail = () => {
                                                     <div>
                                                       <Button
                                                         color="success"
-                                                        // className="add-btn me-3"
+                                                       
                                                         className="add-btn btn-lg btn-block me-3"
                                                         onClick={
                                                           handleAddCoordinate
@@ -1250,7 +1294,7 @@ const ProductDetail = () => {
                                         </div>
                                       </CardBody>
                                     </Card>
-                                  </Card>
+                                  </Card> */}
 
                                   <Col lg={6}>
                                     <label>
@@ -1408,8 +1452,39 @@ const ProductDetail = () => {
                                       </label>
                                     </div>
                                   </Col>
+                                  <Col lg={12}>
+                                    <Card>
+                                      <Label>
+                                        Product Description
+                                        <span className="text-danger">*</span>
+                                      </Label>
+                                      <CardBody>
+                                        {/* <Form method="post"> */}
+                                        <CKEditor
+                                        className={validClassDescription}
+                                          key={"Description_" + _id}
+                                          editor={ClassicEditor}
+                                          data={CkDesc}
+                                          // config={{
+                                          //   extraPlugins: [uploadPlugin],
+                                          // }}
+                                          onChange={(event, editor) => {
+                                            const data = editor.getData();
 
-                                  <Card>
+                                            setCkDesc(data);
+                                            console.log(Description);
+                                          }}
+                                        />
+                                        {isSubmit && (
+                                          <p className="text-danger">
+                                            {formErrors.CkDesc}
+                                          </p>
+                                        )}
+                                      </CardBody>
+                                    </Card>
+                                  </Col>
+
+                                  {/* <Card>
                                     <CardHeader>
                                       <h2>Edit Product Details</h2>
                                     </CardHeader>
@@ -1445,9 +1520,7 @@ const ProductDetail = () => {
                                                   />
                                                   <Label>
                                                     Key{" "}
-                                                    {/* <span className="text-danger">
-                                                      *
-                                                    </span> */}
+                                                 
                                                   </Label>
                                                   {formErrorsArr[index]
                                                     ?.ProductKey && (
@@ -1466,8 +1539,7 @@ const ProductDetail = () => {
                                                   <textarea
                                                     style={{ height: "100px" }}
                                                     type="text"
-                                                    // className={validClassAddProductDesc}
-                                                    // className="form-control"
+                                                  
                                                     className={`form-control ${
                                                       formErrorsArr[index]
                                                         ?.ProductValue
@@ -1500,10 +1572,7 @@ const ProductDetail = () => {
                                                     htmlFor="role-field"
                                                     className="form-label"
                                                   >
-                                                    Description
-                                                    {/* <span className="text-danger">
-                                                      *
-                                                    </span> */}
+                                               
                                                   </label>
                                                 </div>
                                               </Col>
@@ -1533,7 +1602,7 @@ const ProductDetail = () => {
                                                     <div>
                                                       <Button
                                                         color="success"
-                                                        // className="add-btn me-3"
+                                                     
                                                         className="add-btn btn-lg btn-block me-3"
                                                         onClick={
                                                           handleAddCoordinate
@@ -1586,7 +1655,7 @@ const ProductDetail = () => {
                                         </div>
                                       </CardBody>
                                     </Card>
-                                  </Card>
+                                  </Card> */}
 
                                   <Col lg={6}>
                                     <label>
