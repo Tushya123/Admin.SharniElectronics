@@ -29,8 +29,7 @@ import {
 } from "../../functions/CMSshreeji/Commitment";
 
 const initialState = {
-  Title: "",
-  Description: "",
+  
 
   CommitmentImage: "",
   IsActive: false,
@@ -38,7 +37,7 @@ const initialState = {
 
 const Commitment = () => {
   const [values, setValues] = useState(initialState);
-  const { Title, Description, CommitmentImage, IsActive } = values;
+  const { CommitmentImage, IsActive } = values;
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [filter, setFilter] = useState(true);
@@ -80,8 +79,7 @@ const Commitment = () => {
       .then((res) => {
         setValues({
           ...values,
-          Title: res.Title,
-          Description: res.Description,
+        
           CommitmentImage: res.CommitmentImage,
           IsActive: res.IsActive,
         });
@@ -110,8 +108,7 @@ const Commitment = () => {
       const formdata = new FormData();
 
       formdata.append("CommitmentImage", values.CommitmentImage);
-      formdata.append("Title", values.Title);
-      formdata.append("Description", values.Description);
+
       formdata.append("IsActive", values.IsActive);
       createCommitment(formdata)
         .then((res) => {
@@ -152,8 +149,7 @@ const Commitment = () => {
       const formdata = new FormData();
 
       formdata.append("CommitmentImage", values.CommitmentImage);
-      formdata.append("Title", values.Title);
-      formdata.append("Description", values.Description);
+    
       formdata.append("IsActive", values.IsActive);
 
       updateCommitment(_id, formdata)
@@ -189,21 +185,7 @@ const Commitment = () => {
   const validate = (values) => {
     const errors = {};
 
-    if (values.Title === "") {
-      errors.Title = "Title is required!";
-      setErrFN(true);
-    }
-    if (values.Title !== "") {
-      setErrFN(false);
-    }
-
-    if (values.Description === "") {
-      errors.Description = "Description is required!";
-      setErrLN(true);
-    }
-    if (values.Description !== "") {
-      setErrLN(false);
-    }
+  
 
     if (values.CommitmentImage === "") {
       errors.CommitmentImage = " Image is required!";
@@ -323,19 +305,19 @@ const Commitment = () => {
       sortable: true,
       sortField: "srno",
     },
-    {
-      name: "Title",
-      selector: (row) => row.Title,
-      sortable: true,
-      sortField: "Title",
-    },
-    {
-      name: "Description",
-      selector: (row) => row.Description,
-      sortable: true,
-      sortField: "Description",
-      maxWidth: "150px",
-    },
+    // {
+    //   name: "Title",
+    //   selector: (row) => row.Title,
+    //   sortable: true,
+    //   sortField: "Title",
+    // },
+    // {
+    //   name: "Description",
+    //   selector: (row) => row.Description,
+    //   sortable: true,
+    //   sortField: "Description",
+    //   maxWidth: "150px",
+    // },
 
     {
       name: "Image",
@@ -484,7 +466,7 @@ const Commitment = () => {
         </ModalHeader>
         <form>
           <ModalBody>
-            <div className="form-floating mb-3">
+            {/* <div className="form-floating mb-3">
               <Input
                 type="text"
                 className={validClassFN}
@@ -516,7 +498,7 @@ const Commitment = () => {
               {isSubmit && (
                 <p className="text-danger">{formErrors.Description}</p>
               )}
-            </div>
+            </div> */}
 
             <Col lg={6}>
               <label>
@@ -604,7 +586,7 @@ const Commitment = () => {
         </ModalHeader>
         <form>
           <ModalBody>
-            <div className="form-floating mb-3">
+            {/* <div className="form-floating mb-3">
               <Input
                 type="text"
                 className={validClassFN}
@@ -636,7 +618,7 @@ const Commitment = () => {
               {isSubmit && (
                 <p className="text-danger">{formErrors.Description}</p>
               )}
-            </div>
+            </div> */}
 
             <Col lg={6}>
               <label>
