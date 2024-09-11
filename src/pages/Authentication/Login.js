@@ -11,6 +11,7 @@ import {
   Form,
   FormFeedback,
   // Alert,
+  // Alert
 } from "reactstrap";
 import { Alert } from "react-bootstrap";
 
@@ -35,7 +36,7 @@ import withRouter from "../../Components/Common/withRouter";
 import axios from "axios";
 
 const initialState = {
-  email: "",
+  username: "",
   password: "",
 };
 
@@ -48,7 +49,7 @@ const Login = (props) => {
   const [values, setValues] = useState(initialState);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-  const { email, password } = values;
+  const { username, password } = values;
   const [showPassword, setShowPassword] = useState(false);
 
 
@@ -61,19 +62,22 @@ const Login = (props) => {
     setFormErrors(validate(values));
 console.log("dddd")
     axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/adminLogin`, values)
+      .post(`https://dummyjson.com/auth/login`, values)
       .then((res) => {
         console.log("Hiii",res);
-        if (res.isOk&&res.data.IsActive===true) {
+        if (res.id) {
           console.log(" login", res);
 
-          localStorage.setItem("AdminUser", res.data._id);
-          localStorage.setItem("AdminName", res.data.firstName);
-          localStorage.setItem("Email", res.data.email);
-          localStorage.setItem("Image", res.data.bannerImage);
+          localStorage.setItem("AdminUser", res.token);
+          localStorage.setItem("Token", res.token);
+       
+          
+          localStorage.setItem("AdminName", res.name);
+          localStorage.setItem("username", res.name);
+          localStorage.setItem("Image", res.token);
 
 
-          window.location.replace("/admin-user");
+          window.location.replace("/newproducts");
         } else {
           toast.error("Authentication failed!");
         }
@@ -84,20 +88,17 @@ console.log("dddd")
       });
   };
 
-  const [errEmail, seterrEmail] = useState(false);
+  const [errusername, seterrusername] = useState(false);
   const [errPassword, setErrPassword] = useState(false);
 
   const validate = (values) => {
     const errors = {};
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (values.email === "") {
-      errors.email = "Email is required!";
-      seterrEmail(true);
-    } else if (!regex.test(values.email)) {
-      errors.email = "Invalid Email address!";
-      seterrEmail(true);
+    if (values.username === "") {
+      errors.username = "username is required!";
+      seterrusername(true);
     } else {
-      seterrEmail(false);
+      seterrusername(false);
     }
     if (values.password === "") {
       errors.password = "Password is required!";
@@ -108,8 +109,8 @@ console.log("dddd")
     }
     return errors;
   };
-  const validClassEmail =
-    errEmail && isSubmit ? "form-control is-invalid" : "form-control";
+  const validClassusername =
+    errusername && isSubmit ? "form-control is-invalid" : "form-control";
   const validClassPassword =
     errPassword && isSubmit ? "form-control is-invalid" : "form-control pe-5";
 
@@ -170,19 +171,19 @@ console.log("dddd")
                       action="#"
                     > */}
                     <div className="mb-3">
-                      <Label htmlFor="email" className="form-label">
-                        Email
+                      <Label htmlFor="username" className="form-label">
+                        username
                       </Label>
                       <Input
-                        name="email"
-                        className={validClassEmail}
-                        placeholder="Enter email"
-                        type="email"
+                        name="username"
+                        className={validClassusername}
+                        placeholder="Enter username"
+                        type="username"
                         onChange={handleChange}
-                        value={email}
+                        value={username}
                       />
                       {isSubmit && (
-                        <p className="text-danger">{formErrors.email}</p>
+                        <p className="text-danger">{formErrors.username}</p>
                       )}
                     </div>
 

@@ -1104,9 +1104,9 @@ const VerticalLayout = (props) => {
   );
 };
 
-VerticalLayout.propTypes = {
-  location: PropTypes.object,
-  t: PropTypes.any,
-};
+// VerticalLayout.propTypes = {
+//   location: PropTypes.object,
+//   t: PropTypes.any,
+// };
 
 export default withRouter(withTranslation()(VerticalLayout));
