@@ -202,7 +202,7 @@ useEffect(() => {
     
     try {
         const response = await axios.post(
-            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params-date/inquiry`,
+            `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params-date/inquiry`,
             {
                 
                 skip: skip,
@@ -248,7 +248,7 @@ const fetchCategories1 = async (startDate, endDate) => {
     console.log(changedid);
     
         const response = await axios.post(
-            `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params-date/contactinquiry`,
+            `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params-date/contactinquiry`,
             {
               skip: skip,
               per_page: perPage1,
@@ -386,7 +386,7 @@ const fetchCategories1 = async (startDate, endDate) => {
 //  const  selectDropdown  = async () =>{
 //     try {
 //       // const response = await listSpecialityManagement()
-//       const response = await axios.get(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`);
+//       const response = await axios.get(`${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/supplier`);
 //       console.log(response)
 //       const names = response.map((item)=>({
 //         value:item._id , label :item.SupplierName,id:item._id
@@ -423,7 +423,7 @@ const handleStartDateChange = (date) => {
         skip = 0;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/downloadexcelstatusreport`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/downloadexcelstatusreport`,
         {
           skip: skip,
           per_page: perPage,
@@ -455,7 +455,7 @@ const handleStartDateChange = (date) => {
         skip = 0;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/downloadexcelstatusreportforcontact`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/downloadexcelstatusreportforcontact`,
         {
           skip: skip,
           per_page: perPage1,

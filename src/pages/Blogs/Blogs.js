@@ -79,7 +79,7 @@ const Blogs = () => {
                 .then((res) => {
                   console.log("res", res.url);
                   resolve({
-                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
+                    default: `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/uploads/BlogCKImages/${res.url}`,
                   });
                 })
                 .catch((err) => console.log(err));
@@ -306,7 +306,7 @@ const Blogs = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Blog`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/Blog`,
         {
           skip: skip,
           per_page: perPage,
@@ -936,7 +936,7 @@ const Blogs = () => {
                                         src={
                                           checkImagePhoto
                                             ? photoAdd
-                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${BlogImage}`
+                                            : `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${BlogImage}`
                                         }
                                         width="180"
                                         height="200"

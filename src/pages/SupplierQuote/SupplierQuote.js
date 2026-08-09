@@ -60,7 +60,7 @@ const SupplierQuote = () => {
   const [blogs, setBlogs] = useState([]);
 
 const getallsupplierdetails=()=>{
-  axios.get(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`)
+  axios.get(`${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/supplier`)
   .then((response)=>{
     if(response.length>0){
       console.log("rrr",response);
@@ -77,7 +77,7 @@ const getallsupplierdetails=()=>{
   const getallProductDetail=()=>{
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/projectdetail`)
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/projectdetail`)
       .then((response) => {
         if (response.length > 0) {
 
@@ -103,7 +103,7 @@ console.log(selectsupplier.length);
   const getallAssignProduct=()=>{
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProduct`)
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/AssignProduct`)
       .then((response) => {
         if (response.length > 0) {
 
@@ -205,7 +205,7 @@ console.log(data)
     // setblogTitle(row.Description);
     // setblogThumnailDesc(row.subtitle);
     // setblogDesc(row.Detail);
-    // setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`);
+    // setPhotoAdd(`${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${row.imageURL}`);
     // setIsActive(row.IsActive);
     // setCheckImagePhoto(true);
     setmodal_edit(!modal_edit);
@@ -238,7 +238,7 @@ console.log(data)
     //   formdata.append("IsActive", IsActive);
       // formdata.append("subtitle", blogThumnailDesc);
       const response1 = await fetch(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/forget-password`, {
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/forget-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ console.log(data)
       });
 
 
-      axios.post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/supplierquote`,values)
+      axios.post(`${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/create/supplierquote`,values)
         .then((res) => {
           console.log(res);
           setValues(initialState);
@@ -287,7 +287,7 @@ console.log(data)
     e.preventDefault();
     axios
       .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/supplierquote/${remove_id}`)
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/remove/supplierquote/${remove_id}`)
       .then((res) => {
         setmodal_delete(!modal_delete);
         fetchCategories();
@@ -390,7 +390,7 @@ errNA && isSubmit ? "p-0 form-control is-invalid " : "p-0 form-control";
 
   //   await axios
   //     .get(
-  //       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`)
+  //       `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/listprojectdetailbyparam`)
   //     .then((response) => {
   //       if (response.length > 0) {
   //         setLoading(false);
@@ -411,7 +411,7 @@ errNA && isSubmit ? "p-0 form-control is-invalid " : "p-0 form-control";
     }
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/supplierquote`, {
+      .post(`${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params/supplierquote`, {
         skip: skip,
         per_page: perPage,
         sorton: column,

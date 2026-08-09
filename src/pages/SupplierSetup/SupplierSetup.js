@@ -218,7 +218,7 @@ const Supplier = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/supplier`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params/supplier`,
         {
           skip: skip,
           per_page: perPage,
@@ -300,7 +300,7 @@ const Supplier = () => {
     e.preventDefault();
     axios
       .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/supplier/${remove_id}`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/delete/supplier/${remove_id}`
       )
       .then((res) => {
         setmodal_delete(!modal_delete);

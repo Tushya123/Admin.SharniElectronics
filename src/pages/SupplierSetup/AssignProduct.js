@@ -65,7 +65,7 @@ const AssignProduct = () => {
   const getSelectType = () => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/supplier`
       )
       .then((response) => {
         if (response.length > 0) {
@@ -90,7 +90,7 @@ const AssignProduct = () => {
     }
     axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/listprojectdetailbyparam`,
         {
           skip: skip,
           per_page: perPage1,
@@ -128,27 +128,27 @@ const AssignProduct = () => {
 
   const uploadImage = async (body) => {
     return await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/cms-blog/image-upload`,
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/cms-blog/image-upload`,
       body
     );
   };
 
   const updateBlogs = async (_id, values) => {
     return await axios.put(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/blogs/${_id}`,
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/update/blogs/${_id}`,
       values
     );
   };
 
   const getBlogs = async (_id) => {
     return await axios.get(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/blogs/${_id}`
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/get/blogs/${_id}`
     );
   };
 
   const removeBlogs = async (_id) => {
     return await axios.delete(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/AssignProduct/${_id}`
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/remove/AssignProduct/${_id}`
     );
   };
 
@@ -164,7 +164,7 @@ const AssignProduct = () => {
                 .then((res) => {
                   console.log("res", res.url);
                   resolve({
-                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/BlogCKImages/${res.url}`,
+                    default: `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/uploads/BlogCKImages/${res.url}`,
                   });
                 })
                 .catch((err) => console.log(err));
@@ -222,7 +222,7 @@ const AssignProduct = () => {
 
       axios
         .post(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/AssignProduct`,
+          `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/create/AssignProduct`,
           formdata
         )
         .then((res) => {
@@ -254,7 +254,7 @@ const AssignProduct = () => {
 
     axios
       .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/AssignProduct/${remove_id}`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/remove/AssignProduct/${remove_id}`
       )
       .then((res) => {
         setmodal_delete(!modal_delete);
@@ -284,7 +284,7 @@ const AssignProduct = () => {
 
       axios
         .put(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/AssignProduct/${_id}`,
+          `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/update/AssignProduct/${_id}`,
           formdata
         )
         .then((res) => {
@@ -421,7 +421,7 @@ const AssignProduct = () => {
 
   //   await axios
   //     .get(
-  //       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`)
+  //       `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/listprojectdetailbyparam`)
   //     .then((response) => {
   //       if (response.length > 0) {
   //         setLoading(false);
@@ -443,7 +443,7 @@ const AssignProduct = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProductByParams`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/AssignProductByParams`,
         {
           skip: skip,
           per_page: perPage,

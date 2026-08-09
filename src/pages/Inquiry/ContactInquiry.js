@@ -313,7 +313,7 @@ const ContactInquiry = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/contactinquiry`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params/contactinquiry`,
         {
           skip: skip,
           per_page: perPage,

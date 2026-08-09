@@ -130,7 +130,7 @@ const ProductDetail = () => {
     const fetchProductDetails = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`
+          `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/areatype`
         );
         console.log("ressssssss", response);
         setSelectType(response);
@@ -770,7 +770,7 @@ const ProductDetail = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listprojectdetailbyparam`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/listprojectdetailbyparam`,
         {
           skip: skip,
           per_page: perPage,
@@ -1613,7 +1613,7 @@ const ProductDetail = () => {
                                         src={
                                           checkImagePhoto
                                             ? photoAdd
-                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.ProductImage}`
+                                            : `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${values.ProductImage}`
                                         }
                                         width="180"
                                         height="180"

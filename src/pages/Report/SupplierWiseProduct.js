@@ -72,7 +72,7 @@ const SupplierWiseProductReport = () => {
     const fetchProductDetails = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/areatype`
+          `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/areatype`
         );
         console.log("ressssssss", response);
         setSelectType(response);
@@ -160,7 +160,7 @@ const SupplierWiseProductReport = () => {
 
     const response = await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProductByParamsforReport/${changedid}`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/AssignProductByParamsforReport/${changedid}`,
         {
           skip: skip,
           per_page: perPage,
@@ -318,7 +318,7 @@ const SupplierWiseProductReport = () => {
     try {
       // const response = await listSpecialityManagement()
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/supplier`
       );
       console.log(response);
       const names = response.map((item) => ({
@@ -372,7 +372,7 @@ const SupplierWiseProductReport = () => {
                         color="primary"
                         className="btn-rounded waves-effect waves-light"
                         onClick={() => {
-                          const endpoint = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/generateSupplierWiseProductReportExcel/${changedid}`;
+                          const endpoint = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/get/generateSupplierWiseProductReportExcel/${changedid}`;
                           axios
                             .get(endpoint, { responseType: "blob" })
                             .then((response) => {

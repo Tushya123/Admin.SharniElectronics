@@ -4,7 +4,7 @@ export const createContactInquiry = async (values) => {
   try{
     console.log(values)
     const response =await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/contactinquiry`,
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/create/contactinquiry`,
       values
     )
 
@@ -18,13 +18,13 @@ export const createContactInquiry = async (values) => {
 
 export const removeContactInquiry = async (_id) => {
   return await axios.delete(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/contactinquiry/${_id}`
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/delete/contactinquiry/${_id}`
   );
 };
 
 export const listContactInquiry = async () => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/contactinquiry`
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/contactinquiry`
   );
 };
 
@@ -32,7 +32,7 @@ export const listContactInquiry = async () => {
 
 export const updateContactInquiry = async (_id, values) => {
   return await axios.put(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/contactinquiry/${_id}`,
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/update/contactinquiry/${_id}`,
     values
   );
 };
@@ -40,7 +40,7 @@ export const updateContactInquiry = async (_id, values) => {
 
 export const getSpecificContactInquiry = async (_id) => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/getbyid/contactinquiry/${_id}`
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/getbyid/contactinquiry/${_id}`
   );
 };
 

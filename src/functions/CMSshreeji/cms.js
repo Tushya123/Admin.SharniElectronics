@@ -3,7 +3,7 @@ import axios from "axios";
 export const getCmsContactUsDetailById = async (_id) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/cms/get/contactusdetail/${_id}`
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/cms/get/contactusdetail/${_id}`
     );
     return response;
   } catch (error) {
@@ -15,7 +15,7 @@ export const getCmsContactUsDetailById = async (_id) => {
 export const getCmsAboutUsById = async (_id) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/get/cms/${_id}`
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/get/cms/${_id}`
     );
     return response;
   } catch (error) {
@@ -28,7 +28,7 @@ export const editCmsContactUsDetailContent = async (values) => {
   try {
     const { _id } = values;
     const response = await axios.put(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/cms/edit/contactusdetail/${_id}`,
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/cms/edit/contactusdetail/${_id}`,
       values
     );
     return response;
@@ -44,7 +44,7 @@ export const editCmsAboutUsContent = async (_id,values) => {
     // const id= _id._id
     // const { _id } = values;
     const response = await axios.put(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/cms/${_id}`,
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/update/cms/${_id}`,
       values
     );
     return response;
@@ -55,7 +55,7 @@ export const editCmsAboutUsContent = async (_id,values) => {
 };
 export const uploadproductImageAboutUs = async (body) => {
     return await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/ckeditorAboutUs/imageupload`,
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/ckeditorAboutUs/imageupload`,
       body
     );
   };

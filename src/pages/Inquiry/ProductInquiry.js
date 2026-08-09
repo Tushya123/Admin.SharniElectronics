@@ -185,7 +185,7 @@ const ProductInquiry = () => {
   const getallAssignProduct = () => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/AssignProduct`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/AssignProduct`
       )
       .then((response) => {
         if (response.length > 0) {
@@ -326,7 +326,7 @@ const ProductInquiry = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/inquiry`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params/inquiry`,
         {
           skip: skip,
           per_page: perPage,
@@ -358,7 +358,7 @@ const ProductInquiry = () => {
         skip = 0;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params-excel/inquiry`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params-excel/inquiry`,
         {
           skip: skip,
           per_page: perPage,
@@ -486,7 +486,7 @@ const ProductInquiry = () => {
     e.preventDefault();
     axios
       .delete(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/remove/inquiry/${remove_id}`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/remove/inquiry/${remove_id}`
       )
       .then((res) => {
         setmodal_delete(!modal_delete);
@@ -775,7 +775,7 @@ const ProductInquiry = () => {
   const getallProductDetail = () => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/projectdetail`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/projectdetail`
       )
       .then((response) => {
         if (response.length > 0) {
@@ -820,7 +820,7 @@ const ProductInquiry = () => {
     values2.RFQ_Status2 = true;
     axios
       .put(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/InquiryProduct/${rfq}`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/update/InquiryProduct/${rfq}`,
         values2
       )
       .then((res) => {
@@ -850,7 +850,7 @@ const ProductInquiry = () => {
     if (Object.keys(errors).length === 0) {
       axios
         .post(
-          `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/InquiryProduct`,
+          `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/create/InquiryProduct`,
           values2
         )
         .then((res) => {

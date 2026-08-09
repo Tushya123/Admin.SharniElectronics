@@ -241,7 +241,7 @@ const Commitment = () => {
     setsortDirection(sortDirection);
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${uploadimage}`;
 
     return (
       <img
@@ -269,7 +269,7 @@ const Commitment = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Commitment`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/Commitment`,
         {
           skip: skip,
           per_page: perPage,
@@ -662,7 +662,7 @@ const Commitment = () => {
                   src={
                     checkImagePhoto
                       ? photoAdd
-                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.CommitmentImage}`
+                      : `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${values.CommitmentImage}`
                   }
                   width="300"
                   height="200"

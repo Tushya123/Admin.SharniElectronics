@@ -202,7 +202,7 @@ const Newspaper = () => {
     await axios
       .post(
 
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/subscribe`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params/subscribe`,
 
         {
           skip: skip,

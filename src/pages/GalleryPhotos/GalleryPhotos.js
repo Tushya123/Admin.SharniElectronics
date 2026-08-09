@@ -59,7 +59,7 @@ const GalleryPhotos = () => {
   const getSelectType = () => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Category`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/Category`
       )
       .then((response) => {
         if (response.length > 0) {
@@ -93,7 +93,7 @@ const GalleryPhotos = () => {
     setblogImage(row.imageURL);
     setTypes(row.Category);
     setPhotoAdd(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${row.imageURL}`
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${row.imageURL}`
     );
     setIsActive(row.IsActive);
     setCheckImagePhoto(true);
@@ -335,7 +335,7 @@ const GalleryPhotos = () => {
     setTypes("");
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${uploadimage}`;
 
     return (
       <img

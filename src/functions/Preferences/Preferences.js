@@ -4,7 +4,7 @@ export const createSubscribers = async (values) => {
   try{
     console.log(values)
     const response =await axios.post(
-      `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/create/preferences`,
+      `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/create/preferences`,
       values
     )
 
@@ -18,13 +18,13 @@ export const createSubscribers = async (values) => {
 
 export const removeSubscribers = async (_id) => {
   return await axios.delete(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/delete/preferences/${_id}`
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/delete/preferences/${_id}`
   );
 };
 
 export const listSubscriber = async () => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/preferences`
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/preferences`
   );
 };
 
@@ -36,7 +36,7 @@ export const listSubscriber = async () => {
 
 export const updateSubscriber = async (_id, values) => {
   return await axios.put(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/update/preferences/${_id}`,
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/update/preferences/${_id}`,
     values
   );
 };
@@ -44,7 +44,7 @@ export const updateSubscriber = async (_id, values) => {
 
 export const getSpecificSubscriber = async (_id) => {
   return await axios.get(
-    `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/getbyid/preferences/${_id}`
+    `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/getbyid/preferences/${_id}`
   );
 };
 
@@ -56,7 +56,7 @@ export const getSpecificSubscriber = async (_id) => {
 // };
 //   export const getServiceTypebyParams = async (body) => {
 //     return await axios.post(
-//       `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/auth/list-by-params/ServiceType`,
+//       `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/auth/list-by-params/ServiceType`,
 //       body
 //     );
 //   };  

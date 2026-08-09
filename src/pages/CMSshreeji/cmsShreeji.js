@@ -119,7 +119,7 @@ const Cms = () => {
               console.log("Upload response URL:", Url);
 
               return {
-                default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/AboutUS/${Url}`,
+                default: `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/uploads/AboutUS/${Url}`,
               };
             })
             .catch((err) => {
@@ -371,7 +371,7 @@ const Cms = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list-by-params/specialitymanagement`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list-by-params/specialitymanagement`,
         {
           skip: skip,
           per_page: perPage,
@@ -475,7 +475,7 @@ const Cms = () => {
     setProductPDF("");
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${uploadimage}`;
 
     return (
       <img
@@ -639,8 +639,8 @@ const handleSubmitCms = async () => {
         setDetail(res.cmsDesc)
         setBlogImage(res.cmsImage) 
         setCheckImagePhoto(true);
-        // let imageUrl2 = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${res.cmsImage}`;
-        setPhotoAdd(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${res.cmsImage}`);
+        // let imageUrl2 = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${res.cmsImage}`;
+        setPhotoAdd(`${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${res.cmsImage}`);
         
       })
   

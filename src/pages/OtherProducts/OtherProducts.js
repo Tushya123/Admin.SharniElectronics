@@ -83,7 +83,7 @@ const OtherProducts = () => {
                   console.log("res", res.url);
                   resolve({
 
-                    default: `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/uploads/otherproductsCKImage/${res.url}`,
+                    default: `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/uploads/otherproductsCKImage/${res.url}`,
 
                   });
                 })
@@ -310,7 +310,7 @@ const OtherProducts = () => {
     setsortDirection(sortDirection);
   };
 //   const renderImage = (uploadimage) => {
-//     const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+//     const imageUrl = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${uploadimage}`;
 
 //     return (
 //       <img
@@ -338,7 +338,7 @@ const OtherProducts = () => {
 
     await axios
 
-      .post(`${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listotherproductsbyparam`, {
+      .post(`${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/listotherproductsbyparam`, {
 
         skip: skip,
         per_page: perPage,
@@ -960,7 +960,7 @@ className={validClassBD}
                                           checkImagePhoto
                                             ? photoAdd
 
-                                            : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${roleImage}`
+                                            : `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${roleImage}`
 
                                         }
                                         width="180"

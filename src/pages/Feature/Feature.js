@@ -275,7 +275,7 @@ const Feature = () => {
   };
   const renderImage = (uploadimage) => {
 
-    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${uploadimage}`;
 
 
     return (
@@ -305,7 +305,7 @@ const Feature = () => {
     await axios
       .post(
 
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listByparams/feature`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/listByparams/feature`,
 
         {
           skip: skip,
@@ -754,7 +754,7 @@ const Feature = () => {
                     checkImagePhoto
                       ? photoAdd
 
-                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.bannerImage}`
+                      : `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${values.bannerImage}`
 
                   }
                   width="300"

@@ -148,7 +148,7 @@ const CountryWiseReport = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Countryinquiry/${selectedCountry}`, // use selectedCountry here
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/Countryinquiry/${selectedCountry}`, // use selectedCountry here
         {
           skip: skip,
           per_page: perPage,
@@ -180,7 +180,7 @@ const CountryWiseReport = () => {
         skip = 0;
       }
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/downloadexcel/${selectedCountry}`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/downloadexcel/${selectedCountry}`,
         {
           skip: skip,
           per_page: perPage,
@@ -298,7 +298,7 @@ const CountryWiseReport = () => {
     try {
       // const response = await listSpecialityManagement()
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/supplier`
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/supplier`
       );
       console.log(response);
       const names = response.map((item) => ({

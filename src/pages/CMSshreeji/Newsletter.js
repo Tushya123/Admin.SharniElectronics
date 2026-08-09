@@ -257,7 +257,7 @@ const Newsletter = () => {
     setsortDirection(sortDirection);
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${uploadimage}`;
 
     return (
       <img
@@ -285,7 +285,7 @@ const Newsletter = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/list/Newsletter`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/list/Newsletter`,
         {
           skip: skip,
           per_page: perPage,
@@ -758,7 +758,7 @@ const Newsletter = () => {
                   src={
                     checkImagePhoto
                       ? photoAdd
-                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.NewsletterImage}`
+                      : `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${values.NewsletterImage}`
                   }
                   width="300"
                   height="200"

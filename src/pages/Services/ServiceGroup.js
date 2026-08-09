@@ -234,7 +234,7 @@ const ServiceGroup = () => {
     setsortDirection(sortDirection);
   };
   const renderImage = (uploadimage) => {
-    const imageUrl = `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${uploadimage}`;
+    const imageUrl = `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${uploadimage}`;
 
     return (
       <img
@@ -262,7 +262,7 @@ const ServiceGroup = () => {
 
     await axios
       .post(
-        `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/api/auth/listservicetype`,
+        `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/api/auth/listservicetype`,
         {
           skip: skip,
           per_page: perPage,
@@ -691,7 +691,7 @@ const ServiceGroup = () => {
                   src={
                     checkImagePhoto
                       ? photoAdd
-                      : `${process.env.REACT_APP_API_URL_SHREEJI_PHARMACY}/${values.ImageUrl}`
+                      : `${process.env.REACT_APP_API_URL_SHARNI_ELECTRONICS}/${values.ImageUrl}`
                   }
                   width="300"
                   height="200"
